@@ -31,15 +31,13 @@ public class MainEvaluadorTest {
 		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.9));*/
 		
 
-		configuraciones.add(new Configuracion(2,SimilarityAlgorithm.SimAlg.EUCLIDEAN,-1,TypeNeigh.K_NEIGHBORHOOD));
-		configuraciones.add(new Configuracion(2,SimilarityAlgorithm.SimAlg.EUCLIDEAN,-1,TypeNeigh.K_FRIENDS));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.1,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.1,TypeNeigh.THRESHOLD));
 		
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");
 		 resultados = esquema.evaluar(configuraciones);
-		
-		 
 		 System.out.println("Fin evaluacion");
 		 System.out.println("Exportar csv");
 		 exportarCsv(resultados);

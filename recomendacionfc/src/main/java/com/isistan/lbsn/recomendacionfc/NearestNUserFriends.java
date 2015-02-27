@@ -61,8 +61,7 @@ public final class NearestNUserFriends implements UserNeighborhood  {
  */
 	
 	public long[] getUserNeighborhood(long userID) throws TasteException {
-		 System.out.println(userID);
-	     DataModel dataModel = this.dataModel;
+		 DataModel dataModel = this.dataModel;
 	     UserSimilarity userSimilarityImpl = this.userSimilarity;
 	     TopItems.Estimator<Long> estimator = new Estimator(userSimilarityImpl, userID, minSimilarity);
 	     LongPrimitiveIterator userIDs =  this.friendsDm.getFriends(userID);
