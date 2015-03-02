@@ -16,11 +16,16 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
 
 public class EvaluacionEsquema {
-
+/**
+ * 
+ * @param configuraciones
+ * @return
+ * To be clear, trainingPercentage and evaluationPercentage are not related. They do not need to add up to 1.0, for example.
+ */
 	public ArrayList<Resultado> evaluar(ArrayList<Configuracion> configuraciones) {
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
 		try {
-			RandomUtils.useTestSeed();
+		    RandomUtils.useTestSeed();
 			DataModel model = new FileDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/ratingsMeanReducido.csv")));
 			FriendsDataModel fmodel = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
 			for (Configuracion configuracion : configuraciones) {
@@ -28,8 +33,8 @@ public class EvaluacionEsquema {
 				UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),
 												configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
 				RecommenderBuilder recBuilder = new GenRecBuilder(sim,neighborhood);
-	            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.9, 0.5);
-	            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.9, 0.5);
+	            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.9, 1.0);
+	            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.9, 1.0);
 	            resultados.add(new Resultado(configuracion, scoreMae, scoreRms));
 			}
 			

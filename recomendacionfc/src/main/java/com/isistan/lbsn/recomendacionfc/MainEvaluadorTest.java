@@ -16,24 +16,42 @@ public class MainEvaluadorTest {
 		ArrayList<Configuracion> configuraciones = new ArrayList<Configuracion>();
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
 
-		/*	configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,0.1));
-		configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.PEARSON,0.3));
-		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.PEARSON,0.5));
-		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.PEARSON,0.7));
-		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.PEARSON,0.9));
-		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.PEARSON,0.9));
+//	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+//		configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+//		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+//		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+//		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+//		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+//		
+//	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+//		configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+//		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+//		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+//		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+//		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
 		
+		
+		
+	    configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.1,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.3,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.6,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.7,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.8,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.95,TypeNeigh.THRESHOLD));
+		
+		/*	
 		configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.1));
 		configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.3));
 		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.5));
 		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.7));
 		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.9));
-		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.9));*/
+		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.9));
 		
 
 		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
 		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
 		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.1,TypeNeigh.THRESHOLD));
+		*/
 		
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");
@@ -51,7 +69,7 @@ public class MainEvaluadorTest {
 			    .quote('"')      // quote character
 			    .create();       // new instance is immutable
 		
-		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCF.csv", new CSVWriteProc() {
+		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCFTodos.csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
 		        out.writeNext("Similitud","TVecinos","Nvecinos","Threshold","Mae","Rms");
 		        for (Resultado resultado : resultados) {
