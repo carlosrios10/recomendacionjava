@@ -4,6 +4,7 @@ public class Resultado {
 	Configuracion configuracion;
 	double scoreMae;
 	double scoreRms;
+	
 	public Resultado(Configuracion configuracion, double scoreMae,
 			double scoreRms) {
 		super();

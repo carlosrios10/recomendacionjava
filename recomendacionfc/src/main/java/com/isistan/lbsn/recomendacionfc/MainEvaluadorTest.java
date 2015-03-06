@@ -1,11 +1,22 @@
 package com.isistan.lbsn.recomendacionfc;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
+import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
+import org.apache.mahout.cf.taste.model.DataModel;
+import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
+import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import au.com.bytecode.opencsv.CSV;
 import au.com.bytecode.opencsv.CSVWriteProc;
 import au.com.bytecode.opencsv.CSVWriter;
 
+import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithm.SimAlg;
 import com.isistan.lbsn.recomendacionfc.TypeNeighborhood.TypeNeigh;
 
 
@@ -16,42 +27,47 @@ public class MainEvaluadorTest {
 		ArrayList<Configuracion> configuraciones = new ArrayList<Configuracion>();
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
 
-//	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
-//		configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
-//		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
-//		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
-//		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
-//		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
-//		
-//	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
-//		configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
-//		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
-//		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
-//		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
-//		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+   	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
 		
+	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
 		
+	    configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.1,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.3,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.95,TypeNeigh.THRESHOLD));
+		
+   	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_NEIGHBORHOOD));
+		
+	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
+		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.PEARSON,-1,TypeNeigh.K_FRIENDS));
 		
 	    configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.1,TypeNeigh.THRESHOLD));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.3,TypeNeigh.THRESHOLD));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.6,TypeNeigh.THRESHOLD));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.7,TypeNeigh.THRESHOLD));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.8,TypeNeigh.THRESHOLD));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.95,TypeNeigh.THRESHOLD));
-		
-		/*	
-		configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.1));
-		configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.3));
-		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.5));
-		configuraciones.add(new Configuracion(90,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.7));
-		configuraciones.add(new Configuracion(125,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.9));
-		configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.EUCLIDEAN,0.9));
-		
-
-		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_NEIGHBORHOOD));
-		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.1,TypeNeigh.THRESHOLD));
-		*/
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.3,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.6,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.7,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.8,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.95,TypeNeigh.THRESHOLD));
 		
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");
@@ -60,6 +76,9 @@ public class MainEvaluadorTest {
 		 System.out.println("Exportar csv");
 		 exportarCsv(resultados);
 		 System.out.println("FIN");
+		 
+		 
+
 
 	}
 
@@ -69,7 +88,7 @@ public class MainEvaluadorTest {
 			    .quote('"')      // quote character
 			    .create();       // new instance is immutable
 		
-		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCFTodos.csv", new CSVWriteProc() {
+		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCFTodos2.csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
 		        out.writeNext("Similitud","TVecinos","Nvecinos","Threshold","Mae","Rms");
 		        for (Resultado resultado : resultados) {
@@ -89,6 +108,7 @@ public class MainEvaluadorTest {
 		
 	}
 	
+
 	
 
 }

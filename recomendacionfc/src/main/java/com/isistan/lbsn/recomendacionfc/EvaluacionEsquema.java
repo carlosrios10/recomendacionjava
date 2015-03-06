@@ -1,12 +1,15 @@
 package com.isistan.lbsn.recomendacionfc;
 
+import java.awt.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
+import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
@@ -45,6 +48,18 @@ public class EvaluacionEsquema {
 			e.printStackTrace();
 		}
 		return resultados;
+	}
+
+	private double getVecinosPromedios(DataModel model,
+			UserNeighborhood neighborhood) throws TasteException {
+		LongPrimitiveIterator it = model.getUserIDs();
+		int cantidadVecinos = 0;
+		while (it.hasNext()) {
+			Long idUser =  it.next();
+			cantidadVecinos= cantidadVecinos+ neighborhood.getUserNeighborhood(idUser).length;
+		}
+		//double vecinosPromedio = cantidadVecinos/model.getNumUsers();
+		return cantidadVecinos;
 	}
 
 
