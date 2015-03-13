@@ -18,6 +18,8 @@ import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
 
+import com.isistan.lbsn.similitudestructural.GrafoDataModel;
+
 public class EvaluacionEsquema {
 /**
  * 
@@ -31,8 +33,9 @@ public class EvaluacionEsquema {
 		    RandomUtils.useTestSeed();
 			DataModel model = new FileDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/ratingsMeanReducido.csv")));
 			FriendsDataModel fmodel = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
+			GrafoDataModel gModel = new GrafoDataModel("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.graphml");
 			for (Configuracion configuracion : configuraciones) {
-				UserSimilarity sim = SimilarityAlgorithm.build(model, configuracion.getSimAlg());
+				UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg());
 				UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),
 												configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
 				RecommenderBuilder recBuilder = new GenRecBuilder(sim,neighborhood);

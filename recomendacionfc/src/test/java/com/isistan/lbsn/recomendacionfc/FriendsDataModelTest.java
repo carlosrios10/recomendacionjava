@@ -21,7 +21,7 @@ public class FriendsDataModelTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-	dm = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
+		dm = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
 	}
 
 	protected void tearDown() throws Exception {
