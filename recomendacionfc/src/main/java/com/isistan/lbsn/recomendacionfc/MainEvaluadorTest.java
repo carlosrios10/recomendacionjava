@@ -68,8 +68,28 @@ public class MainEvaluadorTest {
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.7,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.8,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSON,0.95,TypeNeigh.THRESHOLD));
-		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.JACCARDNETWORK,0.1,TypeNeigh.THRESHOLD));
-		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.1,TypeNeigh.THRESHOLD));
+		
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.JACCARDNETWORK,0.1,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.JACCARDNETWORK,0.3,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.JACCARDNETWORK,0.6,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.JACCARDNETWORK,0.7,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.JACCARDNETWORK,0.8,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.JACCARDNETWORK,0.9,TypeNeigh.THRESHOLD));
+//		
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.1,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.3,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.6,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.7,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.8,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.9,TypeNeigh.THRESHOLD));
+
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.1,TypeNeigh.THRESHOLD));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.1,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.6,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.7,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.8,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.9,TypeNeigh.THRESHOLD));
+
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");
 		 resultados = esquema.evaluar(configuraciones);
@@ -89,7 +109,7 @@ public class MainEvaluadorTest {
 			    .quote('"')      // quote character
 			    .create();       // new instance is immutable
 		
-		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCFTodosSimEstr.csv", new CSVWriteProc() {
+		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCFTodosSimEstrTest2.csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
 		        out.writeNext("Similitud","TVecinos","Nvecinos","Threshold","Mae","Rms");
 		        for (Resultado resultado : resultados) {

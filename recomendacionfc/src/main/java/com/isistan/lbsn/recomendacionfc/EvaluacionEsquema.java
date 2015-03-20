@@ -1,10 +1,15 @@
 package com.isistan.lbsn.recomendacionfc;
 
-import java.awt.List;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -18,6 +23,7 @@ import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
 
+
 import com.isistan.lbsn.similitudestructural.GrafoDataModel;
 
 public class EvaluacionEsquema {
@@ -30,24 +36,37 @@ public class EvaluacionEsquema {
 	public ArrayList<Resultado> evaluar(ArrayList<Configuracion> configuraciones) {
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
 		try {
-		    RandomUtils.useTestSeed();
-			DataModel model = new FileDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/ratingsMeanReducido.csv")));
-			FriendsDataModel fmodel = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
-			GrafoDataModel gModel = new GrafoDataModel("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.graphml");
-			for (Configuracion configuracion : configuraciones) {
-				UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg());
-				UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),
-												configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
-				RecommenderBuilder recBuilder = new GenRecBuilder(sim,neighborhood);
-	            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.9, 1.0);
-	            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.9, 1.0);
-	            resultados.add(new Resultado(configuracion, scoreMae, scoreRms));
-			}
-			
+			ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+			RandomUtils.useTestSeed();
+			final DataModel model = new FileDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/ratingsMeanReducido.csv")));
+			final FriendsDataModel fmodel = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
+			final GrafoDataModel gModel = new GrafoDataModel("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.graphml");
+			List<Future<Resultado>> futures = new LinkedList<Future<Resultado>>();
+			for (final Configuracion configuracion : configuraciones) {
+				futures.add(service.submit(new java.util.concurrent.Callable<Resultado>() {
+					public Resultado call() throws Exception {
+						UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg());
+						UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),
+														configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
+						RecommenderBuilder recBuilder = new GenRecBuilder(sim,neighborhood);
+			            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.9, 1.0);
+			            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.9, 1.0);
+						return new Resultado(configuracion, scoreMae, scoreRms);
+					}
+				}));
+				}
+				for (Future f : futures) {
+					resultados.add((Resultado) f.get());
+				}
+				
 		
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (TasteException e) {
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return resultados;

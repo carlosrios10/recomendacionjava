@@ -15,6 +15,19 @@ import edu.uci.ics.jung.io.graphml.NodeMetadata;
 
 public class GrafoDataModel {
 	private UndirectedSparseGraph<Long, Integer> grafo;
+	private UndirectedSparseGraph<Nodo, Integer> grafoN;
+
+	public GrafoDataModel(UndirectedSparseGraph<Long, Integer> grafo,
+			UndirectedSparseGraph<Nodo, Integer> grafoN) {
+		super();
+		this.grafo = grafo;
+		this.setGrafoN(grafoN);
+	}
+
+	public GrafoDataModel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public GrafoDataModel(UndirectedSparseGraph<Long, Integer> grafo) {
 		super();
@@ -30,8 +43,15 @@ public class GrafoDataModel {
 		try {
 			FileReader reader = new FileReader(fileName);
 			Transformer<NodeMetadata, Long> vtrans = new Transformer<NodeMetadata, Long>() {
+				// long idLong = 0;
 				public Long transform(NodeMetadata nmd) {
-					return new Long(nmd.getProperty("v_name"));
+					// idLong++;
+					String name = nmd.getProperty("v_name");
+					// Long Long = new Long(idLong,name);
+					return new Long(name);
+					//
+					// Long Long = new Long(id, nombre);
+					// return new Long();
 				}
 			};
 			Transformer<EdgeMetadata, Integer> etrans = new Transformer<EdgeMetadata, Integer>() {
@@ -72,6 +92,14 @@ public class GrafoDataModel {
 
 	public void setGrafo(UndirectedSparseGraph<Long, Integer> grafo) {
 		this.grafo = grafo;
+	}
+
+	public UndirectedSparseGraph<Nodo, Integer> getGrafoN() {
+		return grafoN;
+	}
+
+	public void setGrafoN(UndirectedSparseGraph<Nodo, Integer> grafoN) {
+		this.grafoN = grafoN;
 	}
 
 }
