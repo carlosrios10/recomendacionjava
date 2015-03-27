@@ -47,7 +47,7 @@ public class MainCalcularVecinos {
 		
 		ArrayList<Configuracion> configuraciones = new ArrayList<Configuracion>();
 		
-	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,0.1,TypeNeigh.THRESHOLD));
+//	    configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.PEARSON,0.1,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.LOGLIKE,0.3,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.LOGLIKE,0.6,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.LOGLIKE,0.7,TypeNeigh.THRESHOLD));
@@ -62,7 +62,7 @@ public class MainCalcularVecinos {
 			fmodel = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
 			GrafoDataModel gModel = new GrafoDataModel("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.graphml");
 			for (Configuracion configuracion : configuraciones) {
-				UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg());
+				UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg(),0,0);
 				UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),
 												configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
 			//	 calcularNumeroVecinos(model, neighborhood, sim, resultadosVecino,configuracion);

@@ -4,13 +4,18 @@ public class Resultado {
 	Configuracion configuracion;
 	double scoreMae;
 	double scoreRms;
+	double scorePrecision;
+	double scoreRecall;
 	
+
 	public Resultado(Configuracion configuracion, double scoreMae,
-			double scoreRms) {
+			double scoreRms, double scorePrecision, double scoreRecall) {
 		super();
 		this.configuracion = configuracion;
 		this.scoreMae = scoreMae;
 		this.scoreRms = scoreRms;
+		this.scorePrecision = scorePrecision;
+		this.scoreRecall = scoreRecall;
 	}
 	public Configuracion getConfiguracion() {
 		return configuracion;
@@ -29,6 +34,18 @@ public class Resultado {
 	}
 	public void setScoreRms(double scoreRms) {
 		this.scoreRms = scoreRms;
+	}
+	public double getScorePrecision() {
+		return scorePrecision;
+	}
+	public void setScorePrecision(double scorePrecision) {
+		this.scorePrecision = scorePrecision;
+	}
+	public double getScoreRecall() {
+		return scoreRecall;
+	}
+	public void setScoreRecall(double scoreRecall) {
+		this.scoreRecall = scoreRecall;
 	}
 
 }

@@ -10,6 +10,7 @@ import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
+import com.isistan.lbsn.similitudcombinada.SimilitudCombinada;
 import com.isistan.lbsn.similitudestructural.CosenoNetwork;
 import com.isistan.lbsn.similitudestructural.GrafoDataModel;
 import com.isistan.lbsn.similitudestructural.JaccardNetwork;
@@ -17,11 +18,12 @@ import com.isistan.lbsn.similitudestructural.PearsonNetwork;
 
 public class SimilarityAlgorithm {
 	public enum SimAlg {
-		EUCLIDEAN, PEARSON, TANIMOTO, COSENO, LOGLIKE, SPEARMAN, JACCARDNETWORK, COSENONETWORK,PEARSONNETWORK
+		EUCLIDEAN, PEARSON, TANIMOTO, COSENO, LOGLIKE, SPEARMAN, JACCARDNETWORK, COSENONETWORK,PEARSONNETWORK,COMBINADA
 	};
 
 	public static UserSimilarity build(DataModel model,
-			GrafoDataModel grafoDataModel, SimAlg simAlg) {
+									   GrafoDataModel grafoDataModel, 
+									   SimAlg simAlg,double alfa,double beta ) {
 		UserSimilarity similarity = null;
 		switch (simAlg) {
 		case COSENO:
@@ -60,6 +62,15 @@ public class SimilarityAlgorithm {
 		case PEARSONNETWORK:
 			similarity = new PearsonNetwork(grafoDataModel);
 			return similarity;
+		case COMBINADA:
+			try {
+				UserSimilarity similarityRating = new UncenteredCosineSimilarity(model);
+				UserSimilarity similarityNetwork =  new CosenoNetwork(grafoDataModel);
+				similarity = new SimilitudCombinada(similarityRating,similarityNetwork,alfa,beta);
+			} catch (TasteException e) {
+			}
+			return similarity;
+			
 		default:
 			return null; // We should never get here
 		}

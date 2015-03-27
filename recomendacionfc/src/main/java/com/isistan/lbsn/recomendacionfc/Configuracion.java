@@ -9,13 +9,18 @@ public class Configuracion {
 	SimilarityAlgorithm.SimAlg simAlg; 
 	private double threshold;
 	TypeNeighborhood.TypeNeigh typeNeigh;
+	double alfa;
+	double beta;
 	
-	public Configuracion(int neighSize, SimAlg simAlg, double threshold, TypeNeighborhood.TypeNeigh  typeNeigh) {
+	public Configuracion(int neighSize, SimAlg simAlg, double threshold, TypeNeighborhood.TypeNeigh  typeNeigh,double alfa,
+			double beta) {
 		super();
 		this.neighSize = neighSize;
 		this.simAlg = simAlg;
 		this.threshold = threshold;
 		this.typeNeigh = typeNeigh;
+		this.alfa = alfa;
+		this.beta = beta;
 	}
 	public TypeNeighborhood.TypeNeigh getTypeNeigh() {
 		return typeNeigh;
@@ -40,6 +45,18 @@ public class Configuracion {
 	}
 	public void setThreshold(double threshold) {
 		this.threshold = threshold;
+	}
+	public double getAlfa() {
+		return alfa;
+	}
+	public void setAlfa(double alfa) {
+		this.alfa = alfa;
+	}
+	public double getBeta() {
+		return beta;
+	}
+	public void setBeta(double beta) {
+		this.beta = beta;
 	}
 
 

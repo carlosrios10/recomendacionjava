@@ -83,12 +83,25 @@ public class MainEvaluadorTest {
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.8,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENONETWORK,0.9,TypeNeigh.THRESHOLD));
 
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.1,TypeNeigh.THRESHOLD));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.1,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.1,TypeNeigh.THRESHOLD));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.1,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.6,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.7,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.8,TypeNeigh.THRESHOLD));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.PEARSONNETWORK,0.9,TypeNeigh.THRESHOLD));
+
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.1,0.9));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.2,0.8));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.3,0.7));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.4,0.6));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.5,0.5));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.6,0.4));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.7,0.3));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.8,0.2));
+//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.9,0.1));
+		
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.5,0.5));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.THRESHOLD,0.5,0.5));
 
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");
@@ -109,17 +122,21 @@ public class MainEvaluadorTest {
 			    .quote('"')      // quote character
 			    .create();       // new instance is immutable
 		
-		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCFTodosSimEstrTest2.csv", new CSVWriteProc() {
+		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCFComparacion.csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
-		        out.writeNext("Similitud","TVecinos","Nvecinos","Threshold","Mae","Rms");
+		        out.writeNext("Similitud","TVecinos","Nvecinos","Threshold","alfa","beta","Mae","Rms","Precision","Recall");
 		        for (Resultado resultado : resultados) {
 		        	out.writeNext(
 		        			    resultado.getConfiguracion().getSimAlg().toString(),
 		        			    resultado.getConfiguracion().getTypeNeigh().toString(),
 		        				Integer.toString(resultado.getConfiguracion().getNeighSize()),
 		        				Double.toString(resultado.getConfiguracion().getThreshold()),
+		        				Double.toString(resultado.getConfiguracion().getAlfa()),
+		        				Double.toString(resultado.getConfiguracion().getBeta()),
 		        				Double.toString(resultado.getScoreMae()),
-		        				Double.toString(resultado.getScoreRms())
+		        				Double.toString(resultado.getScoreRms()),
+		        				Double.toString(resultado.getScorePrecision()),
+		        				Double.toString(resultado.getScoreRecall())
 		        				
 		        				);
 				}

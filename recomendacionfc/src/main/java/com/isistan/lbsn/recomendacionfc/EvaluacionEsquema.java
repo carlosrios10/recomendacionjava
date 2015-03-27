@@ -3,7 +3,6 @@ package com.isistan.lbsn.recomendacionfc;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -13,16 +12,18 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.eval.IRStatistics;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
+import org.apache.mahout.cf.taste.eval.RecommenderIRStatsEvaluator;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator;
+import org.apache.mahout.cf.taste.impl.eval.GenericRecommenderIRStatsEvaluator;
 import org.apache.mahout.cf.taste.impl.eval.RMSRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
-
 
 import com.isistan.lbsn.similitudestructural.GrafoDataModel;
 
@@ -45,13 +46,13 @@ public class EvaluacionEsquema {
 			for (final Configuracion configuracion : configuraciones) {
 				futures.add(service.submit(new java.util.concurrent.Callable<Resultado>() {
 					public Resultado call() throws Exception {
-						UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg());
-						UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),
-														configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
+						UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
+						UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
 						RecommenderBuilder recBuilder = new GenRecBuilder(sim,neighborhood);
-			            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.9, 1.0);
-			            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.9, 1.0);
-						return new Resultado(configuracion, scoreMae, scoreRms);
+			            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.7, 1.0);
+			            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.7, 1.0);
+			            IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, model, null, 10, 3, 1.0);
+						return new Resultado(configuracion, scoreMae, scoreRms,stats.getPrecision(),stats.getRecall());
 					}
 				}));
 				}
