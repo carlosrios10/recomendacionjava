@@ -59,12 +59,11 @@ public class MainCalcularVecinos {
 		try {
 			ArrayList<ResultadoVecino> resultadosVecino = new ArrayList<ResultadoVecino>();
 			model = new FileDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/ratingsMeanReducido.csv")));
-			fmodel = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
 			GrafoDataModel gModel = new GrafoDataModel("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.graphml");
 			for (Configuracion configuracion : configuraciones) {
 				UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg(),0,0);
 				UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),
-												configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
+												configuracion.getNeighSize(), configuracion.getThreshold(),gModel);
 			//	 calcularNumeroVecinos(model, neighborhood, sim, resultadosVecino,configuracion);
 				
 			//	 exportarCsvUsuariosSimilitud( calcularMatrizSimilitud(model,sim));

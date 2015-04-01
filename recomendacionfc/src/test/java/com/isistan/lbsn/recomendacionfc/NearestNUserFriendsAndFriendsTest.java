@@ -1,13 +1,17 @@
 package com.isistan.lbsn.recomendacionfc;
 
+import org.apache.mahout.cf.taste.common.TasteException;
+
 import com.isistan.lbsn.similitudestructural.GrafoDataModel;
+import com.isistan.lbsn.vencindario.NearestNUserFriends;
+import com.isistan.lbsn.vencindario.NearestNUserFriendsAndFriends;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import junit.framework.TestCase;
 
-public class GrafoDataModelTest extends TestCase {
-	GrafoDataModel g;
-	public GrafoDataModelTest(String name) {
+public class NearestNUserFriendsAndFriendsTest extends TestCase {
+	NearestNUserFriendsAndFriends vecindario;
+	public NearestNUserFriendsAndFriendsTest(String name) {
 		super(name);
 		UndirectedSparseGraph<Long, Integer> dataModel = new UndirectedSparseGraph<Long, Integer>();
 		// Add some vertices. From above we defined these to be type Integer.
@@ -25,8 +29,9 @@ public class GrafoDataModelTest extends TestCase {
 		dataModel.addEdge((Integer)5, 3l, 5l);
 		dataModel.addEdge((Integer)6, 4l, 6l);
 		dataModel.addEdge((Integer)7, 5l, 6l);
-		g = new GrafoDataModel();
+		GrafoDataModel g= new GrafoDataModel();
 		g.setGrafo(dataModel);
+		vecindario = new NearestNUserFriendsAndFriends(g, Integer.MAX_VALUE);
 	}
 
 	protected void setUp() throws Exception {
@@ -37,9 +42,8 @@ public class GrafoDataModelTest extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetFriendsMyFriends() {
-		assertEquals(4, g.getFriendsMyFriends(1l).size());
-		assertEquals(5, g.getFriendsMyFriends(5l).size());
+	public void testGetUserNeighborhood() throws TasteException {
+		assertEquals(4, vecindario.getUserNeighborhood(1l).length);
 		
 	}
 

@@ -7,11 +7,15 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
+import com.isistan.lbsn.similitudestructural.GrafoDataModel;
+import com.isistan.lbsn.vencindario.NearestNUserFriends;
+import com.isistan.lbsn.vencindario.NearestNUserFriendsAndFriends;
+
 public class TypeNeighborhood {
-	public enum TypeNeigh {K_NEIGHBORHOOD,K_FRIENDS,THRESHOLD};
+	public enum TypeNeigh {K_NEIGHBORHOOD,K_FRIENDS,THRESHOLD,K_FRIENDS_FRIENDS};
     public static UserNeighborhood  build(UserSimilarity userSimilarity,DataModel model, 
     								TypeNeigh  typeNeigh,int neighSize, double threshold,
-    								FriendsDataModel fdm) {
+    								GrafoDataModel fdm) {
     	UserNeighborhood userNeighborhood = null;
         switch(typeNeigh) {
             case K_NEIGHBORHOOD:
@@ -31,6 +35,14 @@ public class TypeNeighborhood {
             case THRESHOLD:
             	System.out.println("ThresholdUserNeighborhood");
                 userNeighborhood = new ThresholdUserNeighborhood(threshold, userSimilarity, model);
+                return userNeighborhood;
+                
+            case K_FRIENDS_FRIENDS:
+			try {
+				System.out.println("ThresholdUserNeighborhood");
+				userNeighborhood = new NearestNUserFriendsAndFriends(neighSize, userSimilarity, model,fdm);
+			} catch (TasteException e) {
+			}
                 return userNeighborhood;
             default: return null; // We should never get here
         }

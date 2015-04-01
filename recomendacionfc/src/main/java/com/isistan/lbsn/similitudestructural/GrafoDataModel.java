@@ -2,6 +2,10 @@ package com.isistan.lbsn.similitudestructural;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -47,8 +51,9 @@ public class GrafoDataModel {
 				public Long transform(NodeMetadata nmd) {
 					// idLong++;
 					String name = nmd.getProperty("v_name");
+					
 					// Long Long = new Long(idLong,name);
-					return new Long(name);
+					return new Long(name.trim());
 					//
 					// Long Long = new Long(id, nombre);
 					// return new Long();
@@ -100,6 +105,27 @@ public class GrafoDataModel {
 
 	public void setGrafoN(UndirectedSparseGraph<Nodo, Integer> grafoN) {
 		this.grafoN = grafoN;
+	}
+
+	public Collection<Long> getFriends(long userID) {
+			Collection<Long> amigos = getGrafo().getNeighbors(userID);
+			return amigos;
+	}
+
+	public int getCantidadAmigos(long userID) {
+		return getGrafo().getNeighborCount(userID);
+	}
+
+	public Collection<Long> getFriendsMyFriends(long userID) {
+		Collection<Long> amigos = getGrafo().getNeighbors(userID);
+		Collection<Long> totalVecinos = new ArrayList<Long>();
+		for (Long amigo : amigos) {
+			totalVecinos.add(amigo);
+			List<Long> amigosDeAmigo = new ArrayList<Long>(getGrafo().getNeighbors(amigo));
+			amigosDeAmigo.remove(new Long(userID));
+			totalVecinos.addAll(amigosDeAmigo);
+		}
+		return 	( new HashSet<Long>(totalVecinos));
 	}
 
 }

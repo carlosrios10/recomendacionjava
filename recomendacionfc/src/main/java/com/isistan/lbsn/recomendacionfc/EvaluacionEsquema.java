@@ -28,6 +28,7 @@ import org.apache.mahout.common.RandomUtils;
 import com.isistan.lbsn.similitudestructural.GrafoDataModel;
 
 public class EvaluacionEsquema {
+	
 /**
  * 
  * @param configuraciones
@@ -40,18 +41,18 @@ public class EvaluacionEsquema {
 			ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 			RandomUtils.useTestSeed();
 			final DataModel model = new FileDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/ratingsMeanReducido.csv")));
-			final FriendsDataModel fmodel = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
 			final GrafoDataModel gModel = new GrafoDataModel("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.graphml");
+			
 			List<Future<Resultado>> futures = new LinkedList<Future<Resultado>>();
 			for (final Configuracion configuracion : configuraciones) {
 				futures.add(service.submit(new java.util.concurrent.Callable<Resultado>() {
 					public Resultado call() throws Exception {
 						UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
-						UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),fmodel);
+						UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),gModel);
 						RecommenderBuilder recBuilder = new GenRecBuilder(sim,neighborhood);
-			            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.7, 1.0);
-			            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.7, 1.0);
-			            IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, model, null, 10, 3, 1.0);
+			            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.7, 1);
+			            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.7, 1);
+			            IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, model, null, 10, 3, 0.1);
 						return new Resultado(configuracion, scoreMae, scoreRms,stats.getPrecision(),stats.getRecall());
 					}
 				}));
