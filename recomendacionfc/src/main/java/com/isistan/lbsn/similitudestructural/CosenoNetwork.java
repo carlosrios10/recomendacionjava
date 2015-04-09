@@ -9,9 +9,9 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 public class CosenoNetwork implements UserSimilarity {
-	GrafoDataModel grafoDataModel;
+	GrafoModel grafoDataModel;
 
-	public CosenoNetwork(GrafoDataModel grafoDataModel) {
+	public CosenoNetwork(GrafoModel grafoDataModel) {
 		super();
 		this.grafoDataModel = grafoDataModel;
 	}
@@ -25,9 +25,9 @@ public class CosenoNetwork implements UserSimilarity {
 	 */
 	public double userSimilarity(long userID1, long userID2)
 			throws TasteException {
-		Collection<Long> vecinosU1 = grafoDataModel.getGrafo().getNeighbors(
+		Collection<Long> vecinosU1 = grafoDataModel.getFriends(
 				userID1);
-		Collection<Long> vecinosU2 = grafoDataModel.getGrafo().getNeighbors(
+		Collection<Long> vecinosU2 = grafoDataModel.getFriends(
 				userID2);
 
 		if (vecinosU1 == null || vecinosU2 == null)

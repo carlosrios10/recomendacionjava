@@ -12,7 +12,7 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.similitudcombinada.SimilitudCombinada;
 import com.isistan.lbsn.similitudestructural.CosenoNetwork;
-import com.isistan.lbsn.similitudestructural.GrafoDataModel;
+import com.isistan.lbsn.similitudestructural.GrafoModel;
 import com.isistan.lbsn.similitudestructural.JaccardNetwork;
 import com.isistan.lbsn.similitudestructural.PearsonNetwork;
 
@@ -22,7 +22,7 @@ public class SimilarityAlgorithm {
 	};
 
 	public static UserSimilarity build(DataModel model,
-									   GrafoDataModel grafoDataModel, 
+			GrafoModel grafoDataModel, 
 									   SimAlg simAlg,double alfa,double beta ) {
 		UserSimilarity similarity = null;
 		switch (simAlg) {

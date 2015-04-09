@@ -1,6 +1,7 @@
 package com.isistan.lbsn.recomendacionfc;
 
 import java.io.File;
+import java.util.Collection;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
 
@@ -21,14 +22,18 @@ public class FriendsDataModelTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		dm = new FriendsDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.csv")));
+		dm = new FriendsDataModel(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/socialgraph.csv"));
+		//dm = new FriendsDataModel();
 	}
 
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
-	public void testgetCantidadAmigos(){
-		assertEquals(0,dm.getCantidadAmigos(1l));
+//	public void testgetCantidadAmigos(){
+//		assertEquals(29,dm.getFriends(1l).size());
+//	}
+	public void testgetCantidadAmigosyAmigos(){
+		assertEquals(4821, dm.getFriendsMyFriends(1l).size());
 	}
 
 }

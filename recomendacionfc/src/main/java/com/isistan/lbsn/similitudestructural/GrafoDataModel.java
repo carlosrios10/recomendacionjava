@@ -17,7 +17,7 @@ import edu.uci.ics.jung.io.graphml.GraphMetadata;
 import edu.uci.ics.jung.io.graphml.HyperEdgeMetadata;
 import edu.uci.ics.jung.io.graphml.NodeMetadata;
 
-public class GrafoDataModel {
+public class GrafoDataModel implements GrafoModel {
 	private UndirectedSparseGraph<Long, Integer> grafo;
 	private UndirectedSparseGraph<Nodo, Integer> grafoN;
 
@@ -118,6 +118,9 @@ public class GrafoDataModel {
 
 	public Collection<Long> getFriendsMyFriends(long userID) {
 		Collection<Long> amigos = getGrafo().getNeighbors(userID);
+		if (amigos == null)
+			return null;
+		
 		Collection<Long> totalVecinos = new ArrayList<Long>();
 		for (Long amigo : amigos) {
 			totalVecinos.add(amigo);

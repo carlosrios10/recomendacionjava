@@ -58,6 +58,11 @@ public class Configuracion {
 	public void setBeta(double beta) {
 		this.beta = beta;
 	}
+	@Override
+	public String toString() {
+		String resultado= ""+getSimAlg()+""+getTypeNeigh()+""+getNeighSize()+""+getAlfa()+""+getBeta()+""+getThreshold();
+		return resultado; 
+	}
 
 
 

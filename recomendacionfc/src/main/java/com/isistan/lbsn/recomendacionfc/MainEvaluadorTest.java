@@ -139,7 +139,7 @@ public class MainEvaluadorTest {
 			    .quote('"')      // quote character
 			    .create();       // new instance is immutable
 		
-		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCFTodosJAIIO.csv", new CSVWriteProc() {
+		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/resultadosUBCF_UE.csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
 		        out.writeNext("Similitud","TVecinos","Nvecinos","Threshold","alfa","beta","Mae","Rms","Precision","Recall");
 		        for (Resultado resultado : resultados) {

@@ -13,9 +13,9 @@ import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
 
 public class PearsonNetwork implements UserSimilarity {
-	GrafoDataModel grafoDataModel;
+	GrafoModel grafoDataModel;
 
-	public PearsonNetwork(GrafoDataModel grafoDataModel) {
+	public PearsonNetwork(GrafoModel grafoDataModel) {
 		super();
 		this.grafoDataModel = grafoDataModel;
 	}

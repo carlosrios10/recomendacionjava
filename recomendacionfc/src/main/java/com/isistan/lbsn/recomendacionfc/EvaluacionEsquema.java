@@ -26,6 +26,7 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
 
 import com.isistan.lbsn.similitudestructural.GrafoDataModel;
+import com.isistan.lbsn.similitudestructural.GrafoModel;
 
 public class EvaluacionEsquema {
 	
@@ -38,36 +39,37 @@ public class EvaluacionEsquema {
 	public ArrayList<Resultado> evaluar(ArrayList<Configuracion> configuraciones) {
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
 		try {
-			ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+			//ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 			RandomUtils.useTestSeed();
-			final DataModel model = new FileDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/ratingsMeanReducido.csv")));
-			final GrafoDataModel gModel = new GrafoDataModel("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/redSocialReducida.graphml");
-			
-			List<Future<Resultado>> futures = new LinkedList<Future<Resultado>>();
+			final DataModel model = new FileDataModel(new File(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/ratingUE.csv")));
+			final GrafoModel gModel = new FriendsDataModel("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/grafoUE.csv"
+					+ ".csv");
+			//List<Future<Resultado>> futures = new LinkedList<Future<Resultado>>();
 			for (final Configuracion configuracion : configuraciones) {
-				futures.add(service.submit(new java.util.concurrent.Callable<Resultado>() {
-					public Resultado call() throws Exception {
+				System.out.println(configuracion.toString());
+				//futures.add(service.submit(new java.util.concurrent.Callable<Resultado>() {
+					//public Resultado call() throws Exception {
 						UserSimilarity sim = SimilarityAlgorithm.build(model, gModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
 						UserNeighborhood neighborhood = TypeNeighborhood.build(sim, model, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),gModel);
 						RecommenderBuilder recBuilder = new GenRecBuilder(sim,neighborhood);
 			            double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,model, 0.7, 1);
 			            double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, model, 0.7, 1);
-			            IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, model, null, 10, 3, 0.1);
-						return new Resultado(configuracion, scoreMae, scoreRms,stats.getPrecision(),stats.getRecall());
-					}
-				}));
+			            System.out.println(scoreMae+" "+scoreRms);
+			          //  IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, model, null, 10, 3, 0.5);
+						//return new Resultado(configuracion, -1, -1,stats.getPrecision(),stats.getRecall());
+			           // System.out.println(stats.getPrecision()+" "+stats.getRecall());
+						resultados.add(new Resultado(configuracion, scoreMae, scoreRms,0,0));
+					//}
+				//}));
 				}
-				for (Future f : futures) {
-					resultados.add((Resultado) f.get());
-				}
+//				for (Future f : futures) {
+//					resultados.add((Resultado) f.get());
+//				}
 				
 		
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
+		} catch (TasteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

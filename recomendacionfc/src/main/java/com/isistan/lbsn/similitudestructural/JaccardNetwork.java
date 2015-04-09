@@ -11,13 +11,13 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
 public class JaccardNetwork implements UserSimilarity {
-	GrafoDataModel grafoDataModel;
+	GrafoModel grafoDataModel;
 
 	public JaccardNetwork() {
 		super();
 	}
 
-	public JaccardNetwork(GrafoDataModel grafoDataModel) {
+	public JaccardNetwork(GrafoModel grafoDataModel) {
 		super();
 		this.grafoDataModel = grafoDataModel;
 	}
@@ -33,9 +33,9 @@ public class JaccardNetwork implements UserSimilarity {
 	public double userSimilarity(long userID1, long userID2)
 			throws TasteException {
 
-		Collection<Long> vecinosU1 = grafoDataModel.getGrafo().getNeighbors(
+		Collection<Long> vecinosU1 = grafoDataModel.getFriends(
 				userID1);
-		Collection<Long> vecinosU2 = grafoDataModel.getGrafo().getNeighbors(
+		Collection<Long> vecinosU2 = grafoDataModel.getFriends(
 				userID2);
 		if (vecinosU1 == null || vecinosU2 == null)
 			return 0;

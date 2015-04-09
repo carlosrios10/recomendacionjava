@@ -15,6 +15,7 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Longs;
 import com.isistan.lbsn.similitudestructural.GrafoDataModel;
+import com.isistan.lbsn.similitudestructural.GrafoModel;
 /**
  * 
  * @author Usuario�
@@ -26,12 +27,12 @@ public final class NearestNUserFriends implements UserNeighborhood  {
 	private final UserSimilarity userSimilarity;
 	private final DataModel dataModel;
 	private final double samplingRate;
-	private final GrafoDataModel friendsDm;
+	private final GrafoModel friendsDm;
 
 	private final RefreshHelper refreshHelper;
 
 
-	public NearestNUserFriends(GrafoDataModel friendsDm,int n) {
+	public NearestNUserFriends(GrafoModel friendsDm,int n) {
 		this.userSimilarity = null;
 		this.dataModel = null;
 		this.samplingRate =  0;
@@ -44,12 +45,12 @@ public final class NearestNUserFriends implements UserNeighborhood  {
 		this.friendsDm =  friendsDm;
 	}
 
-	public NearestNUserFriends(int n, UserSimilarity userSimilarity, DataModel dataModel,GrafoDataModel friendsDm) throws TasteException {
+	public NearestNUserFriends(int n, UserSimilarity userSimilarity, DataModel dataModel,GrafoModel friendsDm) throws TasteException {
 		this(n, Double.NEGATIVE_INFINITY, userSimilarity, dataModel, 1.0,friendsDm);
 	}
 
 	public NearestNUserFriends(int n,double minSimilarity,UserSimilarity userSimilarity,
-			DataModel dataModel,double samplingRate,GrafoDataModel friendsDm) throws TasteException {
+			DataModel dataModel,double samplingRate,GrafoModel friendsDm) throws TasteException {
 		this.userSimilarity = userSimilarity;
 		this.dataModel = dataModel;
 		this.samplingRate =  samplingRate;
@@ -79,6 +80,9 @@ public final class NearestNUserFriends implements UserNeighborhood  {
 		UserSimilarity userSimilarityImpl = this.userSimilarity;
 		TopItems.Estimator<Long> estimator = new Estimator(userSimilarityImpl, userID, minSimilarity);
 		Collection<Long> totalVecinos =  this.friendsDm.getFriends(userID);
+		if(totalVecinos==null)
+			return new long[0];
+		
 		long[] ids = Longs.toArray(totalVecinos);
 		if( totalVecinos.size() < n )
 			return ids; 

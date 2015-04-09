@@ -5,21 +5,29 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveArrayIterator;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.google.common.base.Preconditions;
+import com.isistan.lbsn.similitudestructural.GrafoModel;
+import com.isistan.lbsn.similitudestructural.Nodo;
+
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 /**
  * 
  * @author Usuario�
  *
  */
-public class FriendsDataModel {
+public class FriendsDataModel implements GrafoModel{
 	private  File dataFile;
 	Map<Long,ArrayList<Long>> multiMap;
 	
@@ -28,55 +36,50 @@ public class FriendsDataModel {
 		ArrayList<Long> ids1= new ArrayList<Long>();
 		ids1.add(2l);
 		ids1.add(3l);
-		ids1.add(4l);
 		ArrayList<Long> ids2= new ArrayList<Long>();
 		ids2.add(1l);
+		ids2.add(3l);
+		ids2.add(4l);
 		ArrayList<Long> ids3= new ArrayList<Long>();
 		ids3.add(1l);
-		ids3.add(4l);
-		
+		ids3.add(2l);
+		ids3.add(5l);
 		ArrayList<Long> ids4= new ArrayList<Long>();
-		ids4.add(1l);
-		ids4.add(3l);
-		
+		ids4.add(2l);
+		ids4.add(6l);
+		ArrayList<Long> ids5= new ArrayList<Long>();
+		ids5.add(3l);
+		ids5.add(6l);
+		ArrayList<Long> ids6= new ArrayList<Long>();
+		ids6.add(4l);
+		ids6.add(6l);
 		multiMap.put(1l, ids1);
 		multiMap.put(2l, ids2);
 		multiMap.put(3l, ids3);
 		multiMap.put(4l, ids4);
+		multiMap.put(5l, ids5);
+		multiMap.put(6l, ids6);
 		
 	}
-	public FriendsDataModel(File dataFile) throws IOException{
+	public FriendsDataModel(String fileName) throws IOException{
+		File dataFile = new File(fileName);
 	    this.dataFile = Preconditions.checkNotNull(dataFile.getAbsoluteFile());
 	    if (!dataFile.exists() || dataFile.isDirectory()) {
 	      throw new FileNotFoundException(dataFile.toString());
 	    }
 	    Preconditions.checkArgument(dataFile.length() > 0L, "dataFile is empty");
-	  //  Preconditions.checkArgument(minReloadIntervalMS >= 0L, "minReloadIntervalMs must be non-negative");
-
-//	    System.out.println("Creating FileDataModel for file {}" +  dataFile);
-//	    FileLineIterator iterator = new FileLineIterator(dataFile, false);
-//	    String firstLine = iterator.peek();
-//	    while (firstLine.isEmpty()) {
-//	      iterator.next();
-//	      firstLine = iterator.peek();
-//	      System.out.println(firstLine);
-//	    }
-//	    Closeables.close(iterator, true);
-//	    Splitter delimiterPattern = Splitter.on(',');
-//	    for (String token : delimiterPattern.split(firstLine)) {
-//	        System.out.println(token);
-//	      }
 	    multiMap = new HashMap<Long,ArrayList<Long>>();
 	    CSVReader csvReader = new CSVReader(new FileReader(dataFile));
 	    String[] lineaCsv  = null;
+	    csvReader.readNext();
          while ((lineaCsv = csvReader.readNext()) != null) 
          {
-                      if (multiMap.get(Long.valueOf(lineaCsv[0]))== null ){
+                      if (multiMap.get(Long.valueOf(lineaCsv[0].trim()))== null ){
                     	  ArrayList<Long> idsUsersdos = new ArrayList<Long>();
-                    	  multiMap.put(new Long(lineaCsv[0]),idsUsersdos);
+                    	  multiMap.put(new Long(lineaCsv[0].trim()),idsUsersdos);
                     	  }
                       	
-                      	multiMap.get(Long.valueOf(lineaCsv[0])).add(new Long(lineaCsv[1]));
+                      	multiMap.get(Long.valueOf(lineaCsv[0].trim())).add(new Long(lineaCsv[1].trim()));
                       
          }
          csvReader.close();
@@ -101,6 +104,44 @@ public class FriendsDataModel {
 			return 0;
 		else 
 			return friends.size();
+		
+	}
+	public Collection<Long> getFriends(long userID) {
+		ArrayList<Long> friends =  multiMap.get(userID);
+		if (friends == null )
+			return null;
+		else
+			return friends;
+	}
+	public Collection<Long> getFriendsMyFriends(long userID) {
+		Collection<Long> amigos =  multiMap.get(userID);
+		if (amigos == null)
+			return null;
+		
+		Collection<Long> totalVecinos = new ArrayList<Long>();
+		for (Long amigo : amigos) {
+			totalVecinos.add(amigo);
+			List<Long> amigosDeAmigo = new ArrayList<Long>( multiMap.get(amigo));
+			amigosDeAmigo.remove(new Long(userID));
+			totalVecinos.addAll(amigosDeAmigo);
+		}
+		return 	( new HashSet<Long>(totalVecinos));
+
+	}
+	public UndirectedSparseGraph<Long, Integer> getGrafo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void setGrafo(UndirectedSparseGraph<Long, Integer> grafo) {
+		// TODO Auto-generated method stub
+		
+	}
+	public UndirectedSparseGraph<Nodo, Integer> getGrafoN() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void setGrafoN(UndirectedSparseGraph<Nodo, Integer> grafoN) {
+		// TODO Auto-generated method stub
 		
 	}
 
