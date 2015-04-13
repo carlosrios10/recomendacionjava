@@ -118,14 +118,15 @@ public class FriendsDataModel implements GrafoModel{
 		if (amigos == null)
 			return null;
 		
-		Collection<Long> totalVecinos = new ArrayList<Long>();
+		Collection<Long> totalVecinos = new HashSet<Long>();
 		for (Long amigo : amigos) {
 			totalVecinos.add(amigo);
-			List<Long> amigosDeAmigo = new ArrayList<Long>( multiMap.get(amigo));
+			List<Long> amigosDeAmigo = new ArrayList<Long>(multiMap.get(amigo));
 			amigosDeAmigo.remove(new Long(userID));
 			totalVecinos.addAll(amigosDeAmigo);
 		}
-		return 	( new HashSet<Long>(totalVecinos));
+		//return 	(new HashSet<Long>(totalVecinos));
+		return totalVecinos;
 
 	}
 	public UndirectedSparseGraph<Long, Integer> getGrafo() {

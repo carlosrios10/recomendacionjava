@@ -47,5 +47,9 @@ public class Resultado {
 	public void setScoreRecall(double scoreRecall) {
 		this.scoreRecall = scoreRecall;
 	}
+	public String toString() {
+		String resultado= ""+getConfiguracion().toString()+"----"+getScoreMae()+"--"+getScoreRms()+""+"--"+getScorePrecision()+"--"+getScoreRecall();
+		return resultado;
+	}
 
 }

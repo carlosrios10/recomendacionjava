@@ -20,26 +20,22 @@ public class TypeNeighborhood {
         switch(typeNeigh) {
             case K_NEIGHBORHOOD:
                 try {
-                	System.out.println("NearestNUserNeighborhood");
                 	userNeighborhood = new NearestNUserNeighborhood(neighSize, userSimilarity, model);
                 } catch (TasteException exception) {
                 	}
                 return userNeighborhood;
             case K_FRIENDS: 
                 try {
-                	System.out.println("NearestNUserFriends");
                     userNeighborhood = new NearestNUserFriends(neighSize, userSimilarity, model,fdm);
                 } catch (TasteException exception) {
                 	}
                 return userNeighborhood;
             case THRESHOLD:
-            	System.out.println("ThresholdUserNeighborhood");
                 userNeighborhood = new ThresholdUserNeighborhood(threshold, userSimilarity, model);
                 return userNeighborhood;
                 
             case K_FRIENDS_FRIENDS:
 			try {
-				System.out.println("NearestNUserFriendsAndFriends");
 				userNeighborhood = new NearestNUserFriendsAndFriends(neighSize, userSimilarity, model,fdm);
 			} catch (TasteException e) {
 			}

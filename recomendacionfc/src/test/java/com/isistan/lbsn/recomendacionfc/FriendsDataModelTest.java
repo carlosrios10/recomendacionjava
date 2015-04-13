@@ -22,8 +22,8 @@ public class FriendsDataModelTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		dm = new FriendsDataModel(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/socialgraph.csv"));
-		//dm = new FriendsDataModel();
+		//dm = new FriendsDataModel(StringEscapeUtils.unescapeJava("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/socialgraph.csv"));
+		dm = new FriendsDataModel();
 	}
 
 	protected void tearDown() throws Exception {
@@ -33,7 +33,7 @@ public class FriendsDataModelTest extends TestCase {
 //		assertEquals(29,dm.getFriends(1l).size());
 //	}
 	public void testgetCantidadAmigosyAmigos(){
-		assertEquals(4821, dm.getFriendsMyFriends(1l).size());
+		assertEquals(4, dm.getFriendsMyFriends(1l).size());
 	}
 
 }
