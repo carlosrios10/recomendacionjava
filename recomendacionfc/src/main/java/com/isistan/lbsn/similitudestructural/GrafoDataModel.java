@@ -9,6 +9,11 @@ import java.util.List;
 
 import org.apache.commons.collections15.Transformer;
 
+import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
+import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
+import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
+import edu.uci.ics.jung.algorithms.scoring.HITS;
+import edu.uci.ics.jung.algorithms.scoring.PageRank;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.io.GraphIOException;
 import edu.uci.ics.jung.io.graphml.EdgeMetadata;
@@ -20,6 +25,12 @@ import edu.uci.ics.jung.io.graphml.NodeMetadata;
 public class GrafoDataModel implements GrafoModel {
 	private UndirectedSparseGraph<Long, Integer> grafo;
 	private UndirectedSparseGraph<Nodo, Integer> grafoN;
+	private PageRank pageRank;
+	private HITS hits;
+	private BetweennessCentrality betweennes;
+	private DegreeScorer degree;
+	private ClosenessCentrality closeness;
+	
 
 	public GrafoDataModel(UndirectedSparseGraph<Long, Integer> grafo,
 			UndirectedSparseGraph<Nodo, Integer> grafoN) {
@@ -30,12 +41,16 @@ public class GrafoDataModel implements GrafoModel {
 
 	public GrafoDataModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public GrafoDataModel(UndirectedSparseGraph<Long, Integer> grafo) {
 		super();
 		this.grafo = grafo;
+		pageRank = new PageRank<Long, Integer>(getGrafo(), 0.95);
+		hits = new HITS<Long, Integer>(getGrafo(),1);
+		betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
+		degree = new DegreeScorer<Long>(getGrafo());
+		closeness = new ClosenessCentrality<Long,Integer>(getGrafo());
 	}
 
 	/**
@@ -81,6 +96,11 @@ public class GrafoDataModel implements GrafoModel {
 			GraphMLReader2<UndirectedSparseGraph<Long, Integer>, Long, Integer> gmlr = new GraphMLReader2<UndirectedSparseGraph<Long, Integer>, Long, Integer>(
 					reader, gtrans, vtrans, etrans, hetrans);
 			setGrafo(gmlr.readGraph());
+			pageRank = new PageRank<Long, Integer>(getGrafo(),0.95);
+			hits = new HITS<Long, Integer>(getGrafo());
+			betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
+			degree = new DegreeScorer<Long>(getGrafo());
+			closeness = new ClosenessCentrality<Long,Integer>(getGrafo());
 
 		} catch (FileNotFoundException e) {
 			System.out.println("archivo no existe");
@@ -129,6 +149,37 @@ public class GrafoDataModel implements GrafoModel {
 			totalVecinos.addAll(amigosDeAmigo);
 		}
 		return 	( new HashSet<Long>(totalVecinos));
+	}
+
+	public double getPageRank(long userID) {
+		return (Double) pageRank.getVertexScore(userID);
+	}
+
+	public double getHits(long userID) {
+		System.out.println(hits.getVertexScore(userID));
+		return  0;
+	}
+
+	public double getBetweenness(long userID) {
+		return betweennes.getVertexScore(userID);
+	}
+
+	public double getHub(long userID) {
+		HITS.Scores score = (HITS.Scores) hits.getVertexScore(userID);
+		return score.hub;
+	}
+
+	public double getAuthority(long userID) {
+		HITS.Scores score = (HITS.Scores) hits.getVertexScore(userID);
+		return score.authority;
+	}
+
+	public double getDegree(long userID) {
+		return degree.getVertexScore(userID);
+	}
+
+	public double getCloseness(long userID) {
+		 return closeness.getVertexScore(userID);
 	}
 
 }

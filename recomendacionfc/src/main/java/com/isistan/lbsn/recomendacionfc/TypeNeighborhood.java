@@ -12,10 +12,10 @@ import com.isistan.lbsn.vencindario.NearestNUserFriends;
 import com.isistan.lbsn.vencindario.NearestNUserFriendsAndFriends;
 
 public class TypeNeighborhood {
-	public enum TypeNeigh {K_NEIGHBORHOOD,K_FRIENDS,THRESHOLD,K_FRIENDS_FRIENDS};
+	public enum TypeNeigh {K_NEIGHBORHOOD,K_FRIENDS,THRESHOLD,K_FRIENDS_FRIENDS,THRESHOLD_SCORING};
     public static UserNeighborhood  build(UserSimilarity userSimilarity,DataModel model, 
     								TypeNeigh  typeNeigh,int neighSize, double threshold,
-    								GrafoModel fdm) {
+    								GrafoModel fdm, Scoring scoring) {
     	UserNeighborhood userNeighborhood = null;
         switch(typeNeigh) {
             case K_NEIGHBORHOOD:
@@ -32,6 +32,10 @@ public class TypeNeighborhood {
                 return userNeighborhood;
             case THRESHOLD:
                 userNeighborhood = new ThresholdUserNeighborhood(threshold, userSimilarity, model);
+                return userNeighborhood;
+                
+            case THRESHOLD_SCORING:
+                userNeighborhood = new ThresholdUserNeighborhood(threshold, scoring, model);
                 return userNeighborhood;
                 
             case K_FRIENDS_FRIENDS:

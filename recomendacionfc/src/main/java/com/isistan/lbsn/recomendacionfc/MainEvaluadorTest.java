@@ -101,24 +101,24 @@ public class MainEvaluadorTest {
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.9,0.1));
 		
 		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.THRESHOLD,-1,-1));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.THRESHOLD,-1,-1));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.THRESHOLD,-1,-1));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.THRESHOLD,-1,-1));
-//		
-//		configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
-//		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
-//		configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
-//		configuraciones.add(new Configuracion(Integer.MAX_VALUE,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
-//		
-//		configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
-//		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
-//		configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
-//		configuraciones.add(new Configuracion(Integer.MAX_VALUE,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
-//		
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.6,TypeNeigh.THRESHOLD,-1,-1));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.7,TypeNeigh.THRESHOLD,-1,-1));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.8,TypeNeigh.THRESHOLD,-1,-1));
-//		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.9,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.THRESHOLD,-1,-1));
+		
+		configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(Integer.MAX_VALUE,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
+		
+		configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(Integer.MAX_VALUE,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
+		
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.6,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.7,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.8,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.9,TypeNeigh.THRESHOLD,-1,-1));
 
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");

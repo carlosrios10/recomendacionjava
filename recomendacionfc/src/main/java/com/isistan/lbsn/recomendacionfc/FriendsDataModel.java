@@ -145,5 +145,33 @@ public class FriendsDataModel implements GrafoModel{
 		// TODO Auto-generated method stub
 		
 	}
+	public double getPageRank(long userID) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public double getHits(long userID) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public double getBetweenness(long userID) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public double getHub(long userID) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public double getAuthority(long userID) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public double getDegree(long userID) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	public double getCloseness(long userID) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

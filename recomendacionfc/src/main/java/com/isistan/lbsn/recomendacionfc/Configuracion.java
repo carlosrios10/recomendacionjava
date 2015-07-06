@@ -1,5 +1,7 @@
 package com.isistan.lbsn.recomendacionfc;
 
+import com.isistan.lbsn.recomendacionfc.AgregationFactory.AgregationType;
+import com.isistan.lbsn.recomendacionfc.ScoringFactory.ScoringType;
 import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithm.SimAlg;
 
 
@@ -11,6 +13,8 @@ public class Configuracion {
 	TypeNeighborhood.TypeNeigh typeNeigh;
 	double alfa;
 	double beta;
+	ScoringFactory.ScoringType scoringType;
+	AgregationFactory.AgregationType agregationType;
 	
 	public Configuracion(int neighSize, SimAlg simAlg, double threshold, TypeNeighborhood.TypeNeigh  typeNeigh,double alfa,
 			double beta) {
@@ -21,6 +25,19 @@ public class Configuracion {
 		this.typeNeigh = typeNeigh;
 		this.alfa = alfa;
 		this.beta = beta;
+	}
+	
+	public Configuracion(int neighSize, SimAlg simAlg, double threshold, TypeNeighborhood.TypeNeigh  typeNeigh,double alfa,
+			double beta, ScoringFactory.ScoringType scoringType,AgregationFactory.AgregationType agregationType) {
+		super();
+		this.neighSize = neighSize;
+		this.simAlg = simAlg;
+		this.threshold = threshold;
+		this.typeNeigh = typeNeigh;
+		this.alfa = alfa;
+		this.beta = beta;
+		this.scoringType = scoringType;
+		this.agregationType = agregationType;
 	}
 	public TypeNeighborhood.TypeNeigh getTypeNeigh() {
 		return typeNeigh;
@@ -60,9 +77,22 @@ public class Configuracion {
 	}
 	@Override
 	public String toString() {
-		String resultado= ""+getSimAlg()+""+getTypeNeigh()+""+getNeighSize()+""+getAlfa()+""+getBeta()+""+getThreshold();
+		String resultado= ""+getSimAlg()+""+getTypeNeigh()+""+getNeighSize()+""+getAlfa()+""+getBeta()+""+getThreshold()+""+getAgregationType()+""+getScoringType();
 		return resultado; 
 	}
+	public ScoringFactory.ScoringType getScoringType() {
+		return scoringType;
+	}
+	public void setScoringType(ScoringFactory.ScoringType scoringType) {
+		this.scoringType = scoringType;
+	}
+	public AgregationFactory.AgregationType getAgregationType() {
+		return agregationType;
+	}
+	public void setAgregationType(AgregationFactory.AgregationType agregationType) {
+		this.agregationType = agregationType;
+	}
+
 
 
 

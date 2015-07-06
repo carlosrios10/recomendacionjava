@@ -7,6 +7,7 @@ import junit.framework.TestCase;
 
 public class GrafoDataModelTest extends TestCase {
 	GrafoDataModel g;
+	GrafoDataModel g2;
 	public GrafoDataModelTest(String name) {
 		super(name);
 		UndirectedSparseGraph<Long, Integer> dataModel = new UndirectedSparseGraph<Long, Integer>();
@@ -25,8 +26,28 @@ public class GrafoDataModelTest extends TestCase {
 		dataModel.addEdge((Integer)5, 3l, 5l);
 		dataModel.addEdge((Integer)6, 4l, 6l);
 		dataModel.addEdge((Integer)7, 5l, 6l);
-		g = new GrafoDataModel();
-		g.setGrafo(dataModel);
+		g = new GrafoDataModel(dataModel);
+		
+		UndirectedSparseGraph<Long, Integer> dataModel2 = new UndirectedSparseGraph<Long, Integer>();
+		// Add some vertices. From above we defined these to be type Integer.
+		dataModel2.addVertex(1l);
+		dataModel2.addVertex(2l);
+		dataModel2.addVertex(3l);
+		dataModel2.addVertex(4l); 
+		dataModel2.addVertex(5l); 
+
+		dataModel2.addEdge((Integer)1, 1l, 2l); 
+		dataModel2.addEdge((Integer)2, 1l, 4l);
+		dataModel2.addEdge((Integer)3, 1l, 5l);
+		
+		dataModel2.addEdge((Integer)4, 2l, 3l);
+		dataModel2.addEdge((Integer)5, 2l, 5l);
+
+		dataModel2.addEdge((Integer)6, 3l, 4l);
+		dataModel2.addEdge((Integer)7, 3l, 5l);
+		
+		g2 = new GrafoDataModel(dataModel2);
+		
 	}
 
 	protected void setUp() throws Exception {
@@ -40,7 +61,24 @@ public class GrafoDataModelTest extends TestCase {
 	public void testGetFriendsMyFriends() {
 		assertEquals(4, g.getFriendsMyFriends(1l).size());
 		assertEquals(5, g.getFriendsMyFriends(5l).size());
-		
+		g.getPageRank(2L);
+	}
+	
+	public void testGetPageRankOK() {
+		assertEquals(0.2, g2.getPageRank(4L),0.0001);
+	}
+	
+	public void testGetHubOK() {
+		assertEquals(0.2, g2.getHub(4L),0.0001);
 	}
 
+	public void testGetPageBetweennessOK() {
+		assertEquals(1.0, g2.getBetweenness(1L),0.0001);
+	}
+	public void testGetDegreeOK() {
+		assertEquals(3.0, g2.getDegree(1L));
+	}
+	public void testGetClosness() {
+		assertEquals(0.8, g2.getCloseness(1L));
+	}
 }
