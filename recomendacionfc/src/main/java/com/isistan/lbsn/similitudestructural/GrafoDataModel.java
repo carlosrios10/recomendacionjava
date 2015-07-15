@@ -98,8 +98,8 @@ public class GrafoDataModel implements GrafoModel {
 			setGrafo(gmlr.readGraph());
 			pageRank = new PageRank<Long, Integer>(getGrafo(),0.95);
 			hits = new HITS<Long, Integer>(getGrafo());
-			betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
 			degree = new DegreeScorer<Long>(getGrafo());
+			betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
 			closeness = new ClosenessCentrality<Long,Integer>(getGrafo());
 
 		} catch (FileNotFoundException e) {
