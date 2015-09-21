@@ -1,17 +1,18 @@
-package com.isistan.lbsn.recomendacionfc;
+package com.isistan.lbsn.preproceso;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.mahout.cf.taste.common.TasteException;
-import org.apache.mahout.cf.taste.impl.common.FastIDSet;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
-import org.apache.mahout.cf.taste.impl.similarity.TanimotoCoefficientSimilarity;
+import org.apache.mahout.cf.taste.impl.similarity.EuclideanDistanceSimilarity;
+import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
+import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
@@ -21,77 +22,72 @@ import au.com.bytecode.opencsv.CSVWriteProc;
 import au.com.bytecode.opencsv.CSVWriter;
 
 import com.isistan.lbsn.config.MyProperties;
-import com.isistan.lbsn.recomendacionfc.TypeNeighborhood.TypeNeigh;
+import com.isistan.lbsn.datamodels.ItemModel;
+import com.isistan.lbsn.datamodels.UserModel;
+import com.isistan.lbsn.recomendacionfc.Configuracion;
+import com.isistan.lbsn.recomendacionfc.ResultadoSimilitud;
+import com.isistan.lbsn.recomendacionfc.ResultadoVecino;
 import com.isistan.lbsn.scoring.ScoringCercaniaUsuarioUsuario;
-import com.isistan.lbsn.similitudestructural.GrafoDataModel;
-
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import com.isistan.lbsn.scoring.ScoringOverlapLiked;
+import com.isistan.lbsn.scoring.ScoringOverlapLikedAndHated;
 
 public class MainCalcularVecinos {
 
+	private static final String PATH_SOLAPAMIENTO = "C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/similitudes-scoring/";
+
 	public static void main(String[] args) {
 		try {
+			System.out.println("INICIO - MainCalcularVecinos -");
 			ArrayList<ResultadoVecino> resultadosVecino = new ArrayList<ResultadoVecino>();
 			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModel ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
+			ScoringOverlapLikedAndHated scoring3 = new ScoringOverlapLikedAndHated(null,ratingModel);
+			ScoringOverlapLiked scoring4 = new ScoringOverlapLiked(null,ratingModel,null);
 			ScoringCercaniaUsuarioUsuario scoring = new ScoringCercaniaUsuarioUsuario(null, null, userModel, itemModel);
-		    exportarCsvUsuariosSimilitud( calcularMatrizSimilitud(ratingModel,scoring),"distanciaskm");
-				 //calcaularSolapamiento(model);
-			 	//exportarCsvUsuariosVecinos(resultadosVecino);
-			System.out.println("FIN");
+			
+			ScoringOverlapLiked scoringOverlapLiked_3 = new ScoringOverlapLiked(null,ratingModel,3.0);
+			ScoringOverlapLiked scoringOverlapLied_mean = new ScoringOverlapLiked(null,ratingModel,null);
+			UserSimilarity simlilitudCoseno  = new UncenteredCosineSimilarity(ratingModel);
+			UserSimilarity similitudEuclidea = new EuclideanDistanceSimilarity(ratingModel);
+			UserSimilarity similitudPearson = new PearsonCorrelationSimilarity(ratingModel);
+			
+			calcularMatrizSimilitud(ratingModel,similitudPearson  ,PATH_SOLAPAMIENTO+"similitudPearson"+ ".csv");
+			//calcaularSolapamiento(ratingModel,scoring3,PATH_SOLAPAMIENTO+"cantidadSolpamientoPorUsuarioLikedHated"+ ".csv");
+			
+			System.out.println("FIN - MainCalcularVecinos -");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TasteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 
 	}
-	private static ArrayList<ResultadoSimilitud>  calcaularSolapamiento(DataModel model) throws TasteException{
-	
+	private static void  calcaularSolapamiento(DataModel model,UserSimilarity userSimilarity,String nombreArchivo) 
+			throws TasteException, IOException{
+		CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t');
 		LongPrimitiveIterator usersIterable = model.getUserIDs();
-		int cant=0;
-		HashMap<Double, Integer> resumenSola =  new HashMap<Double, Integer>();
-		TanimotoCoefficientSimilarity similarity = new TanimotoCoefficientSimilarity(model);
-		//usersIterable.skip(cant);
 		while (usersIterable.hasNext()) {
-			//ArrayList<ResultadoSimilitud> resultado =  new ArrayList<ResultadoSimilitud>();
 			Long idUser =  usersIterable.next();
-			cant++;
-			System.out.println("1 :" + idUser + "cant :" + cant);
+			int cantidadSolpa = 0;
 			LongPrimitiveIterator usersIterable2 = model.getUserIDs();
-			usersIterable2.skip(cant);
 			while (usersIterable2.hasNext()) {
 				Long idUser2 = usersIterable2.next();
-
-//			    FastIDSet xPrefs = model.getItemIDsFromUser(idUser);
-//			    FastIDSet yPrefs = model.getItemIDsFromUser(idUser2);
-//			    int xPrefsSize = xPrefs.size();
-//			    int yPrefsSize = yPrefs.size();
-//			    int intersectionSize =  xPrefsSize < yPrefsSize ? yPrefs.intersectionSize(xPrefs) : xPrefs.intersectionSize(yPrefs);
-//			    int unionSize = xPrefsSize + yPrefsSize - intersectionSize;
-//			    double porcentaje = (double) intersectionSize / (double) unionSize;
-			    
-			    double sim = similarity.userSimilarity(idUser, idUser2);
-			    
-			    if(resumenSola.get(sim)==null){
-			    	resumenSola.put(sim, 1);
-			    }else{
-			    	int cantidad = resumenSola.get(sim);
-			    	cantidad++;
-			    	resumenSola.put(sim, cantidad);
-			    }
-			//    resultado.add(new ResultadoSimilitud(idUser, idUser2, intersectionSize));
-				
+				if(idUser2!=idUser){
+					double sim = userSimilarity.userSimilarity(idUser, idUser2);
+					if (!Double.isNaN(sim) && sim >0) {
+						cantidadSolpa++;
+					}
+				}
 			}
-		//	exportarCsvUsuariosSimilitud(resultado, Integer.toString(cant));
+			
+			 String resul = idUser+"#"+cantidadSolpa;
+		     String[] entries = resul.split("#"); 
+		     writer.writeNext(entries);
 			
 			}
-		exportarCsvSolapamiento(resumenSola);
-		return null;
+		writer.close();
 	}
 	
 	private static void calcularNumeroVecinos(DataModel model, UserNeighborhood neighborhood ,UserSimilarity sim,
@@ -102,30 +98,30 @@ public class MainCalcularVecinos {
 			resultadosVecinos.add(new ResultadoVecino(idUser, neighborhood.getUserNeighborhood(idUser).length, config));
 			}
 	}
-	private static ArrayList<ResultadoSimilitud> calcularMatrizSimilitud(DataModel model,
-			UserSimilarity sim) throws TasteException {
-		ArrayList<ResultadoSimilitud> resultado =  new ArrayList<ResultadoSimilitud>();
+	private static void calcularMatrizSimilitud(DataModel model,
+			UserSimilarity sim,String nombreArchivo) throws TasteException, IOException {
+		System.out.println("Inicia-Calcular Matriz Simlitud");
+		CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t');
 		LongPrimitiveIterator usersIterable = model.getUserIDs();
 		int cant=0;
-		//usersIterable.skip(cant);
 		while (usersIterable.hasNext()) {
 			Long idUser =  usersIterable.next();
 			cant++;
-			System.out.println("1 :" + idUser + "cant :" + cant);
 			LongPrimitiveIterator usersIterable2 = model.getUserIDs();
 			usersIterable2.skip(cant);
 			while (usersIterable2.hasNext()) {
-				Long idUser2 = usersIterable2.next();
-				//System.out.println("2 :" + idUser2);
-				double simValue = sim.userSimilarity(idUser, idUser2);
-				resultado.add(new ResultadoSimilitud(idUser, idUser2, simValue));
-				
+				 Long idUser2 = usersIterable2.next();
+				 double simValue = sim.userSimilarity(idUser, idUser2);
+				// if (!Double.isNaN(simValue) && simValue >0) {
+					 String resul = idUser+"#"+idUser2+"#"+simValue;
+				     String[] entries = resul.split("#"); 
+				     writer.writeNext(entries);
+			     //   }
 			}
-			System.out.println("FIN 1 :" + usersIterable2.hasNext());
 			}
-		
-		return resultado;
-	}
+		writer.close();
+		System.out.println("Fin-Calcular Matriz Simlitud" );
+		}
 	
 	private static void exportarCsvSolapamiento(final HashMap<Double,Integer> resultados) {
 		CSV csv = CSV
@@ -157,7 +153,7 @@ public class MainCalcularVecinos {
 			    .quote('"')      // quote character
 			    .create();       // new instance is immutable
 		
-		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/usuariosSolapa/"+file+ ".csv", new CSVWriteProc() {
+		csv.write(PATH_SOLAPAMIENTO+file+ ".csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
 		        out.writeNext("IdUsuario1","IdUsuario2","Similitud");
 		        for (ResultadoSimilitud resultado : resultados) {

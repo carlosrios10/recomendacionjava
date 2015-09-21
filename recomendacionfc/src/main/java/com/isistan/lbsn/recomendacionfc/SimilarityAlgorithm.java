@@ -10,9 +10,9 @@ import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
+import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.similitudcombinada.SimilitudCombinada;
 import com.isistan.lbsn.similitudestructural.CosenoNetwork;
-import com.isistan.lbsn.similitudestructural.GrafoModel;
 import com.isistan.lbsn.similitudestructural.JaccardNetwork;
 import com.isistan.lbsn.similitudestructural.PearsonNetwork;
 

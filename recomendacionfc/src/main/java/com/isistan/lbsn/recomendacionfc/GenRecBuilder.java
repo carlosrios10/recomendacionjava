@@ -5,6 +5,7 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.neighborhood.NearestNUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.neighborhood.ThresholdUserNeighborhood;
 import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
+import org.apache.mahout.cf.taste.impl.recommender.ItemUserAverageRecommender;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.Recommender;
@@ -26,7 +27,7 @@ public class GenRecBuilder implements RecommenderBuilder {
 
 	
 	public Recommender buildRecommender(DataModel model) throws TasteException {
-		return new GenericUserBasedRecommender(model, neighborhood, userSimilarity);
+		return new GenericUserBasedRecommenderNormalizado(model, neighborhood, userSimilarity);
 	}
 
 }

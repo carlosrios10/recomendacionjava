@@ -2,7 +2,7 @@ package com.isistan.lbsn.recomendacionfc;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 
-import com.isistan.lbsn.similitudestructural.GrafoDataModel;
+import com.isistan.lbsn.datamodels.GrafoDataModel;
 import com.isistan.lbsn.vencindario.NearestNUserFriends;
 import com.isistan.lbsn.vencindario.NearestNUserFriendsAndFriends;
 

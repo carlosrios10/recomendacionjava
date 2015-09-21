@@ -1,6 +1,8 @@
-package com.isistan.lbsn.similitudestructural;
+package com.isistan.lbsn.datamodels;
 
 import java.util.Collection;
+
+import com.isistan.lbsn.similitudestructural.Nodo;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 

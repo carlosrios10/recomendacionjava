@@ -2,9 +2,9 @@ package com.isistan.lbsn.recomendacionfc;
 
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
-import com.isistan.lbsn.similitudcombinada.AgregationHarmonicMean;
-import com.isistan.lbsn.similitudcombinada.AgregationOnlyScore;
-import com.isistan.lbsn.similitudcombinada.AgregationOnlySim;
+import com.isitan.lbsn.agregation.AgregationHarmonicMean;
+import com.isitan.lbsn.agregation.AgregationOnlyScore;
+import com.isitan.lbsn.agregation.AgregationOnlySim;
 
 public class AgregationFactory {
 	public enum AgregationType {HARMONIC_MEAN,BASE,ONLY_SCORE};

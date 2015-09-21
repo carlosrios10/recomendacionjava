@@ -8,6 +8,7 @@ import javax.swing.text.html.HTMLDocument.Iterator;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.common.collect.Iterators;
+import com.isistan.lbsn.datamodels.FriendsDataModel;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -14,6 +14,8 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.config.MyProperties;
+import com.isistan.lbsn.datamodels.ItemModel;
+import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.scoring.ScoringCercaniaUsuarioUsuario;
 
 /**

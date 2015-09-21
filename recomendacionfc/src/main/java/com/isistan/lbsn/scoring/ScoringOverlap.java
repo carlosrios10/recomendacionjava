@@ -10,8 +10,8 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
+import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.recomendacionfc.Scoring;
-import com.isistan.lbsn.similitudestructural.GrafoModel;
 
 public class ScoringOverlap implements Scoring{
 	GrafoModel grafoModel;
@@ -28,6 +28,7 @@ public class ScoringOverlap implements Scoring{
 	public double getScoring(long userID1, long userID2, long itemID) throws TasteException {
 	    FastIDSet xPrefs = dataModel.getItemIDsFromUser(userID1);
 	    FastIDSet yPrefs = dataModel.getItemIDsFromUser(userID2);
+	   
 
 	    int xPrefsSize = xPrefs.size();
 	    int yPrefsSize = yPrefs.size();

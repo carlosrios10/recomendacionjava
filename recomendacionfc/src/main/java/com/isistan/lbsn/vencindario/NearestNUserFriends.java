@@ -14,8 +14,8 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Longs;
-import com.isistan.lbsn.similitudestructural.GrafoDataModel;
-import com.isistan.lbsn.similitudestructural.GrafoModel;
+import com.isistan.lbsn.datamodels.GrafoDataModel;
+import com.isistan.lbsn.datamodels.GrafoModel;
 /**
  * 
  * @author Usuario�

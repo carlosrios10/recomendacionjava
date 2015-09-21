@@ -9,6 +9,8 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
+import com.isistan.lbsn.datamodels.GrafoModel;
+
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
 

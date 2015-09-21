@@ -2,8 +2,8 @@ package com.isistan.lbsn.recomendacionfc;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 
+import com.isistan.lbsn.datamodels.GrafoDataModel;
 import com.isistan.lbsn.similitudestructural.CosenoNetwork;
-import com.isistan.lbsn.similitudestructural.GrafoDataModel;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import junit.framework.TestCase;

@@ -1,4 +1,4 @@
-package com.isistan.lbsn.recomendacionfc;
+package com.isistan.lbsn.datamodels;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +10,7 @@ import java.util.Map;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.google.common.base.Preconditions;
+import com.isistan.lbsn.recomendacionfc.Item;
 
 public class ItemModel {
 	private  File dataFile;

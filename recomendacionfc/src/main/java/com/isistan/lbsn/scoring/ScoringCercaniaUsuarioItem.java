@@ -7,12 +7,12 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 
+import com.isistan.lbsn.datamodels.GrafoModel;
+import com.isistan.lbsn.datamodels.ItemModel;
+import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.recomendacionfc.Item;
-import com.isistan.lbsn.recomendacionfc.ItemModel;
 import com.isistan.lbsn.recomendacionfc.Scoring;
 import com.isistan.lbsn.recomendacionfc.User;
-import com.isistan.lbsn.recomendacionfc.UserModel;
-import com.isistan.lbsn.similitudestructural.GrafoModel;
 import com.isistan.lbsn.util.Util;
 /**
  * Clase que calcula la 1/distancia(Usuario-objetivo,Item)

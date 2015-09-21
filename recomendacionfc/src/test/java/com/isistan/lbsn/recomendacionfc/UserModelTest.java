@@ -1,5 +1,7 @@
 package com.isistan.lbsn.recomendacionfc;
 
+import com.isistan.lbsn.datamodels.UserModel;
+
 import junit.framework.TestCase;
 
 public class UserModelTest extends TestCase {

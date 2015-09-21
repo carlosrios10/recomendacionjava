@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 
+import com.isistan.lbsn.datamodels.ItemModel;
+import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.scoring.ScoringCercaniaUsuarioUsuario;
 
 public class ScoringCercaniaUsuarioUsuarioTest extends TestCase {

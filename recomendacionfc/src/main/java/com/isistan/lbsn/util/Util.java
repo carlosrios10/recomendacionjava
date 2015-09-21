@@ -7,9 +7,9 @@ import au.com.bytecode.opencsv.CSV;
 import au.com.bytecode.opencsv.CSVWriteProc;
 import au.com.bytecode.opencsv.CSVWriter;
 
+import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.recomendacionfc.Resultado;
 import com.isistan.lbsn.recomendacionfc.User;
-import com.isistan.lbsn.recomendacionfc.UserModel;
 
 public class Util {
 	

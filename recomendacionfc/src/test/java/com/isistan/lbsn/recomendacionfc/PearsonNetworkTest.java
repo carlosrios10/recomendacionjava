@@ -4,8 +4,8 @@ import junit.framework.TestCase;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 
+import com.isistan.lbsn.datamodels.GrafoDataModel;
 import com.isistan.lbsn.similitudestructural.CosenoNetwork;
-import com.isistan.lbsn.similitudestructural.GrafoDataModel;
 import com.isistan.lbsn.similitudestructural.Nodo;
 import com.isistan.lbsn.similitudestructural.PearsonNetwork;
 

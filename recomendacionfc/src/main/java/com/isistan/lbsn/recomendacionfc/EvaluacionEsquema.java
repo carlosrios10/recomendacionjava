@@ -26,10 +26,13 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
 
 import com.isistan.lbsn.config.MyProperties;
+import com.isistan.lbsn.datamodels.FriendsDataModel;
+import com.isistan.lbsn.datamodels.GrafoDataModel;
+import com.isistan.lbsn.datamodels.GrafoModel;
+import com.isistan.lbsn.datamodels.ItemModel;
+import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.recomendacionfc.AgregationFactory.AgregationType;
 import com.isistan.lbsn.recomendacionfc.ScoringFactory.ScoringType;
-import com.isistan.lbsn.similitudestructural.GrafoDataModel;
-import com.isistan.lbsn.similitudestructural.GrafoModel;
 
 public class EvaluacionEsquema {
 /**
@@ -56,11 +59,10 @@ public class EvaluacionEsquema {
 						Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), ratingModel,grafoModel,userModel, itemModel);
 						UserNeighborhood neighborhood = TypeNeighborhood.build(sim, ratingModel, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),grafoModel,scoring);
 						Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
-						
 						RecommenderBuilder recBuilder = new GenRecBuilder(agregation,neighborhood);
-						double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,ratingModel, 0.7, 0.1);
-					  	double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, ratingModel, 0.7, 0.1);
-						IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, ratingModel, null,5, 3, 0.1);
+						double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,ratingModel, 0.7, 1);
+					  	double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, ratingModel, 0.7, 1);
+						IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, ratingModel, null,5, 3, 1);
 						Resultado resultado = new Resultado(configuracion, scoreMae, scoreRms ,stats.getPrecision(),stats.getRecall());
 						System.out.println(resultado.toString());
 			            //return resultado;

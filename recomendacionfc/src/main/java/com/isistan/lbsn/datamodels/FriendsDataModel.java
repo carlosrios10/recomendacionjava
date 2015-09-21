@@ -1,4 +1,4 @@
-package com.isistan.lbsn.recomendacionfc;
+package com.isistan.lbsn.datamodels;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,7 +18,6 @@ import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.google.common.base.Preconditions;
-import com.isistan.lbsn.similitudestructural.GrafoModel;
 import com.isistan.lbsn.similitudestructural.Nodo;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;

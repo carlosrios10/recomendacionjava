@@ -6,8 +6,8 @@ import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 
+import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.recomendacionfc.Scoring;
-import com.isistan.lbsn.similitudestructural.GrafoModel;
 
 public class ScoringHits implements Scoring{
 	GrafoModel grafoDataModel;

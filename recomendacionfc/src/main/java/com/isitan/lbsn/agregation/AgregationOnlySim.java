@@ -1,4 +1,4 @@
-package com.isistan.lbsn.similitudcombinada;
+package com.isitan.lbsn.agregation;
 
 import java.util.Collection;
 

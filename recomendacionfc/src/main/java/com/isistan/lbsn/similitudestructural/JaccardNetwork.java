@@ -8,6 +8,8 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
+import com.isistan.lbsn.datamodels.GrafoModel;
+
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
 public class JaccardNetwork implements UserSimilarity {

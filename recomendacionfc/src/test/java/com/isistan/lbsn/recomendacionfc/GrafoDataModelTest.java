@@ -1,8 +1,8 @@
 package com.isistan.lbsn.recomendacionfc;
 
 import com.isistan.lbsn.config.MyProperties;
-import com.isistan.lbsn.similitudestructural.GrafoDataModel;
-import com.isistan.lbsn.similitudestructural.GrafoModel;
+import com.isistan.lbsn.datamodels.GrafoDataModel;
+import com.isistan.lbsn.datamodels.GrafoModel;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import junit.framework.TestCase;

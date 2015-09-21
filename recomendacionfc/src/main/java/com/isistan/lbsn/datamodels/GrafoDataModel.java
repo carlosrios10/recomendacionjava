@@ -1,4 +1,4 @@
-package com.isistan.lbsn.similitudestructural;
+package com.isistan.lbsn.datamodels;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.collections15.Transformer;
+
+import com.isistan.lbsn.similitudestructural.Nodo;
 
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
@@ -101,6 +103,7 @@ public class GrafoDataModel implements GrafoModel {
 			degree = new DegreeScorer<Long>(getGrafo());
 			betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
 			closeness = new ClosenessCentrality<Long,Integer>(getGrafo());
+			
 
 		} catch (FileNotFoundException e) {
 			System.out.println("archivo no existe");

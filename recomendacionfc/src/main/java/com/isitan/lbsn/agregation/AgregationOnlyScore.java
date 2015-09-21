@@ -1,4 +1,4 @@
-package com.isistan.lbsn.similitudcombinada;
+package com.isitan.lbsn.agregation;
 
 import java.util.Collection;
 
@@ -9,37 +9,31 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.recomendacionfc.Agregation;
 import com.isistan.lbsn.recomendacionfc.Scoring;
-/**
- * Clase que combina la simitlud entre los usuarios y una medida de scoring.
- * Calcula la media armonica entre dos valores.
- * @author Usuarioç
- *
- */
-public class AgregationHarmonicMean implements Agregation {
+
+public class AgregationOnlyScore implements Agregation{
 	UserSimilarity userSimilarityRating;
 	Scoring scoring;
-	public AgregationHarmonicMean(UserSimilarity userSimilarityRating,
+
+	public AgregationOnlyScore(UserSimilarity userSimilarityRating,
 			Scoring scoring) {
 		super();
 		this.userSimilarityRating = userSimilarityRating;
 		this.scoring = scoring;
 	}
 
-	public void refresh(Collection<Refreshable> alreadyRefreshed) {
+	public double userSimilarity(long userID1, long userID2)
+			throws TasteException {
+		double sim=scoring.getScoring(userID1, userID2, 0);
+	//	System.out.println("id1: "+userID1+" id2: "+userID2+" sim: "+sim);
+		return sim;
+	}
+
+	public void setPreferenceInferrer(PreferenceInferrer inferrer) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public double userSimilarity(long userID1, long userID2)
-			throws TasteException {
-		double simRating = userSimilarityRating.userSimilarity(userID1, userID2);
-		double simScoring = scoring.getScoring(userID1, userID2,0);
-		double harmonicMean	= (2*simRating*simScoring)/(simRating+simScoring);
-		return harmonicMean;
-		
-	}
-
-	public void setPreferenceInferrer(PreferenceInferrer inferrer) {
+	public void refresh(Collection<Refreshable> alreadyRefreshed) {
 		// TODO Auto-generated method stub
 		
 	}
