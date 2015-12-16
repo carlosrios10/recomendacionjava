@@ -7,6 +7,7 @@ import au.com.bytecode.opencsv.CSV;
 import au.com.bytecode.opencsv.CSVWriteProc;
 import au.com.bytecode.opencsv.CSVWriter;
 
+import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.recomendacionfc.Resultado;
 import com.isistan.lbsn.recomendacionfc.User;
@@ -43,12 +44,13 @@ public class Util {
 	}
 	
 	public static void exportarResultadoCsv(final ArrayList<Resultado> resultados, String fileName) {
+		String resultadosPath = MyProperties.getInstance().getProperty("resultados");
 		CSV csv = CSV
 			    .separator(',')  // delimiter of fields
 			    .quote('"')      // quote character
 			    .create();       // new instance is immutable
 		
-		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/"+fileName+".csv", new CSVWriteProc() {
+		csv.write(resultadosPath+fileName+".csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
 		        out.writeNext("Agregation","Scoring","Similitud","TVecinos","Nvecinos","Threshold","alfa","beta","Mae","Rms","Precision","Recall");
 		        for (Resultado resultado : resultados) {

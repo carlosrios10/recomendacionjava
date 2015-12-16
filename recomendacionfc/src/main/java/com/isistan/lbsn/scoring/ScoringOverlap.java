@@ -25,6 +25,10 @@ public class ScoringOverlap implements Scoring{
 		tanimoto = new TanimotoCoefficientSimilarity(dataModel);
 	}
 
+	public ScoringOverlap(DataModel ratingModel) {
+		this.dataModel=ratingModel;
+	}
+
 	public double getScoring(long userID1, long userID2, long itemID) throws TasteException {
 	    FastIDSet xPrefs = dataModel.getItemIDsFromUser(userID1);
 	    FastIDSet yPrefs = dataModel.getItemIDsFromUser(userID2);

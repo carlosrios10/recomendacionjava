@@ -50,7 +50,6 @@ public class EvaluacionEsquema {
 			GrafoModel grafoModel = new FriendsDataModel(MyProperties.getInstance().getProperty("databasegrafo"));
 			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
-			
 			//List<Future<Resultado>> futures = new LinkedList<Future<Resultado>>();
 			for (final Configuracion configuracion : configuraciones) {
 				//futures.add(service.submit(new java.util.concurrent.Callable<Resultado>() {
@@ -62,7 +61,7 @@ public class EvaluacionEsquema {
 						RecommenderBuilder recBuilder = new GenRecBuilder(agregation,neighborhood);
 						double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluator().evaluate(recBuilder,null,ratingModel, 0.7, 1);
 					  	double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, ratingModel, 0.7, 1);
-						IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, ratingModel, null,5, 3, 1);
+						IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, ratingModel, null,10, 2, 1);
 						Resultado resultado = new Resultado(configuracion, scoreMae, scoreRms ,stats.getPrecision(),stats.getRecall());
 						System.out.println(resultado.toString());
 			            //return resultado;

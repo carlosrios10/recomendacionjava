@@ -12,9 +12,11 @@ import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.impl.similarity.EuclideanDistanceSimilarity;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
+import org.apache.mahout.cf.taste.impl.similarity.TanimotoCoefficientSimilarity;
 import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
+import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import au.com.bytecode.opencsv.CSV;
@@ -28,6 +30,7 @@ import com.isistan.lbsn.recomendacionfc.Configuracion;
 import com.isistan.lbsn.recomendacionfc.ResultadoSimilitud;
 import com.isistan.lbsn.recomendacionfc.ResultadoVecino;
 import com.isistan.lbsn.scoring.ScoringCercaniaUsuarioUsuario;
+import com.isistan.lbsn.scoring.ScoringOverlap;
 import com.isistan.lbsn.scoring.ScoringOverlapLiked;
 import com.isistan.lbsn.scoring.ScoringOverlapLikedAndHated;
 
@@ -38,21 +41,26 @@ public class MainCalcularVecinos {
 	public static void main(String[] args) {
 		try {
 			System.out.println("INICIO - MainCalcularVecinos -");
-			ArrayList<ResultadoVecino> resultadosVecino = new ArrayList<ResultadoVecino>();
-			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
-			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
+//			ArrayList<ResultadoVecino> resultadosVecino = new ArrayList<ResultadoVecino>();
+//			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
+//			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModel ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
-			ScoringOverlapLikedAndHated scoring3 = new ScoringOverlapLikedAndHated(null,ratingModel);
-			ScoringOverlapLiked scoring4 = new ScoringOverlapLiked(null,ratingModel,null);
-			ScoringCercaniaUsuarioUsuario scoring = new ScoringCercaniaUsuarioUsuario(null, null, userModel, itemModel);
+//			ScoringOverlapLikedAndHated scoring3 = new ScoringOverlapLikedAndHated(null,ratingModel);
+//			ScoringOverlapLiked scoring4 = new ScoringOverlapLiked(null,ratingModel,null);
+//			ScoringCercaniaUsuarioUsuario scoring = new ScoringCercaniaUsuarioUsuario(null, null, userModel, itemModel);
 			
-			ScoringOverlapLiked scoringOverlapLiked_3 = new ScoringOverlapLiked(null,ratingModel,3.0);
-			ScoringOverlapLiked scoringOverlapLied_mean = new ScoringOverlapLiked(null,ratingModel,null);
+//			ScoringOverlapLiked scoringOverlapLiked_3 = new ScoringOverlapLiked(null,ratingModel,3.0);
+//			ScoringOverlapLiked scoringOverlapLied_mean = new ScoringOverlapLiked(null,ratingModel,null);
 			UserSimilarity simlilitudCoseno  = new UncenteredCosineSimilarity(ratingModel);
 			UserSimilarity similitudEuclidea = new EuclideanDistanceSimilarity(ratingModel);
 			UserSimilarity similitudPearson = new PearsonCorrelationSimilarity(ratingModel);
+			UserSimilarity scoringOverlap  = new ScoringOverlap(ratingModel);
 			
-			calcularMatrizSimilitud(ratingModel,similitudPearson  ,PATH_SOLAPAMIENTO+"similitudPearson"+ ".csv");
+			ItemSimilarity ItemSimlilitudCoseno = new UncenteredCosineSimilarity(ratingModel);
+			ItemSimilarity ItemSimlilitudTanimoto = new TanimotoCoefficientSimilarity(ratingModel);
+			
+			calcularMatrizSimilitud(ratingModel,simlilitudCoseno  ,MyProperties.getInstance().getProperty("resultados")+"usersimlilitudCoseno"+ ".csv");
+			//calcularMatrizSimilitudItemItem(ratingModel,ItemSimlilitudTanimoto,MyProperties.getInstance().getProperty("resultados")+"ItemSimlilitudTanimoto"+ ".csv");
 			//calcaularSolapamiento(ratingModel,scoring3,PATH_SOLAPAMIENTO+"cantidadSolpamientoPorUsuarioLikedHated"+ ".csv");
 			
 			System.out.println("FIN - MainCalcularVecinos -");
@@ -122,7 +130,30 @@ public class MainCalcularVecinos {
 		writer.close();
 		System.out.println("Fin-Calcular Matriz Simlitud" );
 		}
-	
+	private static void calcularMatrizSimilitudItemItem(DataModel model,
+			ItemSimilarity sim,String nombreArchivo) throws TasteException, IOException {
+		System.out.println("Inicia-Calcular Matriz Simlitud");
+		CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t');
+		LongPrimitiveIterator itemIterable = model.getItemIDs();
+		int cant=0;
+		while (itemIterable.hasNext()) {
+			Long idItem =  itemIterable.next();
+			cant++;
+			LongPrimitiveIterator itemIterable2 = model.getItemIDs();
+			itemIterable2.skip(cant);
+			while (itemIterable2.hasNext()) {
+				 Long idItem2 = itemIterable2.next();
+				 double simValue = sim.itemSimilarity(idItem, idItem2);
+				// if (!Double.isNaN(simValue) && simValue >0) {
+					 String resul = idItem+"#"+idItem2+"#"+simValue;
+				     String[] entries = resul.split("#"); 
+				     writer.writeNext(entries);
+			     //   }
+			}
+			}
+		writer.close();
+		System.out.println("Fin-Calcular Matriz Simlitud" );
+		}
 	private static void exportarCsvSolapamiento(final HashMap<Double,Integer> resultados) {
 		CSV csv = CSV
 			    .separator(',')  // delimiter of fields

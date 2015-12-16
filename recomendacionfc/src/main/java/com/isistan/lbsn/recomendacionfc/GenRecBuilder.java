@@ -27,7 +27,7 @@ public class GenRecBuilder implements RecommenderBuilder {
 
 	
 	public Recommender buildRecommender(DataModel model) throws TasteException {
-		return new GenericUserBasedRecommenderNormalizado(model, neighborhood, userSimilarity);
+		return new GenericUserBasedRecommender(model, neighborhood, userSimilarity);
 	}
 
 }

@@ -42,10 +42,10 @@ public class ScoringFactory {
 			scoring = new ScoringCercaniaUsuarioUsuario(grafoModel, dataModel,userModel,itemModel);
 			return scoring;
 		case USER_OVERLAP_LIKED:
-			scoring = new ScoringOverlapLiked(grafoModel, dataModel,null);
+			scoring = new ScoringOverlapLiked(grafoModel, dataModel,2.0);
 			return scoring;
 		case USER_OVERLAP_LIKED_HATED:
-			scoring = new ScoringOverlapLikedAndHated(grafoModel, dataModel);
+			scoring = new ScoringOverlapLikedAndHated(grafoModel, dataModel,2.0);
 			return scoring;	
 		default:
 			return null; 

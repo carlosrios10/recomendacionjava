@@ -12,12 +12,20 @@ import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.recomendacionfc.Scoring;
 
 public class ScoringOverlapLikedAndHated implements Scoring{
-	private static final int UMBRAL_LIKED = 3;
+	//private static final int UMBRAL_LIKED = 3;
 	GrafoModel grafoModel;
 	DataModel dataModel;
+	private Double umbralLiked;
 	public ScoringOverlapLikedAndHated(GrafoModel grafoModel, DataModel dataModel) {
 		this.dataModel=dataModel;
 		this.grafoModel=grafoModel;
+		this.umbralLiked=3.0;
+	}
+	public ScoringOverlapLikedAndHated(GrafoModel grafoModel, DataModel dataModel, Double umbralLiked) {
+		this.dataModel=dataModel;
+		this.grafoModel=grafoModel;
+		this.umbralLiked=umbralLiked; 
+		
 	}
 	public double userSimilarity(long userID1, long userID2)
 			throws TasteException {
@@ -71,7 +79,7 @@ public class ScoringOverlapLikedAndHated implements Scoring{
 		FastIDSet itemIDsFromUser = dataModel.getItemIDsFromUser(userID);
 		for (Long itemID : itemIDsFromUser) {
 			double valor = dataModel.getPreferenceValue(userID, itemID);
-			if( valor < UMBRAL_LIKED ){
+			if( valor < umbralLiked ){
 				itemIDsFromUser.remove(itemID);
 			}
 		}
@@ -83,7 +91,7 @@ public class ScoringOverlapLikedAndHated implements Scoring{
 		FastIDSet itemIDsFromUser = dataModel.getItemIDsFromUser(userID);
 		for (Long itemID : itemIDsFromUser) {
 			double valor = dataModel.getPreferenceValue(userID, itemID);
-			if( valor >= UMBRAL_LIKED ){
+			if( valor >= umbralLiked ){
 				itemIDsFromUser.remove(itemID);
 			}
 		}
