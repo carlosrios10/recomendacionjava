@@ -37,6 +37,7 @@ import com.isistan.lbsn.scoring.ScoringOverlapLikedAndHated;
 public class MainCalcularVecinos {
 
 	private static final String PATH_SOLAPAMIENTO = "C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/similitudes-scoring/";
+	private static final String PATH_RESULTADO = MyProperties.getInstance().getProperty("resultados");
 
 	public static void main(String[] args) {
 		try {
@@ -59,9 +60,9 @@ public class MainCalcularVecinos {
 			ItemSimilarity ItemSimlilitudCoseno = new UncenteredCosineSimilarity(ratingModel);
 			ItemSimilarity ItemSimlilitudTanimoto = new TanimotoCoefficientSimilarity(ratingModel);
 			
-			calcularMatrizSimilitud(ratingModel,simlilitudCoseno  ,MyProperties.getInstance().getProperty("resultados")+"usersimlilitudCoseno"+ ".csv");
+			calcularMatrizSimilitud(ratingModel,scoringOverlap,MyProperties.getInstance().getProperty("resultados")+"cantidad_visitas_comunes2"+ ".csv");
 			//calcularMatrizSimilitudItemItem(ratingModel,ItemSimlilitudTanimoto,MyProperties.getInstance().getProperty("resultados")+"ItemSimlilitudTanimoto"+ ".csv");
-			//calcaularSolapamiento(ratingModel,scoring3,PATH_SOLAPAMIENTO+"cantidadSolpamientoPorUsuarioLikedHated"+ ".csv");
+			//calcaularSolapamiento(ratingModel,scoringOverlap,PATH_RESULTADO+"cantidad_visitas_comunes"+ ".csv");
 			
 			System.out.println("FIN - MainCalcularVecinos -");
 		} catch (IOException e) {
@@ -120,11 +121,11 @@ public class MainCalcularVecinos {
 			while (usersIterable2.hasNext()) {
 				 Long idUser2 = usersIterable2.next();
 				 double simValue = sim.userSimilarity(idUser, idUser2);
-				// if (!Double.isNaN(simValue) && simValue >0) {
+				 if (!Double.isNaN(simValue) && simValue >0) {
 					 String resul = idUser+"#"+idUser2+"#"+simValue;
 				     String[] entries = resul.split("#"); 
 				     writer.writeNext(entries);
-			     //   }
+			       }
 			}
 			}
 		writer.close();

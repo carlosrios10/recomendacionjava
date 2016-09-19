@@ -16,6 +16,7 @@ import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.config.MyProperties;
+import com.isistan.lbsn.recommender.GenericUserBasedRecommenderNormalizado;
 import com.isistan.lbsn.util.Util;
 
 public class ExperimentoFCTradicional {

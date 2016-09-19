@@ -10,7 +10,7 @@ import java.util.Map;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.google.common.base.Preconditions;
-import com.isistan.lbsn.recomendacionfc.Item;
+import com.isistan.lbsn.entidades.Item;
 
 public class ItemModel {
 	private  File dataFile;

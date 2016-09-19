@@ -25,13 +25,19 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhood{
 	private final double samplingRate;
 	private final GrafoModel friendsDm;
 	private final RefreshHelper refreshHelper;
+	private  int nivel;
 
-	public NearestNUserFriendsAndFriends(int n, UserSimilarity userSimilarity, DataModel dataModel,GrafoModel friendsDm) throws TasteException {
+	public NearestNUserFriendsAndFriends(int n, UserSimilarity userSimilarity, DataModel dataModel,GrafoModel friendsDm) 
+			throws TasteException {
 		this(n, Double.NEGATIVE_INFINITY, userSimilarity, dataModel, 1.0,friendsDm);
 	}
-
-	public NearestNUserFriendsAndFriends(int n,double minSimilarity,UserSimilarity userSimilarity,
-			DataModel dataModel,double samplingRate,GrafoModel friendsDm) throws TasteException {
+	public NearestNUserFriendsAndFriends(int n, UserSimilarity userSimilarity, DataModel dataModel,GrafoModel friendsDm,int nivel) 
+			throws TasteException {
+		this(n, Double.NEGATIVE_INFINITY, userSimilarity, dataModel, 1.0,friendsDm);
+		this.nivel = nivel;
+	}
+	public NearestNUserFriendsAndFriends(int n,double minSimilarity,UserSimilarity userSimilarity,DataModel dataModel,double samplingRate,GrafoModel friendsDm) 
+			throws TasteException {
 		this.userSimilarity = userSimilarity;
 		this.dataModel = dataModel;
 		this.samplingRate =  samplingRate;
@@ -70,8 +76,7 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhood{
 	public long[] getUserNeighborhood(long userID) throws TasteException {
 		UserSimilarity userSimilarityImpl = this.userSimilarity;
 		TopItems.Estimator<Long> estimator = new Estimator(userSimilarityImpl, userID, minSimilarity);
-		Collection<Long> totalVecinos= this.friendsDm.getFriendsMyFriends(userID);
-		
+		Collection<Long> totalVecinos= this.friendsDm.getFriendsMyFriends(userID,nivel);
 		if(totalVecinos==null)
 			return new long[0];
 		
@@ -102,5 +107,11 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhood{
 			double sim = userSimilarityImpl.userSimilarity(theUserID, userID);
 			return sim >= minSim ? sim : Double.NaN;
 		}
+	}
+	public int getNivel() {
+		return nivel;
+	}
+	public void setNivel(int nivel) {
+		this.nivel = nivel;
 	}
 }

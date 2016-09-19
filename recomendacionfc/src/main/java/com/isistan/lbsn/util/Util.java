@@ -9,8 +9,8 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.UserModel;
+import com.isistan.lbsn.entidades.User;
 import com.isistan.lbsn.recomendacionfc.Resultado;
-import com.isistan.lbsn.recomendacionfc.User;
 
 public class Util {
 	
@@ -52,7 +52,12 @@ public class Util {
 		
 		csv.write(resultadosPath+fileName+".csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
-		        out.writeNext("Agregation","Scoring","Similitud","TVecinos","Nvecinos","Threshold","alfa","beta","Mae","Rms","Precision","Recall");
+		        out.writeNext("Agregation","Scoring","Similitud",
+		        			  "TVecinos","Nvecinos","Threshold",
+		        			  "alfa","beta","Mae","Rms",
+		        			  "Precision","Recall","F1Measure",
+		        			  "Fallou","nDgg",
+		        			  "Reach","numUserTest","userTestConVecinos","promedioVecinos","numPrefTest");
 		        for (Resultado resultado : resultados) {
 		        	out.writeNext(
 		        				resultado.getConfiguracion().getAgregationType().toString(),
@@ -66,7 +71,15 @@ public class Util {
 		        				Double.toString(resultado.getScoreMae()),
 		        				Double.toString(resultado.getScoreRms()),
 		        				Double.toString(resultado.getScorePrecision()),
-		        				Double.toString(resultado.getScoreRecall())
+		        				Double.toString(resultado.getScoreRecall()),
+		        				Double.toString(resultado.getScoreF1Measure()),
+		        				Double.toString(resultado.getFallout()),
+		        				Double.toString(resultado.getnDgg()),
+		        				Double.toString(resultado.getReach()),
+		        				Double.toString(resultado.getResultadoCantV().getCantidadUsuariosTest()),
+		        				Double.toString(resultado.getResultadoCantV().getCantidadUsuarioTestConVecinos()),
+		        				Double.toString(resultado.getResultadoCantV().getPromedioVecinos()),
+		        				Double.toString(resultado.getResultadoCantV().getCantidadPreferenciasTest())
 		        				
 		        				);
 				}
@@ -109,7 +122,7 @@ public class Util {
 	
     public static double distFrom(double lat1, double lng1, double lat2, double lng2) {  
         //double earthRadius = 3958.75;//miles  
-        double earthRadius = 6371;//kilometers  
+        double earthRadius = 6378.1;//kilometers  
         double dLat = Math.toRadians(lat2 - lat1);  
         double dLng = Math.toRadians(lng2 - lng1);  
         double sindLat = Math.sin(dLat / 2);  

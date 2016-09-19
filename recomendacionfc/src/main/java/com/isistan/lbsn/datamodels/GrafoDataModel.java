@@ -9,13 +9,14 @@ import java.util.List;
 
 import org.apache.commons.collections15.Transformer;
 
-import com.isistan.lbsn.similitudestructural.Nodo;
+import com.isistan.lbsn.scoring.Nodo;
 
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
 import edu.uci.ics.jung.algorithms.scoring.HITS;
 import edu.uci.ics.jung.algorithms.scoring.PageRank;
+import edu.uci.ics.jung.algorithms.shortestpath.UnweightedShortestPath;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.io.GraphIOException;
 import edu.uci.ics.jung.io.graphml.EdgeMetadata;
@@ -32,6 +33,7 @@ public class GrafoDataModel implements GrafoModel {
 	private BetweennessCentrality betweennes;
 	private DegreeScorer degree;
 	private ClosenessCentrality closeness;
+	private UnweightedShortestPath<Long,Integer> distanciaCaminoCortoSinPeso;
 	
 
 	public GrafoDataModel(UndirectedSparseGraph<Long, Integer> grafo,
@@ -98,11 +100,12 @@ public class GrafoDataModel implements GrafoModel {
 			GraphMLReader2<UndirectedSparseGraph<Long, Integer>, Long, Integer> gmlr = new GraphMLReader2<UndirectedSparseGraph<Long, Integer>, Long, Integer>(
 					reader, gtrans, vtrans, etrans, hetrans);
 			setGrafo(gmlr.readGraph());
-			pageRank = new PageRank<Long, Integer>(getGrafo(),0.95);
-			hits = new HITS<Long, Integer>(getGrafo());
-			degree = new DegreeScorer<Long>(getGrafo());
-			betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
-			closeness = new ClosenessCentrality<Long,Integer>(getGrafo());
+//			pageRank = new PageRank<Long, Integer>(getGrafo(),0.95);
+//			hits = new HITS<Long, Integer>(getGrafo());
+//			degree = new DegreeScorer<Long>(getGrafo());
+//			betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
+//			closeness = new ClosenessCentrality<Long,Integer>(getGrafo());
+			distanciaCaminoCortoSinPeso = new UnweightedShortestPath<Long, Integer>(getGrafo());
 			
 
 		} catch (FileNotFoundException e) {
@@ -184,5 +187,26 @@ public class GrafoDataModel implements GrafoModel {
 	public double getCloseness(long userID) {
 		 return closeness.getVertexScore(userID);
 	}
+
+	public Collection<Long> getFriendsMyFriends(long userID, int nivel) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public UnweightedShortestPath<Long, Integer> getDistanciaCaminoCortoSinPeso() {
+		return distanciaCaminoCortoSinPeso;
+	}
+
+	public void setDistanciaCaminoCortoSinPeso(
+			UnweightedShortestPath<Long, Integer> distanciaCaminoCortoSinPeso) {
+		this.distanciaCaminoCortoSinPeso = distanciaCaminoCortoSinPeso;
+	}
+
+
+
+//	public long distancia getDistancia(long userID, long) {
+//		grafo.
+//		return ;
+//	}
 
 }

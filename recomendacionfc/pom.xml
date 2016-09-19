@@ -32,15 +32,23 @@
 	<artifactId>opencsv</artifactId>
 	<version>2.4</version>
 </dependency>
-<dependency>
-	<groupId>org.slf4j</groupId>
-	<artifactId>slf4j-api</artifactId>
-	<version>1.7.1</version>
-</dependency>
-<dependency>
-	<groupId>org.slf4j</groupId>
-	<artifactId>slf4j-nop</artifactId>
-	<version>1.7.10</version>
+
+<!-- <dependency> -->
+<!-- 	<groupId>org.slf4j</groupId> -->
+<!-- 	<artifactId>slf4j-api</artifactId> -->
+<!-- 	<version>1.7.1</version> -->
+<!-- </dependency> -->
+
+<!-- <dependency> -->
+<!-- 	<groupId>org.slf4j</groupId> -->
+<!-- 	<artifactId>slf4j-simple</artifactId> -->
+<!-- 	<version>1.7.21</version> -->
+<!-- </dependency> -->
+
+<dependency> 
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.7.21</version>
 </dependency>
          <dependency>
         <groupId>net.sf.jung</groupId>
@@ -59,4 +67,23 @@
 </dependency>
     
   </dependencies>
+  <build>
+  <plugins>
+  <plugin>
+  <groupId>org.codehaus.mojo</groupId>
+  <artifactId>exec-maven-plugin</artifactId>
+  <version>1.2.1</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>java</goal>
+      </goals>
+    </execution>
+  </executions>
+  <configuration>
+    <mainClass>com.isistan.lbsn.experimentos.dataset2.Experimento1</mainClass>
+  </configuration>
+</plugin>
+  </plugins>
+  </build>
 </project>

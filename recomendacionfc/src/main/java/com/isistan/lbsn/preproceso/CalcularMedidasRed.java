@@ -16,7 +16,7 @@ import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.FriendsDataModel;
 import com.isistan.lbsn.datamodels.GrafoDataModel;
 import com.isistan.lbsn.datamodels.GrafoModel;
-import com.isistan.lbsn.similitudestructural.JaccardNetwork;
+import com.isistan.lbsn.scoring.JaccardNetwork;
 
 public class CalcularMedidasRed {
 	private static final String PATH_SOLAPAMIENTO = "C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/similitudes-scoring/";

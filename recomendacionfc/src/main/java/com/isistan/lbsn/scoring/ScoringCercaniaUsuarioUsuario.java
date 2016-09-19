@@ -10,9 +10,8 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.datamodels.ItemModel;
 import com.isistan.lbsn.datamodels.UserModel;
-import com.isistan.lbsn.recomendacionfc.Item;
-import com.isistan.lbsn.recomendacionfc.Scoring;
-import com.isistan.lbsn.recomendacionfc.User;
+import com.isistan.lbsn.entidades.Item;
+import com.isistan.lbsn.entidades.User;
 import com.isistan.lbsn.util.Util;
 
 public class ScoringCercaniaUsuarioUsuario implements Scoring {

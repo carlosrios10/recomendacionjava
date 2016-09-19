@@ -13,7 +13,11 @@ public class MyProperties extends Properties {
         if (instance == null) {
             try {
                 instance = new MyProperties();
-                FileInputStream in =  new FileInputStream("config.properties");
+                String config = System.getProperty("config");
+                if (config == null){
+                	config = "config.properties";
+                }
+                FileInputStream in =  new FileInputStream(config);
                 instance.load(in);
                 in.close();
             } catch (Exception e) {

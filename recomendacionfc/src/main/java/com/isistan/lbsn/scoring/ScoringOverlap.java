@@ -11,7 +11,6 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.datamodels.GrafoModel;
-import com.isistan.lbsn.recomendacionfc.Scoring;
 
 public class ScoringOverlap implements Scoring{
 	GrafoModel grafoModel;

@@ -2,14 +2,14 @@ package com.isistan.lbsn.expermientos.dataset3;
 
 import java.util.ArrayList;
 
+import com.isistan.lbsn.agregation.AgregationFactory.AgregationType;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
 import com.isistan.lbsn.recomendacionfc.EvaluacionEsquema;
 import com.isistan.lbsn.recomendacionfc.Resultado;
-import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithm;
-import com.isistan.lbsn.recomendacionfc.AgregationFactory.AgregationType;
-import com.isistan.lbsn.recomendacionfc.ScoringFactory.ScoringType;
-import com.isistan.lbsn.recomendacionfc.TypeNeighborhood.TypeNeigh;
+import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithmFactory;
+import com.isistan.lbsn.scoring.ScoringFactory.ScoringType;
 import com.isistan.lbsn.util.Util;
+import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory.TypeNeigh;
 
 public class Experimento1 {
 
@@ -19,32 +19,61 @@ public class Experimento1 {
 		
 ////////////////NEIGHBOR WEIGHTING///////////////
 
-configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(50,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(100,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+//configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+//configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+//configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+//configuraciones.add(new Configuracion(50,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+//
+//configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
+//configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
+//configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
+//configuraciones.add(new Configuracion(50,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
+//
+//configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
+//configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
+//configuraciones.add(new Configuracion(30,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
+//configuraciones.add(new Configuracion(50,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+//ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
 
-configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
-configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
-configuraciones.add(new Configuracion(50,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
-configuraciones.add(new Configuracion(100,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
+////////////////NEIGHBOR WEIGHTING LikedAndHated///////////////
 
-configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
-configuraciones.add(new Configuracion(20,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
-configuraciones.add(new Configuracion(50,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
-configuraciones.add(new Configuracion(100,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
-ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
+configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.BASE));
+configuraciones.add(new Configuracion(20,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.BASE));
+configuraciones.add(new Configuracion(30,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.BASE));
+configuraciones.add(new Configuracion(50,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.BASE));
+
+configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.ONLY_SCORE));
+configuraciones.add(new Configuracion(20,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.ONLY_SCORE));
+configuraciones.add(new Configuracion(30,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.ONLY_SCORE));
+configuraciones.add(new Configuracion(50,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.ONLY_SCORE));
+
+configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.HARMONIC_MEAN));
+configuraciones.add(new Configuracion(20,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.HARMONIC_MEAN));
+configuraciones.add(new Configuracion(30,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.HARMONIC_MEAN));
+configuraciones.add(new Configuracion(50,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+ScoringType.USER_OVERLAP_LIKED_HATED,AgregationType.HARMONIC_MEAN));
 		
 ////////////////NEIGHBOR SELECTION///////////////		
 
@@ -78,11 +107,11 @@ ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
 				
 				 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 				 System.out.println("Inicia evaluacion");
-				 resultados = esquema.evaluar(configuraciones);
+				 resultados = esquema.evaluar(configuraciones,0.7);
 				 System.out.println("Fin evaluacion");
 				 System.out.println("Exportar csv");
 				 
-				 Util.exportarResultadoCsv(resultados, "USER_NEIGHBOR_WEIGHTING_RATING_SENTI2");
+				 Util.exportarResultadoCsv(resultados, "USER_NEIGHBOR_WEIGHTING_LandH_RATING_SENTI2");
 				 System.out.println("FIN");
 	}
 

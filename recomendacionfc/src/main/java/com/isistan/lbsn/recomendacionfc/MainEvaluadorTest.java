@@ -16,8 +16,8 @@ import au.com.bytecode.opencsv.CSV;
 import au.com.bytecode.opencsv.CSVWriteProc;
 import au.com.bytecode.opencsv.CSVWriter;
 
-import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithm.SimAlg;
-import com.isistan.lbsn.recomendacionfc.TypeNeighborhood.TypeNeigh;
+import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithmFactory.SimAlg;
+import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory.TypeNeigh;
 
 
 
@@ -100,29 +100,29 @@ public class MainEvaluadorTest {
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.8,0.2));
 //		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COMBINADA,0.8,TypeNeigh.THRESHOLD,0.9,0.1));
 		
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.THRESHOLD,-1,-1));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.THRESHOLD,-1,-1));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.THRESHOLD,-1,-1));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.THRESHOLD,-1,-1));
 		
-		configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
-		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
-		configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
-		configuraciones.add(new Configuracion(Integer.MAX_VALUE,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithmFactory.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(120,SimilarityAlgorithmFactory.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(Integer.MAX_VALUE,SimilarityAlgorithmFactory.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS,-1,-1));
 		
-		configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
-		configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
-		configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
-		configuraciones.add(new Configuracion(Integer.MAX_VALUE,SimilarityAlgorithm.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(60,SimilarityAlgorithmFactory.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(120,SimilarityAlgorithmFactory.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
+		configuraciones.add(new Configuracion(Integer.MAX_VALUE,SimilarityAlgorithmFactory.SimAlg.COSENO,-1,TypeNeigh.K_FRIENDS_FRIENDS,-1,-1));
 		
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.6,TypeNeigh.THRESHOLD,-1,-1));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.7,TypeNeigh.THRESHOLD,-1,-1));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.8,TypeNeigh.THRESHOLD,-1,-1));
-		configuraciones.add(new Configuracion(-1,SimilarityAlgorithm.SimAlg.TANIMOTO,0.9,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithmFactory.SimAlg.TANIMOTO,0.6,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithmFactory.SimAlg.TANIMOTO,0.7,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithmFactory.SimAlg.TANIMOTO,0.8,TypeNeigh.THRESHOLD,-1,-1));
+		configuraciones.add(new Configuracion(-1,SimilarityAlgorithmFactory.SimAlg.TANIMOTO,0.9,TypeNeigh.THRESHOLD,-1,-1));
 
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");
-		 resultados = esquema.evaluar(configuraciones);
+		 resultados = esquema.evaluar(configuraciones,0.7);
 		 System.out.println("Fin evaluacion");
 		 System.out.println("Exportar csv");
 		 exportarCsv(resultados);

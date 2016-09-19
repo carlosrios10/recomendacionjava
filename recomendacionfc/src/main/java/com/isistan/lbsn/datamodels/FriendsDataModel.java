@@ -18,7 +18,7 @@ import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.google.common.base.Preconditions;
-import com.isistan.lbsn.similitudestructural.Nodo;
+import com.isistan.lbsn.scoring.Nodo;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 /**
@@ -125,6 +125,32 @@ public class FriendsDataModel implements GrafoModel{
 			totalVecinos.addAll(amigosDeAmigo);
 		}
 		//return 	(new HashSet<Long>(totalVecinos));
+		return totalVecinos;
+
+	}
+	
+	private void buscarAmigos(Collection<Long> totalVecinos, Collection<Long> amigos){
+		Collection<Long> listaAux = new  HashSet<Long>(amigos);
+		for(Long amigo: listaAux){
+			totalVecinos.add(amigo);
+			List<Long> amigosDeAmigo = new ArrayList<Long>(multiMap.get(amigo));
+			amigosDeAmigo.remove(new Long(amigo));
+			totalVecinos.addAll(amigosDeAmigo);
+			amigos.addAll(amigosDeAmigo);
+			amigos.remove(amigo);
+		}
+	}
+	public Collection<Long> getFriendsMyFriends(long userID, int nivel) {
+		if (null == getFriends(userID)){
+			return null;
+		}
+		Collection<Long> totalVecinos = new HashSet<Long>();
+		Collection<Long> amigos = new HashSet<Long>();
+		amigos.add(userID);
+		for (int i = 1;i<=nivel;i++){
+			buscarAmigos(totalVecinos, amigos);
+		}
+		totalVecinos.remove(new Long(userID));
 		return totalVecinos;
 
 	}

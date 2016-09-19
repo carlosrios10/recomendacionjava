@@ -16,8 +16,8 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.ItemModel;
 import com.isistan.lbsn.datamodels.UserModel;
-import com.isistan.lbsn.recomendacionfc.Item;
-import com.isistan.lbsn.recomendacionfc.User;
+import com.isistan.lbsn.entidades.Item;
+import com.isistan.lbsn.entidades.User;
 import com.isistan.lbsn.util.Util;
 
 public class CalcularDistanciasUsuario {

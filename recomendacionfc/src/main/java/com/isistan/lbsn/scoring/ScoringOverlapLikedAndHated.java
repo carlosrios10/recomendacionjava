@@ -9,7 +9,6 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 
 import com.isistan.lbsn.datamodels.GrafoModel;
-import com.isistan.lbsn.recomendacionfc.Scoring;
 
 public class ScoringOverlapLikedAndHated implements Scoring{
 	//private static final int UMBRAL_LIKED = 3;

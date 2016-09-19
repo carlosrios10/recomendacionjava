@@ -2,10 +2,10 @@ package com.isistan.lbsn.recomendacionfc;
 
 import java.util.ArrayList;
 
-import com.isistan.lbsn.recomendacionfc.AgregationFactory.AgregationType;
-import com.isistan.lbsn.recomendacionfc.ScoringFactory.ScoringType;
-import com.isistan.lbsn.recomendacionfc.TypeNeighborhood.TypeNeigh;
+import com.isistan.lbsn.agregation.AgregationFactory.AgregationType;
+import com.isistan.lbsn.scoring.ScoringFactory.ScoringType;
 import com.isistan.lbsn.util.Util;
+import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory.TypeNeigh;
 
 public class MainEvaluadorTest2 {
 	public static void main(String[] args) {
@@ -278,37 +278,37 @@ public class MainEvaluadorTest2 {
 
 ////////////////NEIGHBOR WEIGHTING Normalizado///////////////
 
-configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(60,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(120,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(200,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 
-configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
-configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(60,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
-configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(120,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
-configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(200,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.ONLY_SCORE));
 
-configuraciones.add(new Configuracion(10,SimilarityAlgorithm.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
-configuraciones.add(new Configuracion(60,SimilarityAlgorithm.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(60,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
-configuraciones.add(new Configuracion(120,SimilarityAlgorithm.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(120,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
-configuraciones.add(new Configuracion(200,SimilarityAlgorithm.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
+configuraciones.add(new Configuracion(200,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.HARMONIC_MEAN));
 
 
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");
-		 resultados = esquema.evaluar(configuraciones);
+		 resultados = esquema.evaluar(configuraciones,0.7);
 		 System.out.println("Fin evaluacion");
 		 System.out.println("Exportar csv");
 		 

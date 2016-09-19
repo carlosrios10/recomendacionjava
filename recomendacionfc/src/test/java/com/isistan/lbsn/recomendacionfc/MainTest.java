@@ -29,34 +29,34 @@ public class MainTest {
 //			average1.addDatum(i);
 //		}
 //		System.out.println(average1.getAverage());
-		DataModel model;
-		try {
-			model = new FileDataModel(new File("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/dataset.csv"));
-			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
-			UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
-			
-			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
-			RecommenderBuilder builderGen = new GenRecBuilder(similarity,neighborhood);
-			RecommenderBuilder builderRan = new RandomRecBuilder();
-			double resultGen =0;
-			double resultRan =0;
-			for (int i = 0; i < 10; i++) {
-				 resultGen =+ evaluator.evaluate(builderGen, null, model, 0.9, 1.0);
-				 System.out.println(evaluator.getMaxPreference());
-				 resultRan =+ evaluator.evaluate(builderRan, null, model, 0.9, 1.0);
-					
-			}
-				
-			
-			System.out.println(resultGen/10);
-			System.out.println(resultRan/10);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TasteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		DataModel model;
+//		try {
+//			model = new FileDataModel(new File("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/dataset.csv"));
+//			UserSimilarity similarity = new PearsonCorrelationSimilarity(model);
+//			UserNeighborhood neighborhood = new ThresholdUserNeighborhood(0.1, similarity, model);
+//			
+//			RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
+//			RecommenderBuilder builderGen = new GenRecBuilder(similarity,neighborhood);
+//			RecommenderBuilder builderRan = new RandomRecBuilder();
+//			double resultGen =0;
+//			double resultRan =0;
+//			for (int i = 0; i < 10; i++) {
+//				 resultGen =+ evaluator.evaluate(builderGen, null, model, 0.9, 1.0);
+//				 System.out.println(evaluator.getMaxPreference());
+//				 resultRan =+ evaluator.evaluate(builderRan, null, model, 0.9, 1.0);
+//					
+//			}
+//				
+//			
+//			System.out.println(resultGen/10);
+//			System.out.println(resultRan/10);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (TasteException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	static  class RandomRecBuilder implements RecommenderBuilder {

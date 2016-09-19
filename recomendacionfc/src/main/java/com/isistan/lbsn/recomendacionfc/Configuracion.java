@@ -1,22 +1,25 @@
 package com.isistan.lbsn.recomendacionfc;
 
-import com.isistan.lbsn.recomendacionfc.AgregationFactory.AgregationType;
-import com.isistan.lbsn.recomendacionfc.ScoringFactory.ScoringType;
-import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithm.SimAlg;
+import com.isistan.lbsn.agregation.AgregationFactory;
+import com.isistan.lbsn.agregation.AgregationFactory.AgregationType;
+import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithmFactory.SimAlg;
+import com.isistan.lbsn.scoring.ScoringFactory;
+import com.isistan.lbsn.scoring.ScoringFactory.ScoringType;
+import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory;
 
 
 
 public class Configuracion {
 	private int neighSize; 
-	SimilarityAlgorithm.SimAlg simAlg; 
+	SimilarityAlgorithmFactory.SimAlg simAlg; 
 	private double threshold;
-	TypeNeighborhood.TypeNeigh typeNeigh;
+	TypeNeighborhoodFactory.TypeNeigh typeNeigh;
 	double alfa;
 	double beta;
 	ScoringFactory.ScoringType scoringType;
 	AgregationFactory.AgregationType agregationType;
 	
-	public Configuracion(int neighSize, SimAlg simAlg, double threshold, TypeNeighborhood.TypeNeigh  typeNeigh,double alfa,
+	public Configuracion(int neighSize, SimAlg simAlg, double threshold, TypeNeighborhoodFactory.TypeNeigh  typeNeigh,double alfa,
 			double beta) {
 		super();
 		this.neighSize = neighSize;
@@ -27,7 +30,7 @@ public class Configuracion {
 		this.beta = beta;
 	}
 	
-	public Configuracion(int neighSize, SimAlg simAlg, double threshold, TypeNeighborhood.TypeNeigh  typeNeigh,double alfa,
+	public Configuracion(int neighSize, SimAlg simAlg, double threshold, TypeNeighborhoodFactory.TypeNeigh  typeNeigh,double alfa,
 			double beta, ScoringFactory.ScoringType scoringType,AgregationFactory.AgregationType agregationType) {
 		super();
 		this.neighSize = neighSize;
@@ -39,10 +42,10 @@ public class Configuracion {
 		this.scoringType = scoringType;
 		this.agregationType = agregationType;
 	}
-	public TypeNeighborhood.TypeNeigh getTypeNeigh() {
+	public TypeNeighborhoodFactory.TypeNeigh getTypeNeigh() {
 		return typeNeigh;
 	}
-	public void setTypeNeigh(TypeNeighborhood.TypeNeigh typeNeigh) {
+	public void setTypeNeigh(TypeNeighborhoodFactory.TypeNeigh typeNeigh) {
 		this.typeNeigh = typeNeigh;
 	}
 	public int getNeighSize() {
@@ -51,10 +54,10 @@ public class Configuracion {
 	public void setNeighSize(int neighSize) {
 		this.neighSize = neighSize;
 	}
-	public SimilarityAlgorithm.SimAlg getSimAlg() {
+	public SimilarityAlgorithmFactory.SimAlg getSimAlg() {
 		return simAlg;
 	}
-	public void setSimAlg(SimilarityAlgorithm.SimAlg simAlg) {
+	public void setSimAlg(SimilarityAlgorithmFactory.SimAlg simAlg) {
 		this.simAlg = simAlg;
 	}
 	public double getThreshold() {
@@ -77,7 +80,7 @@ public class Configuracion {
 	}
 	@Override
 	public String toString() {
-		String resultado= ""+getSimAlg()+""+getTypeNeigh()+""+getNeighSize()+""+getAlfa()+""+getBeta()+""+getThreshold()+""+getAgregationType()+""+getScoringType();
+		String resultado= ""+getSimAlg()+"-"+getTypeNeigh()+"-"+getNeighSize()+"-"+getAlfa()+"-"+getBeta()+"-"+getThreshold()+"-"+getAgregationType()+"-"+getScoringType();
 		return resultado; 
 	}
 	public ScoringFactory.ScoringType getScoringType() {

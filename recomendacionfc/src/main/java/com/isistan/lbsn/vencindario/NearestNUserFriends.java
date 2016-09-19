@@ -28,7 +28,6 @@ public final class NearestNUserFriends implements UserNeighborhood  {
 	private final DataModel dataModel;
 	private final double samplingRate;
 	private final GrafoModel friendsDm;
-
 	private final RefreshHelper refreshHelper;
 
 
