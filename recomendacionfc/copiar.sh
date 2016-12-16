@@ -1,0 +1,1 @@
+rsync -e 'ssh -p 143' --delete --checksum -z --progress -tr ./ carlos@192.168.2.14:/home/carlos/proyectoRecomendacion
