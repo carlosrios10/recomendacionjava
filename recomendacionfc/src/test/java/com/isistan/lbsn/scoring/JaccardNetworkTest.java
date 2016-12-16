@@ -3,13 +3,13 @@ package com.isistan.lbsn.scoring;
 import org.apache.mahout.cf.taste.common.TasteException;
 
 import com.isistan.lbsn.datamodels.GrafoDataModel;
-import com.isistan.lbsn.scoring.JaccardNetwork;
+import com.isistan.lbsn.scoring.ScoringJaccardNetwork;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import junit.framework.TestCase;
 
 public class JaccardNetworkTest extends TestCase {
-	JaccardNetwork sim;
+	ScoringJaccardNetwork sim;
 
 	public JaccardNetworkTest(String name) {
 		super(name);
@@ -31,7 +31,7 @@ public class JaccardNetworkTest extends TestCase {
 		dataModel.addEdge((Integer)5, 3l, 5l);
 		dataModel.addEdge((Integer)6, 4l, 6l);
 		dataModel.addEdge((Integer)7, 5l, 6l);
-		sim = new JaccardNetwork(new GrafoDataModel(dataModel));
+		sim = new ScoringJaccardNetwork(new GrafoDataModel(dataModel));
 	}
 
 	protected void setUp() throws Exception {

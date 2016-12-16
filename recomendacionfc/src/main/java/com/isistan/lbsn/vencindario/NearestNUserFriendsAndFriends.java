@@ -17,7 +17,7 @@ import com.google.common.primitives.Longs;
 import com.isistan.lbsn.datamodels.GrafoDataModel;
 import com.isistan.lbsn.datamodels.GrafoModel;
 
-public class NearestNUserFriendsAndFriends implements UserNeighborhood{
+public class NearestNUserFriendsAndFriends implements UserNeighborhoodAux{
 	private final int n;
 	private final double minSimilarity;
 	private final UserSimilarity userSimilarity;
@@ -113,5 +113,10 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhood{
 	}
 	public void setNivel(int nivel) {
 		this.nivel = nivel;
+	}
+	public long[] getUserNeighborhood(long userID, long itemID)
+			throws TasteException {
+		return this.getUserNeighborhood(userID)
+				;
 	}
 }

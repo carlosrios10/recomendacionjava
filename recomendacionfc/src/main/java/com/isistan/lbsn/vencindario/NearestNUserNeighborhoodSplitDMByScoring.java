@@ -1,49 +1,50 @@
 package com.isistan.lbsn.vencindario;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveArrayIterator;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.common.RefreshHelper;
 import org.apache.mahout.cf.taste.impl.recommender.TopItems;
-import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.google.common.primitives.Longs;
-import com.isistan.lbsn.datamodels.UserModel;
-import com.isistan.lbsn.entidades.User;
-import com.isistan.lbsn.recomendacionfc.EvaluacionEsquema;
+import com.isistan.lbsn.datamodels.DataModelByItemCategory;
+import com.isistan.lbsn.datamodels.ItemModel;
+import com.isistan.lbsn.entidades.Item;
+import com.isistan.lbsn.scoring.Scoring;
 
-public final class NearestNUserGrupo implements UserNeighborhoodAux {
-	private static final Logger log = LoggerFactory.getLogger(NearestNUserGrupo.class);
-	
+public class NearestNUserNeighborhoodSplitDMByScoring implements UserNeighborhoodAux {
+
 	private final int n;
 	private final double minSimilarity;
 	private final double samplingRate;
 	private final RefreshHelper refreshHelper;
-	private final UserModel userModel;
+	private final ItemModel itemModel;
 	private final UserSimilarity userSimilarity;
-	private final int nivel;
-	
+	private final DataModelByItemCategory dataModel;
+	private int radio;
+	public NearestNUserNeighborhoodSplitDMByScoring(int n, Scoring userSimilarity,ItemModel itemModel,DataModelByItemCategory dataModel) 
+			throws TasteException {
+		this(n, Double.NEGATIVE_INFINITY, userSimilarity, itemModel,dataModel, 1.0);
 
-
-	public NearestNUserGrupo(int n, UserSimilarity userSimilarity,UserModel userModel,int nivel) throws TasteException {
-		this(n, Double.NEGATIVE_INFINITY, userSimilarity, userModel,nivel, 1.0);
 	}
-	public NearestNUserGrupo(int n,double minSimilarity,UserSimilarity userSimilarity,UserModel userModel, int
-			nivel, double samplingRate) throws TasteException {
+	public NearestNUserNeighborhoodSplitDMByScoring(int n,double minSimilarity,Scoring userSimilarity,ItemModel itemModel,DataModelByItemCategory dataModel, double samplingRate) 
+			throws TasteException {
 		this.userSimilarity = userSimilarity;
 		this.samplingRate =  samplingRate;
-		this.userModel = userModel;
+		this.itemModel = itemModel;
+		this.dataModel = dataModel;
 		Preconditions.checkArgument(n >= 1, "n must be at least 1");
-		int numUsers = userModel.getMultiMap().size();
-		this.n = n > numUsers ? numUsers : n;
-		this.nivel = nivel;
+		int numItems = itemModel.getCantidadDeItems();
+		this.n = n > numItems ? numItems : n;
 		this.minSimilarity = minSimilarity;
 		this.refreshHelper = new RefreshHelper(null);
 		this.refreshHelper.addDependency(this.userSimilarity);
@@ -51,29 +52,34 @@ public final class NearestNUserGrupo implements UserNeighborhoodAux {
 	}
 	public void refresh(Collection<Refreshable> alreadyRefreshed) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public long[] getUserNeighborhood(long userID) throws TasteException {
+		return null;
+	}
+
+	public long[] getUserNeighborhood(long userID, long itemID)
+			throws TasteException {
+		LongPrimitiveIterator userIDs = mergeUserIDs(itemID);
 		UserSimilarity userSimilarityImpl = this.userSimilarity;
 		TopItems.Estimator<Long> estimator = new Estimator(userSimilarityImpl, userID, minSimilarity);
-		User user =  userModel.getUser(userID);
-		Collection<Long> totalVecinos =  this.userModel.getUserGrupo(user,nivel);
-		if(totalVecinos==null)
-			return new long[0];
-		//System.out.println(userID +": "+ user.getGrupo() + ": "+ totalVecinos.size());
-		long[] ids = Longs.toArray(totalVecinos);
-		if( totalVecinos.size() > n ){
-			LongPrimitiveIterator usersIDs = new  LongPrimitiveArrayIterator(ids);
-			ids = TopItems.getTopUsers(n, usersIDs, null, estimator); 
-		}
-		String vecinos = userID+"";
-//		for (int i = 0; i < ids.length; i++) {
-//			vecinos = vecinos +","+ Long.toString(ids[i]); 
-//		}
-		//log.debug(vecinos);
-		return ids; 
+		return TopItems.getTopUsers(n, userIDs, null, estimator); 
 	}
+
+	private LongPrimitiveArrayIterator mergeUserIDs(long itemID) throws TasteException{
+		Collection<Long> cateNivelTodas = new HashSet<Long>(); 
+		Item item = itemModel.getItem(itemID);
+		Collection<Long> coll = item.getCategoriaNivel1();
+		for (Iterator<Long> iterator = coll.iterator(); iterator.hasNext();) {
+			Long long1 = iterator.next();
+			LongPrimitiveIterator userIDs = this.dataModel.getUserIDs(long1);
+			cateNivelTodas.addAll(IteratorUtils.toList(userIDs));
+		} 
+		long[] catArray = Longs.toArray(cateNivelTodas);
+		return new LongPrimitiveArrayIterator(catArray);
+	}
+
 	private static final class Estimator implements TopItems.Estimator<Long> {
 		private final UserSimilarity userSimilarityImpl;
 		private final long theUserID;
@@ -85,7 +91,6 @@ public final class NearestNUserGrupo implements UserNeighborhoodAux {
 			this.minSim = minSim;
 		}
 
-
 		public double estimate(Long userID) throws TasteException {
 			if (userID == theUserID) {
 				return Double.NaN;
@@ -93,10 +98,6 @@ public final class NearestNUserGrupo implements UserNeighborhoodAux {
 			double sim = userSimilarityImpl.userSimilarity(theUserID, userID);
 			return sim >= minSim ? sim : Double.NaN;
 		}
-	}
-	public long[] getUserNeighborhood(long userID, long itemID)
-			throws TasteException {
-		return this.getUserNeighborhood(userID);
 	}
 
 }

@@ -8,16 +8,12 @@ import java.util.concurrent.Callable;
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastIDSet;
-import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.common.RefreshHelper;
-import org.apache.mahout.cf.taste.impl.common.RunningAverage;
 import org.apache.mahout.cf.taste.impl.recommender.AbstractRecommender;
 import org.apache.mahout.cf.taste.impl.recommender.EstimatedPreferenceCapper;
 import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
 import org.apache.mahout.cf.taste.impl.recommender.TopItems;
 import org.apache.mahout.cf.taste.model.DataModel;
-import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.IDRescorer;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
@@ -30,18 +26,20 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 import com.isistan.lbsn.agregation.Agregation;
+import com.isistan.lbsn.vencindario.UserNeighborhoodAux;
 
-public class GenericUserBasedRecommenderNormalizado extends AbstractRecommender implements UserBasedRecommender{
-	private static final Logger log = LoggerFactory.getLogger(GenericUserBasedRecommenderNormalizado.class);
+public class GenericUserBasedRecommenderNoNormalizado extends AbstractRecommender implements UserBasedRecommender{
 	  
-	  private final UserNeighborhood neighborhood;
+	  private static final Logger log = LoggerFactory.getLogger(GenericUserBasedRecommender.class);
+	  
+	  private final UserNeighborhoodAux neighborhood;
 	  private final UserSimilarity similarity;
 	  private final RefreshHelper refreshHelper;
 	  private EstimatedPreferenceCapper capper;
 	  private final Agregation agregation;
 	  
-	  public GenericUserBasedRecommenderNormalizado(DataModel dataModel,
-	                                     UserNeighborhood neighborhood,
+	  public GenericUserBasedRecommenderNoNormalizado(DataModel dataModel,
+			  UserNeighborhoodAux neighborhood,
 	                                     UserSimilarity similarity) {
 	    super(dataModel);
 	    Preconditions.checkArgument(neighborhood != null, "neighborhood is null");
@@ -59,9 +57,8 @@ public class GenericUserBasedRecommenderNormalizado extends AbstractRecommender 
 	    refreshHelper.addDependency(neighborhood);
 	    capper = buildCapper();
 	  }
-	  
-	  public GenericUserBasedRecommenderNormalizado(DataModel dataModel,
-              UserNeighborhood neighborhood,
+	  public GenericUserBasedRecommenderNoNormalizado(DataModel dataModel,
+			  UserNeighborhoodAux neighborhood,
               Agregation agregation) {
 		super(dataModel);
 		Preconditions.checkArgument(neighborhood != null, "neighborhood is null");
@@ -79,7 +76,6 @@ public class GenericUserBasedRecommenderNormalizado extends AbstractRecommender 
 		refreshHelper.addDependency(neighborhood);
 		capper = buildCapper();
 }
-	  
 	  public UserSimilarity getSimilarity() {
 	    return similarity;
 	  }
@@ -112,7 +108,8 @@ public class GenericUserBasedRecommenderNormalizado extends AbstractRecommender 
 	    if (actualPref != null) {
 	      return actualPref;
 	    }
-	    long[] theNeighborhood = neighborhood.getUserNeighborhood(userID);
+	    long[] theNeighborhood = neighborhood.getUserNeighborhood(userID,itemID);
+	    
 	    return doEstimatePreference(userID, theNeighborhood, itemID);
 	  }
 	  
@@ -141,14 +138,11 @@ public class GenericUserBasedRecommenderNormalizado extends AbstractRecommender 
 	    for (long userID : theNeighborhood) {
 	      if (userID != theUserID) {
 	        // See GenericItemBasedRecommender.doEstimatePreference() too
-	    	Float pref = dataModel.getPreferenceValue(userID, itemID);
+	        Float pref = dataModel.getPreferenceValue(userID, itemID);
 	        if (pref != null) {
-	        //  double theSimilarity = similarity.userSimilarity(theUserID, userID);
 	          double theSimilarity = agregation.getAgregation(theUserID, userID, itemID);
 	          if (!Double.isNaN(theSimilarity)) {
-	        	double mediaVecino = getMediaPreferenciasFromUser(userID);
-	        	double diferencia = pref-mediaVecino;
-	            preference += theSimilarity * diferencia;
+	            preference += theSimilarity * pref;
 	            totalSimilarity += theSimilarity;
 	            count++;
 	          }
@@ -164,26 +158,13 @@ public class GenericUserBasedRecommenderNormalizado extends AbstractRecommender 
 	      return Float.NaN;
 	    }
 	    float estimate = (float) (preference / totalSimilarity);
-	    double mediaTheUser = getMediaPreferenciasFromUser(theUserID);
-	    estimate = (float) (estimate + mediaTheUser); 
-	    
 	    if (capper != null) {
-	    	estimate = capper.capEstimate(estimate);
+	      estimate = capper.capEstimate(estimate);
 	    }
 	    return estimate;
 	  }
 	  
-	  
-	  private double getMediaPreferenciasFromUser(long userID) throws TasteException {
-		  DataModel dataModel = getDataModel();
-		  RunningAverage average = new FullRunningAverage();
-	      for (Preference pref : dataModel.getPreferencesFromUser(userID)) {
-		        average.addDatum(pref.getValue());
-		      }
-		return average.getAverage();
-	}
-
-	protected FastIDSet getAllOtherItems(long[] theNeighborhood, long theUserID) throws TasteException {
+	  protected FastIDSet getAllOtherItems(long[] theNeighborhood, long theUserID) throws TasteException {
 	    DataModel dataModel = getDataModel();
 	    FastIDSet possibleItemIDs = new FastIDSet();
 	    for (long userID : theNeighborhood) {
@@ -254,4 +235,5 @@ public class GenericUserBasedRecommenderNormalizado extends AbstractRecommender 
 	      return doEstimatePreference(theUserID, theNeighborhood, itemID);
 	    }
 	  }
+
 }

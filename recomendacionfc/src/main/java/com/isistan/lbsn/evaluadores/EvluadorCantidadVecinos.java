@@ -283,35 +283,72 @@ public class EvluadorCantidadVecinos {
 		}
 		return cantidadPreferTest;
 	}
-	  private void splitOneUsersPrefs(double trainingPercentage,
-              FastByIDMap<PreferenceArray> trainingPrefs,
-              FastByIDMap<PreferenceArray> testPrefs,
-              long userID,
-              DataModel dataModel) throws TasteException {
-		  List<Preference> oneUserTrainingPrefs = null;
-		  List<Preference> oneUserTestPrefs = null;
-		  PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
-		  int size = prefs.length();
-		  for (int i = 0; i < size; i++) {
-			  Preference newPref = new GenericPreference(userID, prefs.getItemID(i), prefs.getValue(i));
-			  if (random.nextDouble() < trainingPercentage) {
-				  if (oneUserTrainingPrefs == null) {
-					  oneUserTrainingPrefs = Lists.newArrayListWithCapacity(3);
-				  }
-				  oneUserTrainingPrefs.add(newPref);
-			  } else {
-				  if (oneUserTestPrefs == null) {
-					  oneUserTestPrefs = Lists.newArrayListWithCapacity(3);
-				  }
-				  oneUserTestPrefs.add(newPref);
-			  }
-		  }
-		  if (oneUserTrainingPrefs != null) {
-			  trainingPrefs.put(userID, new GenericUserPreferenceArray(oneUserTrainingPrefs));
-			  if (oneUserTestPrefs != null) {
-				  testPrefs.put(userID, new GenericUserPreferenceArray(oneUserTestPrefs));
-			  }
-		  }
-	  }
+//	  private void splitOneUsersPrefs(double trainingPercentage,
+//              FastByIDMap<PreferenceArray> trainingPrefs,
+//              FastByIDMap<PreferenceArray> testPrefs,
+//              long userID,
+//              DataModel dataModel) throws TasteException {
+//		  List<Preference> oneUserTrainingPrefs = null;
+//		  List<Preference> oneUserTestPrefs = null;
+//		  PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
+//		  int size = prefs.length();
+//		  for (int i = 0; i < size; i++) {
+//			  Preference newPref = new GenericPreference(userID, prefs.getItemID(i), prefs.getValue(i));
+//			  if (random.nextDouble() < trainingPercentage) {
+//				  if (oneUserTrainingPrefs == null) {
+//					  oneUserTrainingPrefs = Lists.newArrayListWithCapacity(3);
+//				  }
+//				  oneUserTrainingPrefs.add(newPref);
+//			  } else {
+//				  if (oneUserTestPrefs == null) {
+//					  oneUserTestPrefs = Lists.newArrayListWithCapacity(3);
+//				  }
+//				  oneUserTestPrefs.add(newPref);
+//			  }
+//		  }
+//		  if (oneUserTrainingPrefs != null) {
+//			  trainingPrefs.put(userID, new GenericUserPreferenceArray(oneUserTrainingPrefs));
+//			  if (oneUserTestPrefs != null) {
+//				  testPrefs.put(userID, new GenericUserPreferenceArray(oneUserTestPrefs));
+//			  }
+//		  }
+//	  }
+//	  
+	  
+		private void splitOneUsersPrefs(double trainingPercentage,
+				FastByIDMap<PreferenceArray> trainingPrefs,
+				FastByIDMap<PreferenceArray> testPrefs,
+				long userID,
+				DataModel dataModel) throws TasteException {
+			if( trainingPercentage != 0.0){ 
+				List<Preference> oneUserTrainingPrefs = null;
+				List<Preference> oneUserTestPrefs = null;
+				PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
+				int size = prefs.length();
+				for (int i = 0; i < size; i++) {
+					Preference newPref = new GenericPreference(userID, prefs.getItemID(i), prefs.getValue(i));
+					if (random.nextDouble() < trainingPercentage) {
+						if (oneUserTrainingPrefs == null) {
+							oneUserTrainingPrefs = Lists.newArrayListWithCapacity(3);
+						}
+						oneUserTrainingPrefs.add(newPref);
+					} else {
+						if (oneUserTestPrefs == null) {
+							oneUserTestPrefs = Lists.newArrayListWithCapacity(3);
+						}
+						oneUserTestPrefs.add(newPref);
+					}
+				}
+				if (oneUserTrainingPrefs != null) {
+					trainingPrefs.put(userID, new GenericUserPreferenceArray(oneUserTrainingPrefs));
+					if (oneUserTestPrefs != null) {
+						testPrefs.put(userID, new GenericUserPreferenceArray(oneUserTestPrefs));
+					}
+				}
+			}else{
+				PreferenceArray prefs = dataModel.getPreferencesFromUser(userID);
+				testPrefs.put(userID, prefs);
+			}
+		}
 
 }

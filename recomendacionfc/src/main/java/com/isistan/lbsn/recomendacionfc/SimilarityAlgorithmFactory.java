@@ -11,8 +11,8 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.datamodels.GrafoModel;
-import com.isistan.lbsn.scoring.CosenoNetwork;
-import com.isistan.lbsn.scoring.JaccardNetwork;
+import com.isistan.lbsn.scoring.ScoringCosenoNetwork;
+import com.isistan.lbsn.scoring.ScoringJaccardNetwork;
 import com.isistan.lbsn.scoring.PearsonNetwork;
 import com.isistan.lbsn.similitudcombinada.SimilitudCombinada;
 
@@ -54,10 +54,10 @@ public class SimilarityAlgorithmFactory {
 			similarity = new TanimotoCoefficientSimilarity(model);
 			return similarity;
 		case JACCARDNETWORK:
-			similarity = new JaccardNetwork(grafoDataModel);
+			similarity = new ScoringJaccardNetwork(grafoDataModel);
 			return similarity;
 		case COSENONETWORK:
-			similarity = new CosenoNetwork(grafoDataModel);
+			similarity = new ScoringCosenoNetwork(grafoDataModel);
 			return similarity;
 		case PEARSONNETWORK:
 			similarity = new PearsonNetwork(grafoDataModel);
@@ -65,7 +65,7 @@ public class SimilarityAlgorithmFactory {
 		case COMBINADA:
 			try {
 				UserSimilarity similarityRating = new UncenteredCosineSimilarity(model);
-				UserSimilarity similarityNetwork =  new CosenoNetwork(grafoDataModel);
+				UserSimilarity similarityNetwork =  new ScoringCosenoNetwork(grafoDataModel);
 				similarity = new SimilitudCombinada(similarityRating,similarityNetwork,alfa,beta);
 			} catch (TasteException e) {
 			}

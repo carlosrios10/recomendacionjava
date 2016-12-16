@@ -5,7 +5,7 @@ import junit.framework.TestCase;
 import org.apache.mahout.cf.taste.common.TasteException;
 
 import com.isistan.lbsn.datamodels.GrafoDataModel;
-import com.isistan.lbsn.scoring.CosenoNetwork;
+import com.isistan.lbsn.scoring.ScoringCosenoNetwork;
 import com.isistan.lbsn.scoring.Nodo;
 import com.isistan.lbsn.scoring.PearsonNetwork;
 

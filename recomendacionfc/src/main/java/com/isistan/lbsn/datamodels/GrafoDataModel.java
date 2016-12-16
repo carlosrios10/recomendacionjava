@@ -187,10 +187,29 @@ public class GrafoDataModel implements GrafoModel {
 	public double getCloseness(long userID) {
 		 return closeness.getVertexScore(userID);
 	}
-
+	private void buscarAmigos(Collection<Long> totalVecinos, Collection<Long> amigos){
+		Collection<Long> listaAux = new  HashSet<Long>(amigos);
+		for(Long amigo: listaAux){
+			totalVecinos.add(amigo);
+			List<Long> amigosDeAmigo = new ArrayList<Long>(getFriends(amigo));
+			amigosDeAmigo.remove(new Long(amigo));
+			totalVecinos.addAll(amigosDeAmigo);
+			amigos.addAll(amigosDeAmigo);
+			amigos.remove(amigo);
+		}
+	}
 	public Collection<Long> getFriendsMyFriends(long userID, int nivel) {
-		// TODO Auto-generated method stub
-		return null;
+		if (null == getFriends(userID)){
+			return null;
+		}
+		Collection<Long> totalVecinos = new HashSet<Long>();
+		Collection<Long> amigos = new HashSet<Long>();
+		amigos.add(userID);
+		for (int i = 1;i<=nivel;i++){
+			buscarAmigos(totalVecinos, amigos);
+		}
+		totalVecinos.remove(new Long(userID));
+		return totalVecinos;
 	}
 
 	public UnweightedShortestPath<Long, Integer> getDistanciaCaminoCortoSinPeso() {

@@ -8,6 +8,7 @@ import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.datamodels.GrafoModel;
+import com.isistan.lbsn.datamodels.ItemModel;
 import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.scoring.Scoring;
 
@@ -25,20 +26,22 @@ public class TypeNeighborhoodFactory {
 						   THRESHOLD,
 						   K_FRIENDS_FRIENDS,
 						   THRESHOLD_SCORING,
-						   K_NEIGHBORHOOD_SCORING};
-    public static UserNeighborhood  build(UserSimilarity userSimilarity,
+						   K_NEIGHBORHOOD_SCORING,
+						   K_NEIGHBORHOOD_BY_SCORING};
+    public static UserNeighborhoodAux  build(UserSimilarity userSimilarity,
     									  DataModel model, 
     									  TypeNeigh  typeNeigh,
     									  int neighSize, 
     									  double threshold,
     									  GrafoModel fdm, 
     									  Scoring scoring,
-    									  UserModel userModel) {
-    	UserNeighborhood userNeighborhood = null;
+    									  UserModel userModel,
+    									  ItemModel itemModel) {
+    	UserNeighborhoodAux userNeighborhood = null;
         switch(typeNeigh) {
             case K_NEIGHBORHOOD:
                 try {
-                	userNeighborhood = new NearestNUserNeighborhood(neighSize, userSimilarity, model);
+                	userNeighborhood = new NearestNUserNeighborhoodBySimilitud(neighSize, userSimilarity, model,null,null);
                 } catch (TasteException exception) {
                 	}
                 return userNeighborhood;
@@ -97,16 +100,16 @@ public class TypeNeighborhoodFactory {
                 	}
                 return userNeighborhood;    
             	
-            case THRESHOLD:
-            	try {
-                userNeighborhood = new ThresholdUserNeighborhood(threshold, userSimilarity, model);
-                } catch (Exception exception) {
-            	}
-                return userNeighborhood;
-                
-            case THRESHOLD_SCORING:
-                userNeighborhood = new ThresholdUserNeighborhood(threshold, scoring, model);
-                return userNeighborhood;
+//            case THRESHOLD:
+//            	try {
+//                userNeighborhood = new ThresholdUserNeighborhood(threshold, userSimilarity, model);
+//                } catch (Exception exception) {
+//            	}
+//                return userNeighborhood;
+//                
+//            case THRESHOLD_SCORING:
+//                userNeighborhood = new ThresholdUserNeighborhood(threshold, scoring, model);
+//                return userNeighborhood;
                 
             case K_FRIENDS_FRIENDS:
 			try {
@@ -114,13 +117,21 @@ public class TypeNeighborhoodFactory {
 			} catch (TasteException e) {
 			}
 			 return userNeighborhood;
-            case K_NEIGHBORHOOD_SCORING:
+//            case K_NEIGHBORHOOD_SCORING:
+//			try {
+//				userNeighborhood = new NearestNUserNeighborhood(neighSize, scoring, model);
+//			} catch (TasteException e) {
+//				e.printStackTrace();
+//			}
+//                return userNeighborhood;
+            case K_NEIGHBORHOOD_BY_SCORING:
 			try {
-				userNeighborhood = new NearestNUserNeighborhood(neighSize, scoring, model);
+				userNeighborhood = new NearestNUserNeighborhoodByScoring(neighSize, scoring, itemModel, model);
 			} catch (TasteException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-                return userNeighborhood;
+                return userNeighborhood;                
             default: return null; // We should never get here
         }
     }

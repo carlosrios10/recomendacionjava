@@ -9,7 +9,6 @@ import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
 import org.apache.mahout.cf.taste.impl.model.GenericUserPreferenceArray;
-import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
@@ -22,11 +21,16 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 import com.isistan.lbsn.agregation.Agregation;
 import com.isistan.lbsn.agregation.AgregationFactory;
+import com.isistan.lbsn.datamodels.DataModelByItemCategory;
 import com.isistan.lbsn.datamodels.GrafoModel;
+import com.isistan.lbsn.datamodels.ItemModel;
 import com.isistan.lbsn.datamodels.UserModel;
+import com.isistan.lbsn.recommender.GenericUserBasedRecommenderNoNormalizado;
+import com.isistan.lbsn.recommender.GenericUserBasedRecommenderNormalizado;
 import com.isistan.lbsn.scoring.Scoring;
 import com.isistan.lbsn.scoring.ScoringFactory;
 import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory;
+import com.isistan.lbsn.vencindario.UserNeighborhoodAux;
 /**
  * Clase que crea un recomendador basado en usuario.
  * @author Usuario�
@@ -38,13 +42,32 @@ public class GenRecBuilder implements RecommenderBuilder {
 	Configuracion configuracion ;
 	GrafoModel grafoModel;
 	UserModel userModel;
+	ItemModel itemModel;
+	DataModelByItemCategory dataModelItemCat;
+	GrafoModel grafoModel2;
 	
-	public GenRecBuilder(Configuracion configuracion,DataModel modeltotal,GrafoModel grafoModel ,UserModel userModel) {
+	public GenRecBuilder(Configuracion configuracion,DataModel modeltotal,GrafoModel grafoModel ,UserModel userModel, 
+			ItemModel itemModel,DataModelByItemCategory dataModelItemCat) {
 		super();
 		this.modelTotal = modeltotal;
 		this.configuracion = configuracion;
 		this.grafoModel = grafoModel;
 		this.userModel = userModel;
+		this.itemModel = itemModel;
+		this.dataModelItemCat = dataModelItemCat;
+
+	}
+	
+	public GenRecBuilder(Configuracion configuracion,DataModel modeltotal,GrafoModel grafoModel ,UserModel userModel, 
+			ItemModel itemModel,DataModelByItemCategory dataModelItemCat,GrafoModel grafoModel2) {
+		super();
+		this.modelTotal = modeltotal;
+		this.configuracion = configuracion;
+		this.grafoModel = grafoModel;
+		this.userModel = userModel;
+		this.itemModel = itemModel;
+		this.dataModelItemCat = dataModelItemCat;
+		this.grafoModel2 = grafoModel2;
 
 	}
 	public GenRecBuilder(Configuracion configuracion,GrafoModel grafoModel ) {
@@ -69,23 +92,22 @@ public class GenRecBuilder implements RecommenderBuilder {
 
 	}
 	public Recommender buildRecommender(DataModel model) throws TasteException {
-		if(modelTotal != null){
-			log.info("Test con  {} usuarios y  {} preferencias", model.getNumUsers(), model.getNumItems());
-			log.info("Filtrar Preferencias");
-			FastByIDMap<PreferenceArray> preferencias = filtrarPreferenciasdeModelTotal(model);
-			DataModel modelFiltrado = new GenericDataModel(preferencias);
-			UserSimilarity sim = SimilarityAlgorithmFactory.build(modelFiltrado, grafoModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
-			Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), modelFiltrado,grafoModel,null,null);
-			UserNeighborhood neighborhood = TypeNeighborhoodFactory.build(sim, modelFiltrado, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),grafoModel,scoring,userModel);
+		log.info("Train con  {} usuarios y  {} items", modelTotal.getNumUsers(), modelTotal.getNumItems());
+//		if(modelTotal != null){
+//			FastByIDMap<PreferenceArray> preferencias = filtrarPreferenciasdeModelTotal(model);
+//			DataModel modelFiltrado = new GenericDataModel(preferencias);
+//			UserSimilarity sim = SimilarityAlgorithmFactory.build(modelFiltrado, grafoModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
+//			Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), modelFiltrado,grafoModel,userModel,itemModel,dataModelItemCat);
+//			UserNeighborhoodAux neighborhood = TypeNeighborhoodFactory.build(sim, modelFiltrado, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),grafoModel,scoring,userModel,itemModel);
+//			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
+//			return new GenericUserBasedRecommenderNoNormalizado(modelFiltrado, neighborhood, agregation);
+//		}else{
+			UserSimilarity sim = SimilarityAlgorithmFactory.build(this.modelTotal, grafoModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
+			Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), modelTotal,grafoModel2,userModel,itemModel,dataModelItemCat);
+			UserNeighborhoodAux neighborhood = TypeNeighborhoodFactory.build(sim, modelTotal, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),grafoModel,scoring,userModel,itemModel);
 			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
-			return new GenericUserBasedRecommender(modelFiltrado, neighborhood, agregation);
-		}else{
-			UserSimilarity sim = SimilarityAlgorithmFactory.build(model, grafoModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
-			Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), model,grafoModel,null,null);
-			UserNeighborhood neighborhood = TypeNeighborhoodFactory.build(sim, model, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),grafoModel,scoring,userModel);
-			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
-			return new GenericUserBasedRecommender(model, neighborhood, agregation);
-		}
+			return new GenericUserBasedRecommenderNoNormalizado(modelTotal, neighborhood, agregation);
+//		}
 	}
 	//Filtra las preferencias en modelTotal que pertenecen al test para cada usuario de model
 	//obtengo las preferencias de modelTotal

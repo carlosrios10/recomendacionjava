@@ -24,4 +24,10 @@ public class AgregationProducto implements Agregation{
 		
 	}
 
+	public double getAgregation(long userID1, long userID2, long itemID)
+			throws TasteException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

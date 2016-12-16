@@ -21,7 +21,7 @@ import com.isistan.lbsn.datamodels.GrafoModel;
  * @author Usuario�
  *
  */
-public final class NearestNUserFriends implements UserNeighborhood  {
+public final class NearestNUserFriends implements UserNeighborhoodAux  {
 	private final int n;
 	private final double minSimilarity;
 	private final UserSimilarity userSimilarity;
@@ -70,7 +70,7 @@ public final class NearestNUserFriends implements UserNeighborhood  {
 
 	}
 	/**
-	 * 	     //obtener la lista de amigos de userID
+	 * 	 //obtener la lista de amigos de userID
 	     //si size(lista_amigos)==0,??? 
 	     //si n > size(lista_amigos), return TopItems.getTopUsers(size(lista_amigos), userIDs, null, estimator);
 	     //sino return TopItems.getTopUsers(n, lista_amigos, null, estimator);
@@ -79,9 +79,9 @@ public final class NearestNUserFriends implements UserNeighborhood  {
 		UserSimilarity userSimilarityImpl = this.userSimilarity;
 		TopItems.Estimator<Long> estimator = new Estimator(userSimilarityImpl, userID, minSimilarity);
 		Collection<Long> totalVecinos =  this.friendsDm.getFriends(userID);
-		if(totalVecinos==null)
+		if(totalVecinos == null)
 			return new long[0];
-		
+
 		long[] ids = Longs.toArray(totalVecinos);
 		if( totalVecinos.size() < n )
 			return ids; 
@@ -115,6 +115,12 @@ public final class NearestNUserFriends implements UserNeighborhood  {
 			double sim = userSimilarityImpl.userSimilarity(theUserID, userID);
 			return sim >= minSim ? sim : Double.NaN;
 		}
+	}
+
+
+	public long[] getUserNeighborhood(long userID, long itemID)
+			throws TasteException {
+		return getUserNeighborhood(userID);
 	}
 
 

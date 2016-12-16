@@ -12,19 +12,19 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.datamodels.GrafoModel;
 
-public class ScoringOverlap implements Scoring{
+public class ScoringOverlapSinNormalizar implements Scoring {
 	GrafoModel grafoModel;
 	DataModel dataModel;
 	UserSimilarity tanimoto;
 	
 
-	public ScoringOverlap(GrafoModel grafoModel, DataModel dataModel) {
+	public ScoringOverlapSinNormalizar(GrafoModel grafoModel, DataModel dataModel) {
 		this.dataModel=dataModel;
 		this.grafoModel=grafoModel;
 		tanimoto = new TanimotoCoefficientSimilarity(dataModel);
 	}
 
-	public ScoringOverlap(DataModel ratingModel) {
+	public ScoringOverlapSinNormalizar(DataModel ratingModel) {
 		this.dataModel=ratingModel;
 	}
 
@@ -46,9 +46,8 @@ public class ScoringOverlap implements Scoring{
 	    if (intersectionSize == 0) {
 	      return Double.NaN;
 	    }
-	    int unionSize = xPrefsSize + yPrefsSize - intersectionSize;
 	    
-	    return (double) intersectionSize/ (double) unionSize;
+	    return (double) intersectionSize;
 	    
 	}
 

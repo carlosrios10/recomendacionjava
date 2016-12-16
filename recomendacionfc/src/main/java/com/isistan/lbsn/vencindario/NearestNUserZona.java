@@ -16,7 +16,7 @@ import com.google.common.primitives.Longs;
 import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.entidades.User;
 
-public class NearestNUserZona implements UserNeighborhood {
+public class NearestNUserZona implements UserNeighborhoodAux {
 	private final int n;
 	private final double minSimilarity;
 	private final double samplingRate;
@@ -41,7 +41,7 @@ public class NearestNUserZona implements UserNeighborhood {
 	}
 	public void refresh(Collection<Refreshable> alreadyRefreshed) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public long[] getUserNeighborhood(long userID) throws TasteException {
@@ -79,6 +79,10 @@ public class NearestNUserZona implements UserNeighborhood {
 			double sim = userSimilarityImpl.userSimilarity(theUserID, userID);
 			return sim >= minSim ? sim : Double.NaN;
 		}
+	}
+	public long[] getUserNeighborhood(long userID, long itemID)
+			throws TasteException {
+		return this.getUserNeighborhood(userID);
 	}
 
 }

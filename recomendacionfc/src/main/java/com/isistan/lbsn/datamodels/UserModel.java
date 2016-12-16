@@ -25,16 +25,18 @@ public class UserModel {
 	public UserModel() {
 		super();
 		  multiMap = new HashMap<Long,User>();
-		  User user = new User();
-		  user.setLatitud("46.7866719");
-		  user.setLongitud("-92.1004852");
-		  multiMap.put(new Long(19) , user);
-		  user.setLatitud("40.715972");
-		  user.setLongitud("-74.001437");
-		  multiMap.put(new Long(1095708) , user);
-		  user.setLatitud("40.715972");
-		  user.setLongitud("-74.001437");
-		  multiMap.put(new Long(1095712) , user);
+		  User user19 = new User();
+		  user19.setLatitud("46.7866719");
+		  user19.setLongitud("-92.1004852");
+		  multiMap.put(new Long(19) , user19);
+		  User user1095708 = new User();
+		  user1095708.setLatitud("40.715972");
+		  user1095708.setLongitud("-74.001437");
+		  multiMap.put(new Long(1095708) , user1095708);
+		  User user1095712 = new User();
+		  user1095712.setLatitud("40.715972");
+		  user1095712.setLongitud("-74.001437");
+		  multiMap.put(new Long(1095712) , user1095712);
 		
 	}
 
@@ -60,9 +62,9 @@ public class UserModel {
         	 user.setGrupo(Integer.parseInt(lineaCsv[3].trim()));
 //        	 user.setGrupoNivel2(Integer.parseInt(lineaCsv[4].trim()));
         	 multiMap.put(new Long(lineaCsv[0].trim()),user);
-//        	 Integer idGrupo = new Integer(user.getGrupo());
-//        	 Integer idGrupoNivel2 = new Integer(user.getGrupoNivel2());
-        	 // grupo nivel 1
+        	 Integer idGrupo = new Integer(user.getGrupo());
+        	 Integer idGrupoNivel2 = new Integer(user.getGrupoNivel2());
+//        	 // grupo nivel 1
 //        	 if( multiMapGrupo.containsKey(idGrupo) ){
 //        		 multiMapGrupo.get(idGrupo).add(user.getId());
 //        	 }else{
@@ -84,6 +86,7 @@ public class UserModel {
 	}
 	
 	public User getUser(long id){
+		//System.out.println("idpppp: "+id);
 		return this.multiMap.get(new Long(id));
 	}
 	

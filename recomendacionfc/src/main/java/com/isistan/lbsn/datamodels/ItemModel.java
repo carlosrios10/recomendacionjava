@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -39,8 +41,25 @@ public class ItemModel {
          while ((lineaCsv = csvReader.readNext()) != null) 
          {
         	 Item item = new Item();
+        	 item.setCategoriaNivel1(new HashSet<Long>());
+        	 item.setCategoriaNivel2(new HashSet<Long>());
+        	 item.setCategoriaNivel3(new HashSet<Long>());
         	 item.setLatitud(lineaCsv[1].trim());
         	 item.setLongitud(lineaCsv[2].trim());
+        	 int cantCategoria = Integer.parseInt(lineaCsv[3].trim());
+        	 for (int i = 0; i < cantCategoria; i++) {
+        		 String cate = lineaCsv[4+i].trim();
+        		 String[] ides =  cate.split(":");
+        		 Long  cat3 = new Long(ides[0]);
+        		 Long  cat2 = new Long(ides[1]);
+        		 Long  cat1 = new Long(ides[2]);
+        		 if( cat1!= -1)
+        			 item.getCategoriaNivel1().add(new Long(cat1));
+        		 if( cat2!= -1)
+        			 item.getCategoriaNivel2().add(new Long(cat2));
+        		 if( cat3!= -1)
+        			 item.getCategoriaNivel3().add(new Long(cat3));
+			}
         	 multiMap.put(new Long(lineaCsv[0].trim()),item);
                       
          }
@@ -49,6 +68,10 @@ public class ItemModel {
 	
 	public Item getItem(long id){
 		return this.multiMap.get(new Long(id));
+	}
+	
+	public int getCantidadDeItems(){
+		return this.multiMap.size();
 	}
 
 }

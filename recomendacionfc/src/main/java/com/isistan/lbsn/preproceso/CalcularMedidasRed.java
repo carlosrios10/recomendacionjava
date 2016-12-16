@@ -16,7 +16,7 @@ import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.FriendsDataModel;
 import com.isistan.lbsn.datamodels.GrafoDataModel;
 import com.isistan.lbsn.datamodels.GrafoModel;
-import com.isistan.lbsn.scoring.JaccardNetwork;
+import com.isistan.lbsn.scoring.ScoringJaccardNetwork;
 
 public class CalcularMedidasRed {
 	private static final String PATH_SOLAPAMIENTO = "C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/similitudes-scoring/";
@@ -28,7 +28,7 @@ public class CalcularMedidasRed {
 //			GrafoModel grafoModel = new FriendsDataModel(MyProperties.getInstance().getProperty("databasegrafo"));
 			DataModel ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
 			System.out.println(grafoModel.getGrafo().getVertexCount());
-			JaccardNetwork jaccardNetwork = new JaccardNetwork(grafoModel);
+			ScoringJaccardNetwork jaccardNetwork = new ScoringJaccardNetwork(grafoModel);
 			calcularMatrizSimilitud(ratingModel,jaccardNetwork,PATH_SOLAPAMIENTO+"jaccardNetwork"+ ".csv");
 			
 		} catch (IOException e) {

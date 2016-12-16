@@ -13,21 +13,17 @@ import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.entidades.Item;
 import com.isistan.lbsn.entidades.User;
 import com.isistan.lbsn.util.Util;
-/**
- * Clase que calcula la 1/distancia(Usuario-objetivo,Item)
- * @author Usuarioç
- *
- */
-public class ScoringCercaniaUsuarioItem implements Scoring{
+
+public class ScoringFrecuenciaUsuarioItem implements Scoring{
 	GrafoModel grafoModel;
 	DataModel dataModel;
 	UserModel userModel;
 	ItemModel itemModel;
-	
-	public ScoringCercaniaUsuarioItem() {
+
+	public ScoringFrecuenciaUsuarioItem() {
 		super();
 	}
-	public ScoringCercaniaUsuarioItem(GrafoModel grafoModel, DataModel dataModel,
+	public ScoringFrecuenciaUsuarioItem(GrafoModel grafoModel, DataModel dataModel,
 			UserModel userModel, ItemModel itemModel) {
 		super();
 		this.grafoModel = grafoModel;
@@ -35,12 +31,12 @@ public class ScoringCercaniaUsuarioItem implements Scoring{
 		this.userModel = userModel;
 		this.itemModel = itemModel;
 	}
-	public ScoringCercaniaUsuarioItem(UserModel userModel, ItemModel itemModel) {
+	public ScoringFrecuenciaUsuarioItem(UserModel userModel, ItemModel itemModel) {
 		super();
 		this.userModel = userModel;
 		this.itemModel = itemModel;
 	}
-	public ScoringCercaniaUsuarioItem(GrafoModel grafoModel, DataModel dataModel) {
+	public ScoringFrecuenciaUsuarioItem(GrafoModel grafoModel, DataModel dataModel) {
 		this.dataModel=dataModel;
 		this.grafoModel=grafoModel;
 	}
@@ -58,7 +54,6 @@ public class ScoringCercaniaUsuarioItem implements Scoring{
 	public double userSimilarity(long userID1, long userID2)
 			throws TasteException {
 		// TODO Auto-generated method stub
-		
 		return 0;
 	}
 	public void setPreferenceInferrer(PreferenceInferrer inferrer) {
@@ -69,5 +64,6 @@ public class ScoringCercaniaUsuarioItem implements Scoring{
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

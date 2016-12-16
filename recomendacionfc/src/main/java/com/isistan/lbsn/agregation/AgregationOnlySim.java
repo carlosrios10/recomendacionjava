@@ -39,4 +39,11 @@ public class AgregationOnlySim implements Agregation{
 		
 	}
 
+
+	public double getAgregation(long userID1, long userID2, long itemID)
+			throws TasteException {
+		// TODO Auto-generated method stub
+		return userSimilarityRating.userSimilarity(userID1, userID2);
+	}
+
 }
