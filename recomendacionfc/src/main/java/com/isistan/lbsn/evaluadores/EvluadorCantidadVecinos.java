@@ -267,16 +267,23 @@ public class EvluadorCantidadVecinos {
 					cantidadUsuarioTestConVecinos,
 					cantidadPreferenciasTest);
 	}
-	public double getCantidadTrainTest(DataModel dataModel,double trainingPercentage) throws TasteException{
+	public double getCantidadTrainTest(DataModel dataModel,double trainingPercentage, double evaluationPercentage) throws TasteException{
 		int numUsers = dataModel.getNumUsers();
 		FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(numUsers);
 		FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(numUsers);
 		LongPrimitiveIterator it = dataModel.getUserIDs();
 		int cantidadPreferTest = 0;
-		while ( it.hasNext() ) {
+		while (it.hasNext()) {
 			long userID = it.nextLong();
-			splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID, dataModel);
+			if (random.nextDouble() < evaluationPercentage) {
+				splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID, dataModel);
+			}
 		}
+		
+//		while ( it.hasNext() ) {
+//			long userID = it.nextLong();
+//			splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID, dataModel);
+//		}
 		for (Map.Entry<Long,PreferenceArray> entry : testPrefs.entrySet()) {
 			cantidadPreferTest = cantidadPreferTest + entry.getValue().getIDs().length;
 

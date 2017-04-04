@@ -1,5 +1,6 @@
 package com.isistan.lbsn.datamodels;
 
+import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.entidades.User;
 
@@ -13,7 +14,8 @@ public class UserModelTest extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		dm = new UserModel("C:/Users/Usuario/Desktop/carlos/Tesis/datasets/forsquare-2/AnalisisProject/users_tips_grafo_zona.csv");
+//		dm = new UserModel("C:/Users/Usuario/Desktop/carlos/Tesis/datasets/forsquare-2/AnalisisProject/users_tips_grafo_zona.csv");
+		 dm = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 	}
 
 	protected void tearDown() throws Exception {
@@ -41,7 +43,7 @@ public class UserModelTest extends TestCase {
 //	}
 	
 	public void testUsuario_getZonaOk(){
-		User user = dm.getUser(283717);
+		User user = dm.getUser(1);
 		assertEquals(6535, dm.getUserZona(user).size());
 	}
 }

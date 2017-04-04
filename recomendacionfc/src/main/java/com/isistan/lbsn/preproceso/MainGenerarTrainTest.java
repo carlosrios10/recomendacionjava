@@ -29,9 +29,8 @@ public class MainGenerarTrainTest {
 	public static void main(String[] args) {
 		try {
 			System.out.println("INICIO - MainGenerarTrainTest -");
-			random = RandomUtils.getRandom();
-			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
-			DataModel ratingModelTotal = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
+			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingtotaltest")));
+			DataModel ratingModelTotal = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingtotal")));
 		    int numUsers = ratingModelEvaluar.getNumUsers();
 		    double trainingPercentage = 0.7 ;
 			FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(numUsers);
@@ -39,6 +38,7 @@ public class MainGenerarTrainTest {
 		    
 		    LongPrimitiveIterator it = ratingModelEvaluar.getUserIDs();
 		    while (it.hasNext()) {
+		      random = RandomUtils.getRandom();	
 		      long userID = it.nextLong();
 		      splitOneUsersPrefs(trainingPercentage, trainingPrefs, testPrefs, userID, ratingModelEvaluar);
 		    }
@@ -46,8 +46,8 @@ public class MainGenerarTrainTest {
 			FastByIDMap<PreferenceArray> preferencias = filtrarPreferenciasdeModelTotal(trainingModel,ratingModelTotal);
 			DataModel modelFiltrado = new GenericDataModel(preferencias);
 		    DataModel testingModel = new GenericDataModel(testPrefs);
-		    String resulTest = MyProperties.getInstance().getProperty("resultados")+"test_matriz_sentimiento.csv";
-		    String resulTrain = MyProperties.getInstance().getProperty("resultados")+"train_matriz_sentimiento.csv";
+		    String resulTest = MyProperties.getInstance().getProperty("resultados")+"one_state_test_matriz_estrella_mas_10.csv";
+		    String resulTrain = MyProperties.getInstance().getProperty("resultados")+"one_state_train_matriz_estrella_total.csv";
 		    toCSV(testingModel,resulTest);
 		    toCSV(modelFiltrado,resulTrain);
 		    System.out.println("FIN - MainGenerarTrainTest -");

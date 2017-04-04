@@ -42,7 +42,7 @@ public class MainCalcularVecinos {
 //			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 //			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModel ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
-//			DataModel ratingModelEval = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluarsample")));
+//			DataModel ratingModelEval = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
 //			ScoringOverlapLikedAndHated scoring3 = new ScoringOverlapLikedAndHated(null,ratingModel);
 //			ScoringOverlapLiked scoring4 = new ScoringOverlapLiked(null,ratingModel,null);
 //			ScoringCercaniaUsuarioUsuario scoring = new ScoringCercaniaUsuarioUsuario(null, null, userModel, itemModel);
@@ -59,11 +59,11 @@ public class MainCalcularVecinos {
 			ItemSimilarity ItemSimlilitudTanimoto = new TanimotoCoefficientSimilarity(ratingModel);
 			
 			String resulPath = MyProperties.getInstance().getProperty("resultados");
-			//calcularMatrizSimilitudConSample(ratingModelEval,ratingModel,scoringOverlap,resulPath);
+			//calcularMatrizSimilitudConSample(ratingModelEval,ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_normalizado_one_state.csv");
 			//calcularMatrizSimilitudItemItem(ratingModel,ItemSimlilitudTanimoto,MyProperties.getInstance().getProperty("resultados")+"ItemSimlilitudTanimoto"+ ".csv");
 			
-			calcularMatrizSimilitud(ratingModel,scoringOverlapSinNormalizar,PATH_RESULTADO+"train_cantidad_visitas_comunes_sin_normalizar"+ ".csv");
-			calcularMatrizSimilitud(ratingModel,scoringOverlap,PATH_RESULTADO+"train_cantidad_visitas_comunes_normalizado"+ ".csv");
+			//calcularMatrizSimilitud(ratingModel,scoringOverlapSinNormalizar,PATH_RESULTADO+"train_cantidad_visitas_comunes_sin_normalizar_mas_10"+ ".csv");
+			calcularMatrizSimilitud(ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_normalizado_one_state.csv");
 			
 			System.out.println("FIN - MainCalcularVecinos -");
 		} catch (IOException e) {
@@ -122,11 +122,11 @@ public class MainCalcularVecinos {
 				 Long idUser2 = usersIterable2.next();
 				 if ( idUser2!=idUser ){
 				 double simValue = sim.userSimilarity(idUser, idUser2);
-				// if (!Double.isNaN(simValue) && simValue >0) {
+				 if (!Double.isNaN(simValue) && simValue >0) {
 					 String resul = idUser+"#"+idUser2+"#"+simValue;
 				     String[] entries = resul.split("#"); 
 				     writer.writeNext(entries);
-			     //  }
+			      }
 				 }
 			}
 			}
