@@ -41,7 +41,7 @@ public class EvaluacionEsquema {
 			//GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
 			GrafoModel grafoModel = null;//new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
 			//GrafoModel grafoModel2 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml2"));
-			UserModel userModel = null; //new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
+			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 			ItemModel itemModel = null; //new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModelByItemCategory dataModelItemCat = null;//new DataModelByItemCategory(ratingModelTotal,itemModel,8);
 			
