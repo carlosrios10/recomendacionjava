@@ -16,6 +16,7 @@ import au.com.bytecode.opencsv.CSV;
 import au.com.bytecode.opencsv.CSVWriteProc;
 import au.com.bytecode.opencsv.CSVWriter;
 
+import com.isistan.lbsn.esquema.EvaluacionEsquema;
 import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithmFactory.SimAlg;
 import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory.TypeNeigh;
 

@@ -33,7 +33,7 @@ import com.isistan.lbsn.scoring.ScoringOverlapSinNormalizar;
 public class MainCalcularVecinos {
 
 	private static final String PATH_SOLAPAMIENTO = "C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/similitudes-scoring/";
-	private static final String PATH_RESULTADO = MyProperties.getInstance().getProperty("resultados");
+	private static final String PATH_RESULTADO = MyProperties.getInstance().getProperty("resultadosprocesar");
 
 	public static void main(String[] args) {
 		try {
@@ -41,7 +41,7 @@ public class MainCalcularVecinos {
 //			ArrayList<ResultadoVecino> resultadosVecino = new ArrayList<ResultadoVecino>();
 //			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 //			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
-			DataModel ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
+			DataModel ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar")));
 //			DataModel ratingModelEval = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
 //			ScoringOverlapLikedAndHated scoring3 = new ScoringOverlapLikedAndHated(null,ratingModel);
 //			ScoringOverlapLiked scoring4 = new ScoringOverlapLiked(null,ratingModel,null);
@@ -58,12 +58,12 @@ public class MainCalcularVecinos {
 			ItemSimilarity ItemSimlilitudCoseno = new UncenteredCosineSimilarity(ratingModel);
 			ItemSimilarity ItemSimlilitudTanimoto = new TanimotoCoefficientSimilarity(ratingModel);
 			
-			String resulPath = MyProperties.getInstance().getProperty("resultados");
+			String resulPath = MyProperties.getInstance().getProperty("resultadosprocesar");
 			//calcularMatrizSimilitudConSample(ratingModelEval,ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_normalizado_one_state.csv");
 			//calcularMatrizSimilitudItemItem(ratingModel,ItemSimlilitudTanimoto,MyProperties.getInstance().getProperty("resultados")+"ItemSimlilitudTanimoto"+ ".csv");
 			
 			//calcularMatrizSimilitud(ratingModel,scoringOverlapSinNormalizar,PATH_RESULTADO+"train_cantidad_visitas_comunes_sin_normalizar_mas_10"+ ".csv");
-			calcularMatrizSimilitud(ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_normalizado_one_state.csv");
+			calcularMatrizSimilitud(ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_categorias_normalizado_one_state.csv");
 			
 			System.out.println("FIN - MainCalcularVecinos -");
 		} catch (IOException e) {
@@ -136,7 +136,7 @@ public class MainCalcularVecinos {
 	private static void calcularMatrizSimilitud(DataModel model,
 			UserSimilarity sim,String nombreArchivo) throws TasteException, IOException {
 		System.out.println("Inicia-Calcular Matriz Simlitud");
-		CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t');
+		CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t',CSVWriter.NO_QUOTE_CHARACTER);
 		LongPrimitiveIterator usersIterable = model.getUserIDs();
 		int cant=0;
 		while (usersIterable.hasNext()) {

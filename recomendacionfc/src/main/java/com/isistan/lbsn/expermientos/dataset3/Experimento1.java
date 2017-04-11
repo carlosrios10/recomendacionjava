@@ -3,8 +3,8 @@ package com.isistan.lbsn.expermientos.dataset3;
 import java.util.ArrayList;
 
 import com.isistan.lbsn.agregation.AgregationFactory.AgregationType;
+import com.isistan.lbsn.esquema.EvaluacionEsquema;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
-import com.isistan.lbsn.recomendacionfc.EvaluacionEsquema;
 import com.isistan.lbsn.recomendacionfc.Resultado;
 import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithmFactory;
 import com.isistan.lbsn.scoring.ScoringFactory.ScoringType;

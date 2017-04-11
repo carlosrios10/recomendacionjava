@@ -3,6 +3,7 @@ package com.isistan.lbsn.recomendacionfc;
 import java.util.ArrayList;
 
 import com.isistan.lbsn.agregation.AgregationFactory.AgregationType;
+import com.isistan.lbsn.esquema.EvaluacionEsquema;
 import com.isistan.lbsn.scoring.ScoringFactory.ScoringType;
 import com.isistan.lbsn.util.Util;
 import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory.TypeNeigh;

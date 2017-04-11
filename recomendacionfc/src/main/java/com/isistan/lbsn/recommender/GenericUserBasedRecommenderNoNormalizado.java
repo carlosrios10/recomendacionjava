@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.apache.mahout.cf.taste.common.NoSuchUserException;
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastIDSet;
@@ -14,7 +15,6 @@ import org.apache.mahout.cf.taste.impl.recommender.EstimatedPreferenceCapper;
 import org.apache.mahout.cf.taste.impl.recommender.GenericUserBasedRecommender;
 import org.apache.mahout.cf.taste.impl.recommender.TopItems;
 import org.apache.mahout.cf.taste.model.DataModel;
-import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.IDRescorer;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.recommender.Rescorer;
@@ -137,8 +137,14 @@ public class GenericUserBasedRecommenderNoNormalizado extends AbstractRecommende
 	    int count = 0;
 	    for (long userID : theNeighborhood) {
 	      if (userID != theUserID) {
+	    	  Float pref = null;
 	        // See GenericItemBasedRecommender.doEstimatePreference() too
-	        Float pref = dataModel.getPreferenceValue(userID, itemID);
+	    	try{  
+	         pref = dataModel.getPreferenceValue(userID, itemID);
+	    	}catch(NoSuchUserException e){
+	    		
+	    	}
+	    	
 	        if (pref != null) {
 	          double theSimilarity = agregation.getAgregation(theUserID, userID, itemID);
 	          if (!Double.isNaN(theSimilarity)) {
@@ -147,6 +153,7 @@ public class GenericUserBasedRecommenderNoNormalizado extends AbstractRecommende
 	            count++;
 	          }
 	        }
+	     
 	      }
 	    }
 	    // Throw out the estimate if it was based on no data points, of course, but also if based on
@@ -168,7 +175,12 @@ public class GenericUserBasedRecommenderNoNormalizado extends AbstractRecommende
 	    DataModel dataModel = getDataModel();
 	    FastIDSet possibleItemIDs = new FastIDSet();
 	    for (long userID : theNeighborhood) {
-	      possibleItemIDs.addAll(dataModel.getItemIDsFromUser(userID));
+	    try{
+	    	possibleItemIDs.addAll(dataModel.getItemIDsFromUser(userID));
+	    }catch(NoSuchUserException e){
+	    	
+	    }
+	    
 	    }
 	    possibleItemIDs.removeAll(dataModel.getItemIDsFromUser(theUserID));
 	    return possibleItemIDs;

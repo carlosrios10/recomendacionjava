@@ -31,7 +31,7 @@ public class MainGenerarTrainTestYelp {
 			System.out.println("INICIO - MainGenerarTrainTest -");
 			//RandomUtils.useTestSeed();
 			//random = RandomUtils.getRandom();
-			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingtotal")));
+			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingtotaltest")));
 			//DataModel ratingModelTotal = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
 		   
 			int numUsers = ratingModelEvaluar.getNumUsers();
@@ -49,8 +49,8 @@ public class MainGenerarTrainTestYelp {
 //			FastByIDMap<PreferenceArray> preferencias = filtrarPreferenciasdeModelTotal(trainingModel,ratingModelTotal);
 //			DataModel modelFiltrado = new GenericDataModel(preferencias);
 		    DataModel testingModel = new GenericDataModel(testPrefs);
-		    String resulTest = MyProperties.getInstance().getProperty("resultados")+"test_matriz_estrella_mas_10.csv";
-		    String resulTrain = MyProperties.getInstance().getProperty("resultados")+"train_matriz_estrella_mas_10.csv";
+		    String resulTest = MyProperties.getInstance().getProperty("resultadosprocesar")+"one_state_AZ_test_matriz_estrella_mas_10.csv";
+		    String resulTrain = MyProperties.getInstance().getProperty("resultadosprocesar")+"one_state_AZ_train_matriz_estrella_mas_10.csv";
 		    toCSV(testingModel,resulTest);
 		    toCSV(trainingModel,resulTrain);
 		    System.out.println("FIN - MainGenerarTrainTest -");

@@ -22,8 +22,8 @@ import com.google.common.collect.Lists;
 import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.entidades.User;
+import com.isistan.lbsn.esquema.EvaluacionEsquema;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
-import com.isistan.lbsn.recomendacionfc.EvaluacionEsquema;
 
 public class EvluadorCantidadVecinos {
 	private static final Logger log = LoggerFactory.getLogger(EvluadorCantidadVecinos.class);

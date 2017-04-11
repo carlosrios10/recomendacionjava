@@ -17,7 +17,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.primitives.Longs;
 import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.entidades.User;
-import com.isistan.lbsn.recomendacionfc.EvaluacionEsquema;
+import com.isistan.lbsn.esquema.EvaluacionEsquema;
 
 public final class NearestNUserGrupo implements UserNeighborhoodAux {
 	private static final Logger log = LoggerFactory.getLogger(NearestNUserGrupo.class);

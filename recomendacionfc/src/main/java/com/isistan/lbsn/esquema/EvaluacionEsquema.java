@@ -1,4 +1,4 @@
-package com.isistan.lbsn.recomendacionfc;
+package com.isistan.lbsn.esquema;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +23,9 @@ import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.evaluadores.AverageAbsoluteDifferenceRecommenderEvaluatorTrainTest;
 import com.isistan.lbsn.evaluadores.EvluadorCantidadVecinos;
 import com.isistan.lbsn.evaluadores.ResultadoEvaluarCantidadVecinos;
+import com.isistan.lbsn.recomendacionfc.Configuracion;
+import com.isistan.lbsn.recomendacionfc.GenRecBuilder;
+import com.isistan.lbsn.recomendacionfc.Resultado;
 
 public class EvaluacionEsquema {
 	  private static final Logger log = LoggerFactory.getLogger(EvaluacionEsquema.class);
@@ -39,15 +42,15 @@ public class EvaluacionEsquema {
 			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
 			DataModel ratingModelTotal = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
 			//GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
-			GrafoModel grafoModel = null;//new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+			GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
 			//GrafoModel grafoModel2 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml2"));
-			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
+			UserModel userModel = null;//new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 			ItemModel itemModel = null; //new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModelByItemCategory dataModelItemCat = null;//new DataModelByItemCategory(ratingModelTotal,itemModel,8);
 			
 			log.info("Model a evaluar con  {} usuarios y  {} items", ratingModelEvaluar.getNumUsers(), ratingModelEvaluar.getNumItems());
 			EvluadorCantidadVecinos evalCantidadVecinos = new EvluadorCantidadVecinos();
-			log.info("Con {}  para test, Preferencias en test {} ",(1-porcentajeTrain), evalCantidadVecinos.getCantidadTrainTest(ratingModelEvaluar, 0.0,0.05));
+			log.info("Con {}  para test, Preferencias en test {} ",(1-porcentajeTrain), evalCantidadVecinos.getCantidadTrainTest(ratingModelEvaluar, 0.0,0.5));
 			for (final Configuracion configuracion : configuraciones) {
 //					    ResultadoEvaluarCantidadVecinos  res = evalCantidadVecinos.evaluate(configuracion,
 //					    																	ratingModelTotal,
@@ -56,7 +59,7 @@ public class EvaluacionEsquema {
 //					    																	userModel, 
 //					    																	0.8);
 						RecommenderBuilder recBuilder = new GenRecBuilder(configuracion,ratingModelTotal,grafoModel,userModel,itemModel,dataModelItemCat,grafoModel);
-					    double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluatorTrainTest().evaluate(recBuilder,null,ratingModelEvaluar, 0.0, 0.05);
+					    double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluatorTrainTest().evaluate(recBuilder,null,ratingModelEvaluar, 0.0, 0.5);
 					 // 	double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, ratingModelEvaluar, 0.8, 1);
 					//	IRStatistics stats =  new GenericRecommenderIRStatsEvaluator().evaluate(recBuilder, null, ratingModelEvaluar, null,10, 0, 1);
 						Resultado resultado = new Resultado(configuracion, scoreMae, 0 ,
