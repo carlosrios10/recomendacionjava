@@ -19,7 +19,7 @@ import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory.TypeNeigh;
 public class ExperimentosSeleccionVecinos {
 
 	private static final double PORCENTAJE_TRAIN = 0.7;
-	private static final Logger log = LoggerFactory.getLogger(Experimento1.class);
+	private static final Logger log = LoggerFactory.getLogger(ExperimentosSeleccionVecinos.class);
 	public static void main(String[] args) {
 		ArrayList<Configuracion> configuraciones = new ArrayList<Configuracion>();
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
@@ -181,7 +181,7 @@ ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 				 resultados = esquema.evaluar(configuraciones,PORCENTAJE_TRAIN);
 				 log.info("Fin evaluacion");
 				 log.info("Exportar csv");
-				 Util.exportarResultadoCsv(resultados, "yelp_resultados_red_visitas_weekdayname_one_state");
+				 Util.exportarResultadoCsv(resultados, "yelp_resultados_red_visitas_categoria_m6_one_state");
 				 log.info("FIN");
 				 
 				 

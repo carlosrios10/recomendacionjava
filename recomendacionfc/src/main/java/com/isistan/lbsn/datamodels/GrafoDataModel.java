@@ -8,7 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.collections15.Transformer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionVecinos;
 import com.isistan.lbsn.scoring.Nodo;
 
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
@@ -34,7 +37,7 @@ public class GrafoDataModel implements GrafoModel {
 	private DegreeScorer degree;
 	private ClosenessCentrality closeness;
 	private UnweightedShortestPath<Long,Integer> distanciaCaminoCortoSinPeso;
-	
+	private static final Logger log = LoggerFactory.getLogger(GrafoDataModel.class);
 
 	public GrafoDataModel(UndirectedSparseGraph<Long, Integer> grafo,
 			UndirectedSparseGraph<Nodo, Integer> grafoN) {
@@ -63,6 +66,7 @@ public class GrafoDataModel implements GrafoModel {
 	 */
 	public GrafoDataModel(String fileName) {
 		super();
+		log.info("Grafo - file "+fileName);
 		try {
 			FileReader reader = new FileReader(fileName);
 			Transformer<NodeMetadata, Long> vtrans = new Transformer<NodeMetadata, Long>() {
@@ -106,6 +110,9 @@ public class GrafoDataModel implements GrafoModel {
 //			betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
 //			closeness = new ClosenessCentrality<Long,Integer>(getGrafo());
 			distanciaCaminoCortoSinPeso = new UnweightedShortestPath<Long, Integer>(getGrafo());
+			log.info("Inicia evaluacion");
+			System.out.println("Grafo cantidad de nodos " + this.getGrafo().getVertexCount());
+			System.out.println("Grafo cantidad de aristas " + this.getGrafo().getEdgeCount());
 			
 
 		} catch (FileNotFoundException e) {
