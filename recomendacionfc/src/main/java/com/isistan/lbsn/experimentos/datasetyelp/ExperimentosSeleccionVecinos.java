@@ -109,28 +109,28 @@ configuraciones.add(new Configuracion(250,SimilarityAlgorithmFactory.SimAlg.COSE
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 configuraciones.add(new Configuracion(300,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_FRIENDS_NIVEL_3,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-
-////
-//configuraciones.add(new Configuracion(5,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));		
-//configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-//configuraciones.add(new Configuracion(20,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-//configuraciones.add(new Configuracion(30,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-//configuraciones.add(new Configuracion(50,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-//configuraciones.add(new Configuracion(100,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));		
-//configuraciones.add(new Configuracion(150,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-//configuraciones.add(new Configuracion(200,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-//configuraciones.add(new Configuracion(250,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-//configuraciones.add(new Configuracion(300,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
-//ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+//
+//////
+configuraciones.add(new Configuracion(5,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));		
+configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+configuraciones.add(new Configuracion(20,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+configuraciones.add(new Configuracion(30,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+configuraciones.add(new Configuracion(50,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+configuraciones.add(new Configuracion(100,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));		
+configuraciones.add(new Configuracion(150,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+configuraciones.add(new Configuracion(200,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+configuraciones.add(new Configuracion(250,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
+configuraciones.add(new Configuracion(300,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
+ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 
 //
 //configuraciones.add(new Configuracion(5,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_5,-1,-1,
@@ -181,7 +181,7 @@ ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 				 resultados = esquema.evaluar(configuraciones,PORCENTAJE_TRAIN);
 				 log.info("Fin evaluacion");
 				 log.info("Exportar csv");
-				 Util.exportarResultadoCsv(resultados, "yelp_resultados_red_visitas_categoria_m6_one_state");
+				 Util.exportarResultadoCsv(resultados, "yelp_resultados_red_visitas_categoria_weekdayname_m6_one_state");
 				 log.info("FIN");
 				 
 				 

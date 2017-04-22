@@ -63,7 +63,7 @@ public class MainCalcularVecinos {
 			//calcularMatrizSimilitudItemItem(ratingModel,ItemSimlilitudTanimoto,MyProperties.getInstance().getProperty("resultados")+"ItemSimlilitudTanimoto"+ ".csv");
 			
 			//calcularMatrizSimilitud(ratingModel,scoringOverlapSinNormalizar,PATH_RESULTADO+"train_cantidad_visitas_comunes_sin_normalizar_mas_10"+ ".csv");
-			calcularMatrizSimilitud(ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_categorias_normalizado_one_state.csv");
+			calcularMatrizSimilitud(ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_categorias_weekdayname_normalizado_one_state.csv");
 			
 			System.out.println("FIN - MainCalcularVecinos -");
 		} catch (IOException e) {
