@@ -24,26 +24,30 @@ import au.com.bytecode.opencsv.CSVWriteProc;
 import au.com.bytecode.opencsv.CSVWriter;
 
 import com.isistan.lbsn.config.MyProperties;
+import com.isistan.lbsn.datamodels.GrafoDataModel;
+import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
 import com.isistan.lbsn.recomendacionfc.ResultadoSimilitud;
 import com.isistan.lbsn.recomendacionfc.ResultadoVecino;
+import com.isistan.lbsn.scoring.ScoringCosenoNetwork;
 import com.isistan.lbsn.scoring.ScoringOverlap;
+import com.isistan.lbsn.scoring.ScoringOverlapLiked;
 import com.isistan.lbsn.scoring.ScoringOverlapSinNormalizar;
 
 public class MainCalcularVecinos {
 
 	private static final String PATH_SOLAPAMIENTO = "C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/similitudes-scoring/";
 	private static final String PATH_RESULTADO = MyProperties.getInstance().getProperty("resultadosprocesar");
-
 	public static void main(String[] args) {
 		try {
 			System.out.println("INICIO - MainCalcularVecinos -");
 //			ArrayList<ResultadoVecino> resultadosVecino = new ArrayList<ResultadoVecino>();
 //			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 //			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
-			DataModel ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar")));
-//			DataModel ratingModelEval = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
-//			ScoringOverlapLikedAndHated scoring3 = new ScoringOverlapLikedAndHated(null,ratingModel);
+			DataModel	ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar")));
+			DataModel ratingModelEval = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar2")));
+			GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+			//			ScoringOverlapLikedAndHated scoring3 = new ScoringOverlapLikedAndHated(null,ratingModel);
 //			ScoringOverlapLiked scoring4 = new ScoringOverlapLiked(null,ratingModel,null);
 //			ScoringCercaniaUsuarioUsuario scoring = new ScoringCercaniaUsuarioUsuario(null, null, userModel, itemModel);
 			
@@ -53,7 +57,11 @@ public class MainCalcularVecinos {
 			UserSimilarity similitudEuclidea = new EuclideanDistanceSimilarity(ratingModel);
 			UserSimilarity similitudPearson = new PearsonCorrelationSimilarity(ratingModel);
 			UserSimilarity scoringOverlap  = new ScoringOverlap(ratingModel);
+			
 			UserSimilarity scoringOverlapSinNormalizar  = new ScoringOverlapSinNormalizar(ratingModel);
+			ScoringOverlapLiked scoringLiked = new ScoringOverlapLiked(null,ratingModel,null);
+			
+			UserSimilarity scoringCosenoNetwork = new ScoringCosenoNetwork(grafoModel); 
 			
 			ItemSimilarity ItemSimlilitudCoseno = new UncenteredCosineSimilarity(ratingModel);
 			ItemSimilarity ItemSimlilitudTanimoto = new TanimotoCoefficientSimilarity(ratingModel);
@@ -61,9 +69,8 @@ public class MainCalcularVecinos {
 			String resulPath = MyProperties.getInstance().getProperty("resultadosprocesar");
 			//calcularMatrizSimilitudConSample(ratingModelEval,ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_normalizado_one_state.csv");
 			//calcularMatrizSimilitudItemItem(ratingModel,ItemSimlilitudTanimoto,MyProperties.getInstance().getProperty("resultados")+"ItemSimlilitudTanimoto"+ ".csv");
-			
 			//calcularMatrizSimilitud(ratingModel,scoringOverlapSinNormalizar,PATH_RESULTADO+"train_cantidad_visitas_comunes_sin_normalizar_mas_10"+ ".csv");
-			calcularMatrizSimilitud(ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_categorias_normalizado_one_state.csv");
+			calcularMatrizSimilitud(ratingModelEval,scoringCosenoNetwork,PATH_RESULTADO+"goodness_yelp_grafo_coseno_one_state.csv");
 			
 			System.out.println("FIN - MainCalcularVecinos -");
 		} catch (IOException e) {
@@ -74,6 +81,7 @@ public class MainCalcularVecinos {
 
 
 	}
+
 	private static void  calcaularSolapamiento(DataModel model,
 			UserSimilarity userSimilarity,String nombreArchivo) 
 			throws TasteException, IOException{

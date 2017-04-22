@@ -13,6 +13,7 @@ import org.apache.mahout.common.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.isistan.lbsn.builderrecomender.GenRecBuilder;
 import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.DataModelByItemCategory;
 import com.isistan.lbsn.datamodels.FriendsDataModel;
@@ -24,7 +25,6 @@ import com.isistan.lbsn.evaluadores.AverageAbsoluteDifferenceRecommenderEvaluato
 import com.isistan.lbsn.evaluadores.EvluadorCantidadVecinos;
 import com.isistan.lbsn.evaluadores.ResultadoEvaluarCantidadVecinos;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
-import com.isistan.lbsn.recomendacionfc.GenRecBuilder;
 import com.isistan.lbsn.recomendacionfc.Resultado;
 
 public class EvaluacionEsquema {
@@ -42,9 +42,9 @@ public class EvaluacionEsquema {
 			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
 			DataModel ratingModelTotal = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
 			//GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
-			GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+			GrafoModel grafoModel = null;//new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
 			//GrafoModel grafoModel2 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml2"));
-			UserModel userModel = null;//new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
+			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 			ItemModel itemModel = null; //new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModelByItemCategory dataModelItemCat = null;//new DataModelByItemCategory(ratingModelTotal,itemModel,8);
 			

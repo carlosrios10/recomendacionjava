@@ -25,12 +25,16 @@ public class NearestNUserZona implements UserNeighborhoodAux {
 	private final UserSimilarity userSimilarity;
 	private int radio;
 	public NearestNUserZona(int n, UserSimilarity userSimilarity,UserModel userModel) throws TasteException {
-		this(n, Double.NEGATIVE_INFINITY, userSimilarity, userModel, 1.0);
+		this(n, Double.NEGATIVE_INFINITY, userSimilarity, userModel, 1.0,1);
 	}
-	public NearestNUserZona(int n,double minSimilarity,UserSimilarity userSimilarity,UserModel userModel, double samplingRate) throws TasteException {
+	public NearestNUserZona(int n, UserSimilarity userSimilarity,UserModel userModel,int radio) throws TasteException {
+		this(n, Double.NEGATIVE_INFINITY, userSimilarity, userModel, 1.0,radio);
+	}
+	public NearestNUserZona(int n,double minSimilarity,UserSimilarity userSimilarity,UserModel userModel, double samplingRate,int radio) throws TasteException {
 		this.userSimilarity = userSimilarity;
 		this.samplingRate =  samplingRate;
 		this.userModel = userModel;
+		this.radio = radio;
 		Preconditions.checkArgument(n >= 1, "n must be at least 1");
 		int numUsers = userModel.getMultiMap().size();
 		this.n = n > numUsers ? numUsers : n;

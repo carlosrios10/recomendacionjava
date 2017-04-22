@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 import com.google.common.base.Preconditions;
@@ -21,7 +24,7 @@ public class UserModel {
 	Map<Long,User> multiMap;
 	Map<Integer,ArrayList<Long>> multiMapGrupo;
 	Map<Integer,ArrayList<Long>> multiMapGrupoNivel2;
-	
+	private static final Logger log = LoggerFactory.getLogger(UserModel.class);
 	public UserModel() {
 		super();
 		  multiMap = new HashMap<Long,User>();
@@ -83,6 +86,8 @@ public class UserModel {
                       
          }
          csvReader.close();
+         log.info("Levantado datos de usuarios");
+         log.info("Cantidad de usarios con zona: {}",multiMap.size());
 	}
 	
 	public User getUser(long id){
@@ -124,6 +129,26 @@ public class UserModel {
 			Long IdUser2 = it.next();
 			User user2 = getUser(IdUser2);
 			if( existeInterseccionZona(user, user2) ){
+				usuariosZona.add(IdUser2);
+			}
+		}
+		if ( usuariosZona.size() == 1 )
+			return null;
+		else			
+			return usuariosZona;
+	}
+	
+	public Collection<Long> getUserZona(User user,int radio){
+		ArrayList<Long> usuariosZona = new ArrayList<Long>();
+		Iterator<Long> it = multiMap.keySet().iterator();
+		while (it.hasNext()) {
+			Long IdUser2 = it.next();
+			User user2 = getUser(IdUser2);
+			double distanciaKms = Util.distFrom(Double.valueOf(user.getLatitud()), 
+					Double.valueOf(user.getLongitud()), 
+					Double.valueOf(user2.getLatitud()), 
+					Double.valueOf(user2.getLongitud()));
+			if( distanciaKms<= radio ){
 				usuariosZona.add(IdUser2);
 			}
 		}

@@ -1,4 +1,4 @@
-package com.isistan.lbsn.recomendacionfc;
+package com.isistan.lbsn.builderrecomender;
 
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +25,8 @@ import com.isistan.lbsn.datamodels.DataModelByItemCategory;
 import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.datamodels.ItemModel;
 import com.isistan.lbsn.datamodels.UserModel;
+import com.isistan.lbsn.recomendacionfc.Configuracion;
+import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithmFactory;
 import com.isistan.lbsn.recommender.GenericUserBasedRecommenderNoNormalizado;
 import com.isistan.lbsn.recommender.GenericUserBasedRecommenderNormalizado;
 import com.isistan.lbsn.scoring.Scoring;
@@ -78,6 +80,11 @@ public class GenRecBuilder implements RecommenderBuilder {
 
 	}
 
+	public GenRecBuilder(DataModel modeltotal ) {
+		super();
+		this.modelTotal = null;
+		this.modelTotal = modeltotal;
+	}
 
 	private boolean existeItem(long itemId, PreferenceArray arrayPref){
 		int size = arrayPref.length();

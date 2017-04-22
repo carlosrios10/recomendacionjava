@@ -14,6 +14,7 @@ import org.apache.mahout.common.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.isistan.lbsn.builderrecomender.GenRecBuilder;
 import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.DataModelByItemCategory;
 import com.isistan.lbsn.datamodels.GrafoDataModel;
@@ -24,7 +25,6 @@ import com.isistan.lbsn.evaluadores.EvluadorCantidadVecinos;
 import com.isistan.lbsn.evaluadores.GenericRecommenderIRStatsEvaluatorTrainTest;
 import com.isistan.lbsn.evaluadores.ResultadoEvaluarCantidadVecinos;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
-import com.isistan.lbsn.recomendacionfc.GenRecBuilder;
 import com.isistan.lbsn.recomendacionfc.Resultado;
 
 public class EvaluacionEsquemaIRS {
