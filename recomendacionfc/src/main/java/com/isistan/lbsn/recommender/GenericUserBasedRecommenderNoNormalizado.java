@@ -57,6 +57,8 @@ public class GenericUserBasedRecommenderNoNormalizado extends AbstractRecommende
 	    refreshHelper.addDependency(neighborhood);
 	    capper = buildCapper();
 	  }
+	  
+	  
 	  public GenericUserBasedRecommenderNoNormalizado(DataModel dataModel,
 			  UserNeighborhoodAux neighborhood,
               Agregation agregation) {
@@ -105,9 +107,9 @@ public class GenericUserBasedRecommenderNoNormalizado extends AbstractRecommende
 	  public float estimatePreference(long userID, long itemID) throws TasteException {
 	    DataModel model = getDataModel();
 	    Float actualPref = model.getPreferenceValue(userID, itemID);
-	    if (actualPref != null) {
-	      return actualPref;
-	    }
+//	    if (actualPref != null) {
+//	      return actualPref;
+//	    }
 	    long[] theNeighborhood = neighborhood.getUserNeighborhood(userID,itemID);
 	    
 	    return doEstimatePreference(userID, theNeighborhood, itemID);

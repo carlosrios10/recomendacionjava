@@ -23,6 +23,11 @@ public class TypeNeighborhoodFactory {
 						   K_NEIGHBORHOOD_GRUPO,
 						   K_NEIGHBORHOOD_GRUPO_NIVEL_2,
 						   K_NEIGHBORHOOD_ZONA,
+						   K_NEIGHBORHOOD_ZONA_RADIO_1,
+						   K_NEIGHBORHOOD_ZONA_RADIO_2,
+						   K_NEIGHBORHOOD_ZONA_RADIO_3,
+						   K_NEIGHBORHOOD_ZONA_RADIO_4,
+						   K_NEIGHBORHOOD_ZONA_RADIO_5,
 						   THRESHOLD,
 						   K_FRIENDS_FRIENDS,
 						   THRESHOLD_SCORING,
@@ -98,7 +103,37 @@ public class TypeNeighborhoodFactory {
                     userNeighborhood = new NearestNUserZona(neighSize, userSimilarity,userModel);
                 } catch (TasteException exception) {
                 	}
-                return userNeighborhood;    
+                return userNeighborhood;
+            case K_NEIGHBORHOOD_ZONA_RADIO_1:
+                try {
+                    userNeighborhood = new NearestNUserZona(neighSize, userSimilarity,userModel,1);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;
+            case K_NEIGHBORHOOD_ZONA_RADIO_2:
+                try {
+                    userNeighborhood = new NearestNUserZona(neighSize, userSimilarity,userModel,2);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;  
+            case K_NEIGHBORHOOD_ZONA_RADIO_3:
+                try {
+                    userNeighborhood = new NearestNUserZona(neighSize, userSimilarity,userModel,3);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;
+            case K_NEIGHBORHOOD_ZONA_RADIO_4:
+                try {
+                    userNeighborhood = new NearestNUserZona(neighSize, userSimilarity,userModel,4);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;  
+            case K_NEIGHBORHOOD_ZONA_RADIO_5:
+                try {
+                    userNeighborhood = new NearestNUserZona(neighSize, userSimilarity,userModel,5);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;                  
             	
 //            case THRESHOLD:
 //            	try {
