@@ -131,7 +131,6 @@ ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 //ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 //configuraciones.add(new Configuracion(300,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_FRIENDS_NIVEL_4,-1,-1,
 //ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-//
 ////
 //configuraciones.add(new Configuracion(5,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_FRIENDS_NIVEL_5,-1,-1,
 //ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));		

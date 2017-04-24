@@ -10,18 +10,10 @@ import java.util.Iterator;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
-import org.apache.mahout.cf.taste.impl.similarity.EuclideanDistanceSimilarity;
-import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
-import org.apache.mahout.cf.taste.impl.similarity.TanimotoCoefficientSimilarity;
-import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
-
-import au.com.bytecode.opencsv.CSV;
-import au.com.bytecode.opencsv.CSVWriteProc;
-import au.com.bytecode.opencsv.CSVWriter;
 
 import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.GrafoDataModel;
@@ -30,12 +22,16 @@ import com.isistan.lbsn.recomendacionfc.Configuracion;
 import com.isistan.lbsn.recomendacionfc.ResultadoSimilitud;
 import com.isistan.lbsn.recomendacionfc.ResultadoVecino;
 import com.isistan.lbsn.scoring.ScoringCosenoNetwork;
+import com.isistan.lbsn.scoring.ScoringLR;
 import com.isistan.lbsn.scoring.ScoringOverlap;
-import com.isistan.lbsn.scoring.ScoringOverlapLiked;
-import com.isistan.lbsn.scoring.ScoringOverlapSinNormalizar;
+
+import au.com.bytecode.opencsv.CSV;
+import au.com.bytecode.opencsv.CSVWriteProc;
+import au.com.bytecode.opencsv.CSVWriter;
 
 public class MainCalcularVecinos {
 
+	private static final double UMBRAL = 0.15;
 	private static final String PATH_SOLAPAMIENTO = "C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/datasets_csv/similitudes-scoring/";
 	private static final String PATH_RESULTADO = MyProperties.getInstance().getProperty("resultadosprocesar");
 	public static void main(String[] args) {
@@ -45,7 +41,10 @@ public class MainCalcularVecinos {
 //			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 //			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModel	ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar")));
-			DataModel ratingModelEval = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar2")));
+			DataModel	ratingModel2 = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar2")));
+			DataModel	ratingModel3 = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar3")));
+			DataModel	ratingModel4 = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar4")));
+//			DataModel ratingModelEval = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar2")));
 			GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
 			//			ScoringOverlapLikedAndHated scoring3 = new ScoringOverlapLikedAndHated(null,ratingModel);
 //			ScoringOverlapLiked scoring4 = new ScoringOverlapLiked(null,ratingModel,null);
@@ -53,25 +52,34 @@ public class MainCalcularVecinos {
 			
 //			ScoringOverlapLiked scoringOverlapLiked_3 = new ScoringOverlapLiked(null,ratingModel,3.0);
 //			ScoringOverlapLiked scoringOverlapLied_mean = new ScoringOverlapLiked(null,ratingModel,null);
-			UserSimilarity simlilitudCoseno  = new UncenteredCosineSimilarity(ratingModel);
-			UserSimilarity similitudEuclidea = new EuclideanDistanceSimilarity(ratingModel);
-			UserSimilarity similitudPearson = new PearsonCorrelationSimilarity(ratingModel);
-			UserSimilarity scoringOverlap  = new ScoringOverlap(ratingModel);
+//			UserSimilarity simlilitudCoseno  = new UncenteredCosineSimilarity(ratingModel);
+//			UserSimilarity similitudEuclidea = new EuclideanDistanceSimilarity(ratingModel);
+//			UserSimilarity similitudPearson = new PearsonCorrelationSimilarity(ratingModel);
+//			UserSimilarity scoringOverlap  = new ScoringOverlap(ratingModel);
+//			UserSimilarity scoringOverlapSinNormalizar  = new ScoringOverlapSinNormalizar(ratingModel);
+//			UserSimilarity scoringLiked = new ScoringOverlapLiked(null,ratingModel,null);
+//			UserSimilarity scoringCosenoNetwork = new ScoringCosenoNetwork(grafoModel); 
+//			ItemSimilarity ItemSimlilitudCoseno = new UncenteredCosineSimilarity(ratingModel);
+//			ItemSimilarity ItemSimlilitudTanimoto = new TanimotoCoefficientSimilarity(ratingModel);
 			
-			UserSimilarity scoringOverlapSinNormalizar  = new ScoringOverlapSinNormalizar(ratingModel);
-			ScoringOverlapLiked scoringLiked = new ScoringOverlapLiked(null,ratingModel,null);
+			UserSimilarity userVisitas  = new ScoringOverlap(ratingModel);
+			UserSimilarity userVisitasWeekDayName  = new ScoringOverlap(ratingModel2);
+			UserSimilarity userVisitasCateWeekOrWeekend  = new ScoringOverlap(ratingModel3);
+			UserSimilarity userVisitasCateWeekDayName  = new ScoringOverlap(ratingModel4);
+			UserSimilarity userCosenoNet  = new ScoringCosenoNetwork(grafoModel); 
 			
-			UserSimilarity scoringCosenoNetwork = new ScoringCosenoNetwork(grafoModel); 
-			
-			ItemSimilarity ItemSimlilitudCoseno = new UncenteredCosineSimilarity(ratingModel);
-			ItemSimilarity ItemSimlilitudTanimoto = new TanimotoCoefficientSimilarity(ratingModel);
+			UserSimilarity scoringLR = new ScoringLR(
+					userVisitas, 
+					userVisitasWeekDayName, 
+					userVisitasCateWeekOrWeekend, 
+					userVisitasCateWeekDayName, 
+					userCosenoNet);
 			
 			String resulPath = MyProperties.getInstance().getProperty("resultadosprocesar");
 			//calcularMatrizSimilitudConSample(ratingModelEval,ratingModel,scoringOverlap,PATH_RESULTADO+"yelp_red_cantidad_visitas_comunes_normalizado_one_state.csv");
 			//calcularMatrizSimilitudItemItem(ratingModel,ItemSimlilitudTanimoto,MyProperties.getInstance().getProperty("resultados")+"ItemSimlilitudTanimoto"+ ".csv");
-			//calcularMatrizSimilitud(ratingModel,scoringOverlapSinNormalizar,PATH_RESULTADO+"train_cantidad_visitas_comunes_sin_normalizar_mas_10"+ ".csv");
-			calcularMatrizSimilitud(ratingModelEval,scoringCosenoNetwork,PATH_RESULTADO+"goodness_yelp_grafo_coseno_one_state.csv");
-			
+			calcularMatrizSimilitud(ratingModel,scoringLR,PATH_RESULTADO+"yelp_red_relacion_LR_user_user_one_state.csv");
+			//calcularMatrizSimilitud(ratingModelEval,scoringLR,PATH_RESULTADO+"goodness_yelp_grafo_coseno_one_state.csv");
 			System.out.println("FIN - MainCalcularVecinos -");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -143,7 +151,8 @@ public class MainCalcularVecinos {
 		}
 	private static void calcularMatrizSimilitud(DataModel model,
 			UserSimilarity sim,String nombreArchivo) throws TasteException, IOException {
-		System.out.println("Inicia-Calcular Matriz Simlitud");
+		System.out.println("Inicia-Calcular Matriz Simlitud ");
+		System.out.println("Umbral :  " +UMBRAL);
 		CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t',CSVWriter.NO_QUOTE_CHARACTER);
 		LongPrimitiveIterator usersIterable = model.getUserIDs();
 		int cant=0;
@@ -155,7 +164,7 @@ public class MainCalcularVecinos {
 			while (usersIterable2.hasNext()) {
 				 Long idUser2 = usersIterable2.next();
 				 double simValue = sim.userSimilarity(idUser, idUser2);
-				 if (!Double.isNaN(simValue) && simValue >0) {
+				 if (!Double.isNaN(simValue) && simValue >UMBRAL) {
 					 String resul = idUser+"#"+idUser2+"#"+simValue;
 					// System.out.println(resul);
 				     String[] entries = resul.split("#"); 
