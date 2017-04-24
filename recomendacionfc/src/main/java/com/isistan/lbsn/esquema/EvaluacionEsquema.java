@@ -42,9 +42,9 @@ public class EvaluacionEsquema {
 			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
 			DataModel ratingModelTotal = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
 			//GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
-			GrafoModel grafoModel = null;//new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+			GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
 			//GrafoModel grafoModel2 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml2"));
-			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
+			UserModel userModel = null;//new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 			ItemModel itemModel = null; //new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModelByItemCategory dataModelItemCat = null;//new DataModelByItemCategory(ratingModelTotal,itemModel,8);
 			
