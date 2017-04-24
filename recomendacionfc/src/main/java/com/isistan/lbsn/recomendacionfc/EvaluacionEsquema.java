@@ -14,6 +14,7 @@ import org.apache.mahout.common.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.isistan.lbsn.builderrecomender.GenRecBuilder;
 import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.DataModelByItemCategory;
 import com.isistan.lbsn.datamodels.GrafoModel;
