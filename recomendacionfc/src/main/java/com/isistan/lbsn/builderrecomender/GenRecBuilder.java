@@ -7,12 +7,10 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
-import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
 import org.apache.mahout.cf.taste.impl.model.GenericUserPreferenceArray;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
-import org.apache.mahout.cf.taste.neighborhood.UserNeighborhood;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.slf4j.Logger;
@@ -28,9 +26,9 @@ import com.isistan.lbsn.datamodels.UserModel;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
 import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithmFactory;
 import com.isistan.lbsn.recommender.GenericUserBasedRecommenderNoNormalizado;
-import com.isistan.lbsn.recommender.GenericUserBasedRecommenderNormalizado;
 import com.isistan.lbsn.scoring.Scoring;
 import com.isistan.lbsn.scoring.ScoringFactory;
+import com.isistan.lbsn.similitudcombinada.SimilitudProxy;
 import com.isistan.lbsn.vencindario.TypeNeighborhoodFactory;
 import com.isistan.lbsn.vencindario.UserNeighborhoodAux;
 /**
@@ -47,6 +45,7 @@ public class GenRecBuilder implements RecommenderBuilder {
 	ItemModel itemModel;
 	DataModelByItemCategory dataModelItemCat;
 	GrafoModel grafoModel2;
+	UserSimilarity cacheUserSimilarity;
 	
 	public GenRecBuilder(Configuracion configuracion,DataModel modeltotal,GrafoModel grafoModel ,UserModel userModel, 
 			ItemModel itemModel,DataModelByItemCategory dataModelItemCat) {
@@ -70,6 +69,20 @@ public class GenRecBuilder implements RecommenderBuilder {
 		this.itemModel = itemModel;
 		this.dataModelItemCat = dataModelItemCat;
 		this.grafoModel2 = grafoModel2;
+
+	}
+	
+	public GenRecBuilder(Configuracion configuracion,DataModel modeltotal,GrafoModel grafoModel ,UserModel userModel, 
+			ItemModel itemModel,DataModelByItemCategory dataModelItemCat,GrafoModel grafoModel2,UserSimilarity cacheUserSimilarity) {
+		super();
+		this.modelTotal = modeltotal;
+		this.configuracion = configuracion;
+		this.grafoModel = grafoModel;
+		this.userModel = userModel;
+		this.itemModel = itemModel;
+		this.dataModelItemCat = dataModelItemCat;
+		this.grafoModel2 = grafoModel2;
+		this.cacheUserSimilarity = cacheUserSimilarity;
 
 	}
 	public GenRecBuilder(Configuracion configuracion,GrafoModel grafoModel ) {
@@ -109,7 +122,7 @@ public class GenRecBuilder implements RecommenderBuilder {
 //			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
 //			return new GenericUserBasedRecommenderNoNormalizado(modelFiltrado, neighborhood, agregation);
 //		}else{
-			UserSimilarity sim = SimilarityAlgorithmFactory.build(this.modelTotal, grafoModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
+			UserSimilarity sim = (cacheUserSimilarity!=null)?cacheUserSimilarity: SimilarityAlgorithmFactory.build(this.modelTotal, grafoModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
 			Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), modelTotal,grafoModel2,userModel,itemModel,dataModelItemCat);
 			UserNeighborhoodAux neighborhood = TypeNeighborhoodFactory.build(sim, modelTotal, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),grafoModel,scoring,userModel,itemModel);
 			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);

@@ -123,7 +123,8 @@ public class MainEvaluadorTest {
 
 		 EvaluacionEsquema esquema =  new EvaluacionEsquema();
 		 System.out.println("Inicia evaluacion");
-		 resultados = esquema.evaluar(configuraciones,0.7);
+		 boolean cache = true;
+		 resultados = esquema.evaluar(configuraciones,0.7,cache);
 		 System.out.println("Fin evaluacion");
 		 System.out.println("Exportar csv");
 		 exportarCsv(resultados);

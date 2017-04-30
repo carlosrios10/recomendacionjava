@@ -46,6 +46,7 @@ public class GrafoDataModelTest extends TestCase {
 		dataModel2.addVertex(7l);
 		dataModel2.addVertex(8l);
 		dataModel2.addVertex(9l);
+		dataModel2.addVertex(10l);
 
 		dataModel2.addEdge((Integer)1, 1l, 2l); 
 		dataModel2.addEdge((Integer)2, 1l, 4l);
@@ -62,7 +63,7 @@ public class GrafoDataModelTest extends TestCase {
 		dataModel2.addEdge((Integer)10, 7l, 9l);
 		
 		g2 = new GrafoDataModel(dataModel2);
-		g3 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+		//g3 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
 		
 	}
 
@@ -114,6 +115,82 @@ public class GrafoDataModelTest extends TestCase {
 //		assertEquals(2, g3.getDistanciaCaminoCortoSinPeso().getDistance(45l, 215l));
 //	}
 	
+//	public void testGetFriends_g2_1_nivel1_OK(){
+//		Collection<Long> trueVal = new  HashSet<Long>();
+//		trueVal.add(2l);
+//		trueVal.add(4l);
+//		trueVal.add(5l);
+//		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(1l,1)));
+//	}
+//	
+//	public void testGetFriends_g2_1_nivel2_OK(){
+//		Collection<Long> trueVal = new  HashSet<Long>();
+//		trueVal.add(2l);
+//		trueVal.add(4l);
+//		trueVal.add(5l);
+//		trueVal.add(3l);
+//		trueVal.add(7l);
+//		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(1l,2)));
+//	}
+//	
+//	public void testGetFriends_g2_4_nivel1_OK(){
+//		Collection<Long> trueVal = new  HashSet<Long>();
+//		trueVal.add(1l);
+//		trueVal.add(3l);
+//		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(4l,1)));
+//	}
+//	
+//	public void testGetFriends_g2_4_nivel2_OK(){
+//		Collection<Long> trueVal = new  HashSet<Long>();
+//		trueVal.add(1l);
+//		trueVal.add(3l);
+//		trueVal.add(2l);
+//		trueVal.add(5l);
+//		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(4l,2)));
+//	}
+//	
+//	public void testGetFriends_g2_6_sinVecinos_OK(){
+//		assertEquals(0,g2.getFriendsMyFriends(6l,1).size());
+//	}
+//	
+//	public void testGetFriends_g2_9_nivel1_OK(){
+//		Collection<Long> trueVal = new  HashSet<Long>();
+//		trueVal.add(7l);
+//		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(9l,1)));
+//	}
+//	
+//	public void testGetFriends_g2_9_nivel2_OK(){
+//		Collection<Long> trueVal = new  HashSet<Long>();
+//		trueVal.add(7l);
+//		trueVal.add(8l);
+//		trueVal.add(5l);
+//		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(9l,2)));
+//	}
+//	
+//	public void testGetFriends_g2_9_nivel3_OK(){
+//		Collection<Long> trueVal = new  HashSet<Long>();
+//		trueVal.add(7l);
+//		trueVal.add(8l);
+//		trueVal.add(5l);
+//		trueVal.add(1l);
+//		trueVal.add(2l);
+//		trueVal.add(3l);
+//		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(9l,3)));
+//	}
+//	
+//	public void testGetFriends_g2_9_nivel4_OK(){
+//		Collection<Long> trueVal = new  HashSet<Long>();
+//		trueVal.add(7l);
+//		trueVal.add(8l);
+//		trueVal.add(5l);
+//		trueVal.add(1l);
+//		trueVal.add(2l);
+//		trueVal.add(3l);
+//		trueVal.add(4l);
+//		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(9l,4)));
+//	}
+//	
+	
 	public void testGetFriends_g2_1_nivel1_OK(){
 		Collection<Long> trueVal = new  HashSet<Long>();
 		trueVal.add(2l);
@@ -129,6 +206,7 @@ public class GrafoDataModelTest extends TestCase {
 		trueVal.add(5l);
 		trueVal.add(3l);
 		trueVal.add(7l);
+		g2.getFriendsMyFriends(1l,1);
 		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(1l,2)));
 	}
 	
@@ -145,6 +223,7 @@ public class GrafoDataModelTest extends TestCase {
 		trueVal.add(3l);
 		trueVal.add(2l);
 		trueVal.add(5l);
+		g2.getFriendsMyFriends(4l,1);
 		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(4l,2)));
 	}
 	
@@ -163,6 +242,7 @@ public class GrafoDataModelTest extends TestCase {
 		trueVal.add(7l);
 		trueVal.add(8l);
 		trueVal.add(5l);
+		g2.getFriendsMyFriends(9l,1);
 		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(9l,2)));
 	}
 	
@@ -174,6 +254,8 @@ public class GrafoDataModelTest extends TestCase {
 		trueVal.add(1l);
 		trueVal.add(2l);
 		trueVal.add(3l);
+		g2.getFriendsMyFriends(9l,1);
+		g2.getFriendsMyFriends(9l,2);
 		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(9l,3)));
 	}
 	
@@ -186,6 +268,18 @@ public class GrafoDataModelTest extends TestCase {
 		trueVal.add(2l);
 		trueVal.add(3l);
 		trueVal.add(4l);
+		g2.getFriendsMyFriends(9l,1);
+		g2.getFriendsMyFriends(9l,2);
+		g2.getFriendsMyFriends(9l,4);
 		assertEquals(true, CollectionUtils.isEqualCollection(trueVal,g2.getFriendsMyFriends(9l,4)));
+	}
+	
+	public void testGetFriends_not_Vertex_OK(){
+		assertNull(g2.getFriendsMyFriends(100l,1));
+	}
+	
+	
+	public void testGetFriends_Vertex_without_neigh_OK(){
+		assertEquals(0, g2.getFriendsMyFriends(10l,1).size());
 	}
 }

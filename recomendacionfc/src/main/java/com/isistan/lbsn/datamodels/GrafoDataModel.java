@@ -4,22 +4,27 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections15.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionVecinos;
+import com.isistan.lbsn.entidades.User;
 import com.isistan.lbsn.scoring.Nodo;
 
+import edu.uci.ics.jung.algorithms.filters.KNeighborhoodFilter;
 import edu.uci.ics.jung.algorithms.scoring.BetweennessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.ClosenessCentrality;
 import edu.uci.ics.jung.algorithms.scoring.DegreeScorer;
 import edu.uci.ics.jung.algorithms.scoring.HITS;
 import edu.uci.ics.jung.algorithms.scoring.PageRank;
 import edu.uci.ics.jung.algorithms.shortestpath.UnweightedShortestPath;
+import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.io.GraphIOException;
 import edu.uci.ics.jung.io.graphml.EdgeMetadata;
@@ -37,8 +42,13 @@ public class GrafoDataModel implements GrafoModel {
 	private DegreeScorer degree;
 	private ClosenessCentrality closeness;
 	private UnweightedShortestPath<Long,Integer> distanciaCaminoCortoSinPeso;
+//	private Map<Long,Collection<Long>> userCache = new Hashtable<Long, Collection<Long>>(125000);
+//	private Map<Long,Integer> userCacheLevel = new Hashtable<Long, Integer>(125000);
+	
 	private static final Logger log = LoggerFactory.getLogger(GrafoDataModel.class);
-
+	
+	
+	
 	public GrafoDataModel(UndirectedSparseGraph<Long, Integer> grafo,
 			UndirectedSparseGraph<Nodo, Integer> grafoN) {
 		super();
@@ -104,15 +114,15 @@ public class GrafoDataModel implements GrafoModel {
 			GraphMLReader2<UndirectedSparseGraph<Long, Integer>, Long, Integer> gmlr = new GraphMLReader2<UndirectedSparseGraph<Long, Integer>, Long, Integer>(
 					reader, gtrans, vtrans, etrans, hetrans);
 			setGrafo(gmlr.readGraph());
+			
 //			pageRank = new PageRank<Long, Integer>(getGrafo(),0.95);
 //			hits = new HITS<Long, Integer>(getGrafo());
 //			degree = new DegreeScorer<Long>(getGrafo());
 //			betweennes =  new BetweennessCentrality<Long, Integer>(getGrafo()); 
 //			closeness = new ClosenessCentrality<Long,Integer>(getGrafo());
 			distanciaCaminoCortoSinPeso = new UnweightedShortestPath<Long, Integer>(getGrafo());
-			log.info("Inicia evaluacion");
-			System.out.println("Grafo cantidad de nodos " + this.getGrafo().getVertexCount());
-			System.out.println("Grafo cantidad de aristas " + this.getGrafo().getEdgeCount());
+			log.info("Grafo cantidad de nodos " + this.getGrafo().getVertexCount());
+			log.info("Grafo cantidad de aristas " + this.getGrafo().getEdgeCount());
 			
 
 		} catch (FileNotFoundException e) {
@@ -209,6 +219,7 @@ public class GrafoDataModel implements GrafoModel {
 		if (null == getFriends(userID)){
 			return null;
 		}
+		
 		Collection<Long> totalVecinos = new HashSet<Long>();
 		Collection<Long> amigos = new HashSet<Long>();
 		amigos.add(userID);
@@ -216,9 +227,51 @@ public class GrafoDataModel implements GrafoModel {
 			buscarAmigos(totalVecinos, amigos);
 		}
 		totalVecinos.remove(new Long(userID));
+		
 		return totalVecinos;
 	}
-
+	
+//	public Collection<Long> getFriendsMyFriends(long userID, int nivel) {
+//		if (null == getFriends(userID)){
+//			return null;
+//		}
+//		
+//		if(!userCache.containsKey(userID)){
+//			Collection<Long> totalVecinos = new HashSet<Long>();
+//			Collection<Long> amigos = new HashSet<Long>();
+//			amigos.add(userID);
+//			buscarAmigos(totalVecinos, amigos);
+//			totalVecinos.remove(new Long(userID));
+//			userCache.put(userID, totalVecinos);
+//			userCacheLevel.put(userID, nivel);
+//		}else{
+//			int lastNivel = userCacheLevel.get(userID);
+//			if(lastNivel<nivel){
+//				//System.out.println(userID+" "+lastNivel+" "+nivel);
+//				Collection<Long> totalVecinos = new HashSet<Long>();
+//				Collection<Long> amigos = userCache.get(userID);
+//				buscarAmigos(totalVecinos, amigos);
+//				totalVecinos.remove(new Long(userID));
+//				userCache.remove(userID);
+//				userCache.put(userID,totalVecinos);
+//				
+//				userCacheLevel.remove(userID);
+//				userCacheLevel.put(userID,nivel);
+//			}
+//		}
+//		
+//		//System.out.println(" "+userID+" "+nivel+" "+userCache.get(userID).size());
+//		return userCache.get(userID);
+//	}
+	
+//	public Collection<Long> getFriendsMyFriends(long userID, int nivel) {
+//		if( !this.grafo.containsVertex(new Long(userID)))
+//			return null;
+//		KNeighborhoodFilter<Long, Integer> kNeighborhoodFilter = new KNeighborhoodFilter<Long , Integer>(new Long(userID), nivel, KNeighborhoodFilter.EdgeType.IN_OUT); 
+//		Graph<Long, Integer> grafoVecinos =  kNeighborhoodFilter.transform(this.getGrafo());
+//		grafoVecinos.removeVertex(new Long(userID));
+//		return grafoVecinos.getVertices();
+//	}
 	public UnweightedShortestPath<Long, Integer> getDistanciaCaminoCortoSinPeso() {
 		return distanciaCaminoCortoSinPeso;
 	}

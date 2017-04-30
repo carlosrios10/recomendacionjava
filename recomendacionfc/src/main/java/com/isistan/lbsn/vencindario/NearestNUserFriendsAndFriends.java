@@ -1,6 +1,8 @@
 package com.isistan.lbsn.vencindario;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -26,6 +28,7 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhoodAux{
 	private final GrafoModel friendsDm;
 	private final RefreshHelper refreshHelper;
 	private  int nivel;
+	//private Hashtable<Long, long[]> topUserCache;
 
 	public NearestNUserFriendsAndFriends(int n, UserSimilarity userSimilarity, DataModel dataModel,GrafoModel friendsDm) 
 			throws TasteException {
@@ -49,7 +52,7 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhoodAux{
 		this.refreshHelper.addDependency(this.dataModel);
 		this.refreshHelper.addDependency(this.userSimilarity);
 		this.friendsDm =  friendsDm;
-
+		//topUserCache = new Hashtable<Long, long[]>();
 
 	}
 	public NearestNUserFriendsAndFriends(GrafoDataModel friendsDm, int n) {
@@ -74,19 +77,29 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhoodAux{
 	 * 
 	 */
 	public long[] getUserNeighborhood(long userID) throws TasteException {
+		//if(!topUserCache.containsKey(userID)){
+			
 		UserSimilarity userSimilarityImpl = this.userSimilarity;
 		TopItems.Estimator<Long> estimator = new Estimator(userSimilarityImpl, userID, minSimilarity);
 		Collection<Long> totalVecinos= this.friendsDm.getFriendsMyFriends(userID,nivel);
-		if(totalVecinos==null)
+		if(totalVecinos==null){
+		//	topUserCache.put(userID, new long[0]);
 			return new long[0];
-		
+		}
+		long[] topVecinos = null;
 		long[] ids = 	Longs.toArray(totalVecinos);
 		if( totalVecinos.size() < n )
-			return ids; 
+			topVecinos =  ids; 
 		else{
 			LongPrimitiveIterator usersIDs = new  LongPrimitiveArrayIterator(ids);
-			return TopItems.getTopUsers(n, usersIDs, null, estimator); 
+			topVecinos = TopItems.getTopUsers(n, usersIDs, null, estimator);
 		}
+		//topUserCache.put(userID, topVecinos);
+		return  topVecinos;
+	
+	//	}else{
+	//		return topUserCache.get(userID);
+	//	}
 	}
 	private static final class Estimator implements TopItems.Estimator<Long> {
 		private final UserSimilarity userSimilarityImpl;
@@ -104,6 +117,7 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhoodAux{
 			if (userID == theUserID) {
 				return Double.NaN;
 			}
+			
 			double sim = userSimilarityImpl.userSimilarity(theUserID, userID);
 			return sim >= minSim ? sim : Double.NaN;
 		}
@@ -116,7 +130,6 @@ public class NearestNUserFriendsAndFriends implements UserNeighborhoodAux{
 	}
 	public long[] getUserNeighborhood(long userID, long itemID)
 			throws TasteException {
-		return this.getUserNeighborhood(userID)
-				;
+		return this.getUserNeighborhood(userID);
 	}
 }

@@ -252,7 +252,8 @@ ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 				 
 				 log.info("Inicia evaluacion");
 				 EvaluacionEsquema esquema =  new EvaluacionEsquema();
-				 resultados = esquema.evaluar(configuraciones,PORCENTAJE_TRAIN);
+				 boolean cache = false;
+				 resultados = esquema.evaluar(configuraciones,PORCENTAJE_TRAIN,cache);
 				 log.info("Fin evaluacion");
 				 log.info("Exportar csv");
 				 Util.exportarResultadoCsv(resultados, "resultados_UserNY_Red_Visitas__Condado_matriz_visitas_V3_test4");

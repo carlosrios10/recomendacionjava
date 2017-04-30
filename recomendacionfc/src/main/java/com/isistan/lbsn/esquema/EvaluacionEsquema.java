@@ -8,7 +8,9 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.impl.eval.AverageAbsoluteDifferenceRecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
+import org.apache.mahout.cf.taste.impl.similarity.UncenteredCosineSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
+import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.common.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ import com.isistan.lbsn.evaluadores.EvluadorCantidadVecinos;
 import com.isistan.lbsn.evaluadores.ResultadoEvaluarCantidadVecinos;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
 import com.isistan.lbsn.recomendacionfc.Resultado;
+import com.isistan.lbsn.similitudcombinada.SimilitudProxy;
 
 public class EvaluacionEsquema {
 	  private static final Logger log = LoggerFactory.getLogger(EvaluacionEsquema.class);
@@ -35,22 +38,25 @@ public class EvaluacionEsquema {
  * @return
  * To be clear, trainingPercentage and evaluationPercentage are not related. They do not need to add up to 1.0, for example.
  */
-	public ArrayList<Resultado> evaluar(ArrayList<Configuracion> configuraciones, double porcentajeTrain) {
+	public ArrayList<Resultado> evaluar(ArrayList<Configuracion> configuraciones, double porcentajeTrain, boolean cache ) {
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
 		try {
 			RandomUtils.useTestSeed();
 			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
 			DataModel ratingModelTotal = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
 			//GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
-			GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+			GrafoModel grafoModel = null;// new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
 			//GrafoModel grafoModel2 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml2"));
 			UserModel userModel = null;//new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 			ItemModel itemModel = null; //new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModelByItemCategory dataModelItemCat = null;//new DataModelByItemCategory(ratingModelTotal,itemModel,8);
 			
+			 UserSimilarity similarityCache = cache?new SimilitudProxy(new UncenteredCosineSimilarity(ratingModelTotal)):null;
+			
 			log.info("Model a evaluar con  {} usuarios y  {} items", ratingModelEvaluar.getNumUsers(), ratingModelEvaluar.getNumItems());
 			EvluadorCantidadVecinos evalCantidadVecinos = new EvluadorCantidadVecinos();
-			log.info("Con {}  para test, Preferencias en test {} ",(1-porcentajeTrain), evalCantidadVecinos.getCantidadTrainTest(ratingModelEvaluar, 0.0,0.5));
+			log.info("Con {}  para test, Preferencias en test {} ",(1-porcentajeTrain), evalCantidadVecinos.getCantidadTrainTest(ratingModelEvaluar, 0.0, 0.5));
+		
 			for (final Configuracion configuracion : configuraciones) {
 //					    ResultadoEvaluarCantidadVecinos  res = evalCantidadVecinos.evaluate(configuracion,
 //					    																	ratingModelTotal,
@@ -58,7 +64,7 @@ public class EvaluacionEsquema {
 //					    																	grafoModel,
 //					    																	userModel, 
 //					    																	0.8);
-						RecommenderBuilder recBuilder = new GenRecBuilder(configuracion,ratingModelTotal,grafoModel,userModel,itemModel,dataModelItemCat,grafoModel);
+						RecommenderBuilder recBuilder = new GenRecBuilder(configuracion,ratingModelTotal,grafoModel,userModel,itemModel,dataModelItemCat,grafoModel,similarityCache);
 					    double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluatorTrainTest().evaluate(recBuilder,null,ratingModelEvaluar, 0.0, 0.5);
 					 // 	double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, ratingModelEvaluar, 0.8, 1);
 						Resultado resultado = new Resultado(configuracion, scoreMae, 0 ,
@@ -80,6 +86,8 @@ public class EvaluacionEsquema {
 					  log.info(resultado.toString());
 					  resultados.add(resultado);
 				}
+			
+			
 		
 		} catch (IOException e) {
 			e.printStackTrace();
