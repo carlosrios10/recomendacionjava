@@ -52,7 +52,7 @@ public class NearestNUserZona implements UserNeighborhoodAux {
 		UserSimilarity userSimilarityImpl = this.userSimilarity;
 		TopItems.Estimator<Long> estimator = new Estimator(userSimilarityImpl, userID, minSimilarity);
 		User user =  userModel.getUser(userID);
-		Collection<Long> totalVecinos =  this.userModel.getUserZona(user);
+		Collection<Long> totalVecinos =  this.userModel.getUserZona(user,this.radio);
 		if(totalVecinos==null)
 			return new long[0];
 		//System.out.println(userID +": "+ user.getGrupo() + ": "+ totalVecinos.size());

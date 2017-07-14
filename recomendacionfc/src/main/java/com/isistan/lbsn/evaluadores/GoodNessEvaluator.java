@@ -139,4 +139,96 @@ public class GoodNessEvaluator {
 
 
 	}
+	
+
+
+private boolean goodNeig(long idUserU, long idUser2V,DataModel dataModel) throws TasteException{
+	int numUsers = dataModel.getNumUsers();
+	FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(
+			1 + (int) (1 * numUsers));
+	splitUsersPrefsWithoutUserV(0.5, trainingPrefs,idUser2V, dataModel);
+	
+	FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(2);
+	trainingPrefs.remove(idUserU);
+	getTestPrefence(0.5,testPrefs,trainingPrefs,idUserU,dataModel);
+	DataModel testModel =  new GenericDataModel(testPrefs);
+	
+	return true;
+	
+}	
+public void evaluate2(DataModel dataModel,double trainingPercentage, double evaluationPercentage,String nombreArchivo)
+			throws TasteException, IOException {
+	
+	CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t',CSVWriter.NO_QUOTE_CHARACTER);
+	LongPrimitiveIterator usersIterable = dataModel.getUserIDs();
+	int cant=0;
+	while (usersIterable.hasNext()) {
+		Long idUser =  usersIterable.next();
+		cant++;
+		LongPrimitiveIterator usersIterable2 = dataModel.getUserIDs();
+		usersIterable2.skip(cant);
+		while (usersIterable2.hasNext()) {
+			 Long idUser2 = usersIterable2.next();
+			 boolean simValue = goodNeig(idUser, idUser2,dataModel);
+			 
+			 String resul = idUser+"#"+idUser2+"#"+simValue;
+			 String[] entries = resul.split("#"); 
+			 writer.writeNext(entries);
+		}
+		}
+	writer.close();
+	
+//int numUsers = dataModel.getNumUsers();
+//CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t',CSVWriter.NO_QUOTE_CHARACTER);
+//
+//LongPrimitiveIterator usersIterable = dataModel.getUserIDs();
+//while (usersIterable.hasNext()) {
+//	Long idUserV = usersIterable.next();
+//	FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(
+//			1 + (int) (evaluationPercentage * numUsers));
+//	
+//	splitUsersPrefsWithoutUserV(trainingPercentage, trainingPrefs,idUserV, dataModel);
+//	
+//	LongPrimitiveIterator usersIterable2 = dataModel.getUserIDs();
+//	while (usersIterable2.hasNext()) {
+//		Long idUserU = usersIterable2.next();
+//		
+//		if( !idUserU.equals(idUserV) ){
+//			
+//			FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(2);
+//			trainingPrefs.remove(idUserU);
+//			getTestPrefence(0.5,testPrefs,trainingPrefs,idUserU,dataModel);
+//			DataModel testModel =  new GenericDataModel(testPrefs);
+//
+//			DataModel trainingModel =  new GenericDataModel(trainingPrefs);
+//			RecommenderBuilder recBuilderSinV = new RecomendadorBuilder(trainingModel);
+//			double scoreMaeSinV = new AverageAbsoluteDifferenceRecommenderEvaluatorTrainTest().evaluate(recBuilderSinV,null,testModel, 0.0, 1);
+//			
+//			PreferenceArray prefs = dataModel.getPreferencesFromUser(idUserV);
+//			trainingPrefs.put(idUserV, prefs);
+//			DataModel trainingModel2 =  new GenericDataModel(trainingPrefs);
+//			RecommenderBuilder recBuilderConV = new RecomendadorBuilder(trainingModel2);
+//			double scoreMaeConV = new AverageAbsoluteDifferenceRecommenderEvaluatorTrainTest().evaluate(recBuilderConV,null,testModel, 0.0, 1);
+//			boolean isbuenVecino =  (scoreMaeSinV > scoreMaeConV);
+//			boolean isMalVecino =  (scoreMaeSinV < scoreMaeConV);
+//			boolean isNeutro =  (scoreMaeSinV == scoreMaeConV);
+//			
+//			String resul = idUserU+"#"+idUserV+"#"+scoreMaeSinV+"#"+scoreMaeConV+"#"+isbuenVecino+"#"+isMalVecino;
+//		    String[] entries = resul.split("#"); 
+//		    writer.writeNext(entries);
+//		    
+//		    trainingPrefs.remove(idUserV);
+//		    trainingPrefs.remove(idUserU);
+//		    trainingPrefs.put(idUserU, dataModel.getPreferencesFromUser(idUserU));
+//
+//		}
+//
+//
+//	}
+//}
+
+//writer.close();
+
+
+}	
 }

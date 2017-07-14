@@ -27,6 +27,11 @@ public class NearestNUserNeighborhoodByScoring implements UserNeighborhoodAux {
 		this(n, Double.NEGATIVE_INFINITY, userSimilarity, itemModel,dataModel, 1.0);
 		
 	}
+	public NearestNUserNeighborhoodByScoring(int n, Scoring userSimilarity,DataModel dataModel) 
+			throws TasteException {
+		this(n, Double.NEGATIVE_INFINITY, userSimilarity,dataModel, 1.0);
+		
+	}
 	public NearestNUserNeighborhoodByScoring(int n,double minSimilarity,Scoring userSimilarity,ItemModel itemModel,DataModel dataModel, double samplingRate) 
 			throws TasteException {
 		this.userSimilarity = userSimilarity;
@@ -41,6 +46,21 @@ public class NearestNUserNeighborhoodByScoring implements UserNeighborhoodAux {
 		this.refreshHelper.addDependency(this.userSimilarity);
 
 	}
+	
+	public NearestNUserNeighborhoodByScoring(int n,double minSimilarity,Scoring userSimilarity,DataModel dataModel, double samplingRate) 
+			throws TasteException {
+		this.userSimilarity = userSimilarity;
+		this.samplingRate =  samplingRate;
+		this.dataModel = dataModel;
+		Preconditions.checkArgument(n >= 1, "n must be at least 1");
+		this.minSimilarity = minSimilarity;
+		this.n = n;
+		this.itemModel = null;
+		this.refreshHelper = new RefreshHelper(null);
+		this.refreshHelper.addDependency(this.userSimilarity);
+
+	}
+	
 	public void refresh(Collection<Refreshable> alreadyRefreshed) {
 		// TODO Auto-generated method stub
 		

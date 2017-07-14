@@ -14,10 +14,10 @@ public class MainCalcularGoodness {
 	private static final String PATH_RESULTADO = MyProperties.getInstance().getProperty("resultadosprocesar");
 	public static void main(String[] args) {
 		try {
-			System.out.println("INICIO -  -");
+			System.out.println("INICIO - MainCalcularGoodness  -");
 			DataModel	ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar")));
-			new GoodNessEvaluator().evaluate( ratingModel, 0.5, 1.0,PATH_RESULTADO+"vecinos_goodness_3.csv");
-			System.out.println("FIN -  -");
+			new GoodNessEvaluator().evaluate( ratingModel, 0.5, 1.0,PATH_RESULTADO+"vecinos_goodness_mas10.csv");
+			System.out.println("FIN - MainCalcularGoodness -");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TasteException e) {

@@ -12,8 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.mahout.cf.taste.impl.common.FastIDSet;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveArrayIterator;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
+import org.apache.mahout.cf.taste.model.DataModel;
 
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -197,6 +199,26 @@ public class FriendsDataModel implements GrafoModel{
 	public double getCloseness(long userID) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	@Override
+	public Integer getDistanciaSinPeso(long userID1, long userID2) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void setDataModel(DataModel dm) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Boolean areFriends(long userID1, long userID2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public FastIDSet getFriendsMyFriendsFastIDSet(long userID, int nivel) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

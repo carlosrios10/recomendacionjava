@@ -3,7 +3,7 @@ package com.isistan.lbsn.vecindario;
 import org.apache.mahout.cf.taste.common.TasteException;
 
 import com.isistan.lbsn.datamodels.GrafoDataModel;
-import com.isistan.lbsn.scoring.PearsonNetwork;
+import com.isistan.lbsn.scoring.ScoringPearsonNetwork;
 import com.isistan.lbsn.vencindario.NearestNUserFriends;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;

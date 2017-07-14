@@ -65,11 +65,19 @@
 			<artifactId>jung-io</artifactId>
 			<version>2.0.1</version>
 		</dependency>
+		
+		<dependency>
+  <groupId>com.googlecode.combinatoricslib</groupId>
+  <artifactId>combinatoricslib</artifactId>
+  <version>2.1</version>
+  <scope>compile</scope>
+</dependency>
 <dependency>
     <groupId>com.google.guava</groupId>
     <artifactId>guava</artifactId>
     <version>21.0</version>
 </dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -93,11 +101,15 @@
 				</executions>
 				<configuration>
 					<!-- <mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionVecinosIRS</mainClass> -->
-					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionVecinos</mainClass>
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosPonderacionVecinos</mainClass> -->
+					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionRedesPonderacionScorings</mainClass>
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionRedesByScoringPonderacionScoring</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionVecinos</mainClass> -->
 					<!-- <mainClass>com.isistan.lbsn.experimentos.dataset2.Experimento3</mainClass> -->
 					<!-- <mainClass>com.isistan.lbsn.preproceso.MainCalcularVecinosEnGrafo</mainClass> -->
-					<!-- <mainClass>com.isistan.lbsn.preproceso.MainCalcularVecinos</mainClass> -->
-
+<!-- 					<mainClass>com.isistan.lbsn.preproceso.MainCalcularVecinos</mainClass> -->
+					<!--<mainClass>com.isistan.lbsn.preproceso.MainCalcularGoodness</mainClass> -->
+					<cleanupDaemonThreads>false</cleanupDaemonThreads>
 				</configuration>
 			</plugin>
 		</plugins>

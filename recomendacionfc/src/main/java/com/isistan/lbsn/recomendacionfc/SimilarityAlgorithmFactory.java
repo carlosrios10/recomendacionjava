@@ -13,7 +13,7 @@ import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import com.isistan.lbsn.datamodels.GrafoModel;
 import com.isistan.lbsn.scoring.ScoringCosenoNetwork;
 import com.isistan.lbsn.scoring.ScoringJaccardNetwork;
-import com.isistan.lbsn.scoring.PearsonNetwork;
+import com.isistan.lbsn.scoring.ScoringPearsonNetwork;
 import com.isistan.lbsn.similitudcombinada.SimilitudCombinada;
 
 public class SimilarityAlgorithmFactory {
@@ -60,7 +60,7 @@ public class SimilarityAlgorithmFactory {
 			similarity = new ScoringCosenoNetwork(grafoDataModel);
 			return similarity;
 		case PEARSONNETWORK:
-			similarity = new PearsonNetwork(grafoDataModel);
+			similarity = new ScoringPearsonNetwork(grafoDataModel);
 			return similarity;
 		case COMBINADA:
 			try {

@@ -31,7 +31,7 @@ public class ScoringOverlap implements Scoring{
 	public double getScoring(long userID1, long userID2, long itemID) throws TasteException {
 	    FastIDSet xPrefs = dataModel.getItemIDsFromUser(userID1);
 	    FastIDSet yPrefs = dataModel.getItemIDsFromUser(userID2);
-
+	    
 	    int xPrefsSize = xPrefs.size();
 	    int yPrefsSize = yPrefs.size();
 	    if (xPrefsSize == 0 && yPrefsSize == 0) {

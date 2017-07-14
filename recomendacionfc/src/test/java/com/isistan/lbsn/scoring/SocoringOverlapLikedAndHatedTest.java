@@ -62,7 +62,7 @@ public class SocoringOverlapLikedAndHatedTest extends TestCase{
 		preferences.put(4L, prefsForUser4);
 		
 		DataModel model = new GenericDataModel(preferences);
-		scoring = new ScoringOverlapLikedAndHated(null, model,null);
+		scoring = new ScoringOverlapLikedAndHated(model,null,null);
 		
 	}
 	protected void tearDown() throws Exception {

@@ -6,32 +6,24 @@ import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastIDSet;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
-import org.apache.mahout.cf.taste.impl.common.FullRunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.impl.common.RunningAverage;
-import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 
 import com.isistan.lbsn.datamodels.GrafoModel;
 
-public class ScoringOverlapLiked implements Scoring{
+public class ScoringOverlapHated implements Scoring{
 	//private static final int UMBRAL_LIKED = 3;
 	GrafoModel grafoModel;
 	DataModel dataModel;
-	DataModel dataModelLiked;
 	Double umbralLiked;
-	public ScoringOverlapLiked(GrafoModel grafoModel, DataModel dataModel) {
+	public ScoringOverlapHated(GrafoModel grafoModel, DataModel dataModel) {
 		this.dataModel=dataModel;
 		this.grafoModel=grafoModel;
-		
+		this.umbralLiked = 3.0;
 	}
-	public ScoringOverlapLiked(GrafoModel grafoModel, DataModel dataModel,DataModel dataModelLiked ) {
-		this.dataModel=dataModel;
-		this.grafoModel=grafoModel;
-		this.dataModelLiked = dataModelLiked;
-	}
-	public ScoringOverlapLiked(GrafoModel grafoModel, DataModel dataModel, Double umbralLiked) {
+	public ScoringOverlapHated(GrafoModel grafoModel, DataModel dataModel, Double umbralLiked) {
 		this.dataModel=dataModel;
 		this.grafoModel=grafoModel;
 		this.umbralLiked=umbralLiked; 
@@ -55,11 +47,11 @@ public class ScoringOverlapLiked implements Scoring{
 	public double getScoring(long userID1, long userID2, long itemID)
 			throws TasteException {
 		
-	    FastIDSet xPrefs = (this.dataModelLiked != null)?dataModelLiked.getItemIDsFromUser(userID1):getLikedItems(userID1);
-	    FastIDSet yPrefs = (this.dataModelLiked != null)?dataModelLiked.getItemIDsFromUser(userID2):getLikedItems(userID2);
+//	    FastIDSet xPrefs = getLikedItems(userID1);
+//	    FastIDSet yPrefs = getLikedItems(userID2);
 	    
-//	    FastIDSet xPrefs = dataModel.getItemIDsFromUser(userID1);
-//	    FastIDSet yPrefs = dataModel.getItemIDsFromUser(userID2);
+	    FastIDSet xPrefs = dataModel.getItemIDsFromUser(userID1);
+	    FastIDSet yPrefs = dataModel.getItemIDsFromUser(userID2);
 	    
 	    int xPrefsSize = xPrefs.size();
 	    int yPrefsSize = yPrefs.size();
@@ -84,9 +76,9 @@ public class ScoringOverlapLiked implements Scoring{
 
 	private FastIDSet getLikedItems(Long userID) throws TasteException {
 		FastIDSet itemIDsFromUser = dataModel.getItemIDsFromUser(userID);
-		double theUmbral = (umbralLiked==null) ? calcularUmbral(dataModel.getPreferencesFromUser(userID)) : umbralLiked;
 		for (Long itemID : itemIDsFromUser) {
 			double valor = dataModel.getPreferenceValue(userID, itemID);
+			double theUmbral = (umbralLiked==null) ? calcularUmbral(dataModel.getPreferencesFromUser(userID)) : umbralLiked;
 			if( valor < theUmbral ){
 				itemIDsFromUser.remove(itemID);
 			}
@@ -107,18 +99,5 @@ public class ScoringOverlapLiked implements Scoring{
 		      avg.addDatum(prefs.getValue(i));
 		    }
 		    return avg.getAverage();
-		  }
-	  
-	  private  double computeThreshold(PreferenceArray prefs) {
-		    if (prefs.length() < 2) {
-		      // Not enough data points -- return a threshold that allows everything
-		      return Double.NEGATIVE_INFINITY;
-		    }
-		    RunningAverageAndStdDev stdDev = new FullRunningAverageAndStdDev();
-		    int size = prefs.length();
-		    for (int i = 0; i < size; i++) {
-		      stdDev.addDatum(prefs.getValue(i));
-		    }
-		    return stdDev.getAverage() + stdDev.getStandardDeviation();
 		  }
 }

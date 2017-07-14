@@ -34,9 +34,10 @@ import com.google.common.base.Preconditions;
 
 public class GenericRecommenderIRStatsEvaluatorTrainTest implements RecommenderIRStatsEvaluator {
 
-	  private static final Logger log = LoggerFactory.getLogger(GenericRecommenderIRStatsEvaluator.class);
+	  private static final Logger log = LoggerFactory.getLogger(GenericRecommenderIRStatsEvaluatorTrainTest.class);
 
 	  private static final double LOG2 = Math.log(2.0);
+	  DataModel trainDataModel;
 
 	  /**
 	   * Pass as "relevanceThreshold" argument to
@@ -81,6 +82,7 @@ public class GenericRecommenderIRStatsEvaluatorTrainTest implements RecommenderI
 	    int numUsersWithRecommendations = 0;
 
 	    LongPrimitiveIterator it = dataModel.getUserIDs();
+	    Recommender recommender = recommenderBuilder.buildRecommender(null);
 	    while (it.hasNext()) {
 
 	      long userID = it.nextLong();
@@ -103,8 +105,8 @@ public class GenericRecommenderIRStatsEvaluatorTrainTest implements RecommenderI
 	        continue;
 	      }
 
-	      FastByIDMap<PreferenceArray> trainingUsers = new FastByIDMap<PreferenceArray>(dataModel.getNumUsers());
-	      LongPrimitiveIterator it2 = dataModel.getUserIDs();
+//	      FastByIDMap<PreferenceArray> trainingUsers = new FastByIDMap<PreferenceArray>(dataModel.getNumUsers());
+//	      LongPrimitiveIterator it2 = dataModel.getUserIDs();
 //	      while (it2.hasNext()) {
 //	        dataSplitter.processOtherUser(userID, relevantItemIDs, trainingUsers, it2.nextLong(), dataModel);
 //	      }
@@ -118,13 +120,13 @@ public class GenericRecommenderIRStatsEvaluatorTrainTest implements RecommenderI
 //	      }
 
 //	      int size = numRelevantItems + trainingModel.getItemIDsFromUser(userID).size();
-	      int size = 30;
-	      if (size < 2 * at) {
-	        // Really not enough prefs to meaningfully evaluate this user
-	        continue;
-	      }
+	      int size = dataModel.getItemIDsFromUser(userID).size() + trainDataModel.getItemIDsFromUser(userID).size();
+//	      if (size <= 2 * at) {
+//	        // Really not enough prefs to meaningfully evaluate this user
+//	        continue;
+//	      }
 
-	      Recommender recommender = recommenderBuilder.buildRecommender(null);
+	    //  Recommender recommender = recommenderBuilder.buildRecommender(null);
 
 	      int intersectionSize = 0;
 	      List<RecommendedItem> recommendedItems = recommender.recommend(userID, at, rescorer);
@@ -180,10 +182,10 @@ public class GenericRecommenderIRStatsEvaluatorTrainTest implements RecommenderI
 
 	      long end = System.currentTimeMillis();
 
-	      log.info("Evaluated with user {} in {}ms", userID, end - start);
-	      log.info("Precision/recall/fall-out/nDCG/reach: {} / {} / {} / {} / {}",
-	               precision.getAverage(), recall.getAverage(), fallOut.getAverage(), nDCG.getAverage(),
-	               (double) numUsersWithRecommendations / (double) numUsersRecommendedFor);
+//	      log.info("Evaluated with user {} in {}ms", userID, end - start);
+//	      log.info("Precision/recall/fall-out/nDCG/reach: {} / {} / {} / {} / {}",
+//	               precision.getAverage(), recall.getAverage(), fallOut.getAverage(), nDCG.getAverage(),
+//	               (double) numUsersWithRecommendations / (double) numUsersRecommendedFor);
 	    }
 	    
 	    return new IRStatisticsImpl2(precision.getAverage(),recall.getAverage(),fallOut.getAverage(),nDCG.getAverage(),(double) numUsersWithRecommendations / (double) numUsersRecommendedFor);
@@ -205,5 +207,13 @@ public class GenericRecommenderIRStatsEvaluatorTrainTest implements RecommenderI
 	  private static double log2(double value) {
 	    return Math.log(value) / LOG2;
 	  }
+
+	public DataModel getTrainDataModel() {
+		return trainDataModel;
+	}
+
+	public void setTrainDataModel(DataModel trainDataModel) {
+		this.trainDataModel = trainDataModel;
+	}
 
 }

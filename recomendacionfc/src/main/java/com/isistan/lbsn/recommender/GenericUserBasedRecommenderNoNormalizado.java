@@ -30,7 +30,7 @@ import com.isistan.lbsn.vencindario.UserNeighborhoodAux;
 
 public class GenericUserBasedRecommenderNoNormalizado extends AbstractRecommender implements UserBasedRecommender{
 	  
-	  private static final Logger log = LoggerFactory.getLogger(GenericUserBasedRecommender.class);
+	  private static final Logger log = LoggerFactory.getLogger(GenericUserBasedRecommenderNoNormalizado.class);
 	  
 	  private final UserNeighborhoodAux neighborhood;
 	  private final UserSimilarity similarity;

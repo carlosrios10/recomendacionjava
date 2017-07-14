@@ -1,6 +1,7 @@
 package com.isistan.lbsn.scoring;
 
 import org.apache.mahout.cf.taste.model.DataModel;
+import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 
 import com.isistan.lbsn.datamodels.DataModelByItemCategory;
 import com.isistan.lbsn.datamodels.GrafoModel;
@@ -23,14 +24,28 @@ public class ScoringFactory {
 		SCORING_COSENO_NETWORK,
 		SCORING_JACCARD_NETWORK,
 		SCORING_OVERLAP_ABSTRACCION_CATEGORY,
-		SCORING_OVERLAP_BY_CATEGORY,};
+		SCORING_OVERLAP_BY_CATEGORY,
+		SCORING_OVERLAP_BY_CATEGORY_WEEKDAYNAME,
+		SCORING_OVERLAP_BY_CATEGORY_WEEKORWEEKEND,
+		SCORING_LR2,
+		SCORING_DISTANCIA_NETWORK,
+		SCORING_OVERLAP_WEEKDAYNAME,
+		SCORING_OVERLAP_WEEKORWEEKEND};
 	
-	public static Scoring build( ScoringType scoringType,
+	public static Scoring build(ScoringType scoringType,
 								DataModel dataModel, 
 								GrafoModel grafoModel,
 								UserModel userModel,
 								ItemModel itemModel,
-								DataModelByItemCategory dataModelItemCat) {
+								DataModelByItemCategory dataModelItemCat,
+								DataModel modelTotalLiked,
+								DataModel modelTotalHated,
+								DataModel modelAbstraccionCategoria,
+								DataModel modelAbstraccionCategoriaWeekDayName,
+								DataModel modelAbstraccionCategoriaWeekOrWeekEnd,
+								DataModel modelTotalWeekDayName,
+								DataModel modelTotalWeekOrWeekend
+								) {
 		Scoring scoring = null;
 		switch (scoringType) {
 		case USER_OVERLAP:
@@ -43,22 +58,59 @@ public class ScoringFactory {
 			scoring = new ScoringCercaniaUsuarioUsuario(grafoModel, dataModel,userModel,itemModel);
 			return scoring;
 		case USER_OVERLAP_LIKED:
-			scoring = new ScoringOverlapLiked(grafoModel, dataModel,2.5);
+			scoring = new ScoringOverlapLiked(grafoModel, dataModel,modelTotalLiked);
 			return scoring;
 		case USER_OVERLAP_LIKED_HATED:
-			scoring = new ScoringOverlapLikedAndHated(grafoModel, dataModel,null);
+			scoring = new ScoringOverlapLikedAndHated(dataModel,modelTotalLiked,modelTotalHated);
 			return scoring;
+		case SCORING_OVERLAP_WEEKDAYNAME:
+			scoring = new ScoringOverlap(modelTotalWeekDayName);
+			return scoring;
+		case SCORING_OVERLAP_WEEKORWEEKEND:
+			scoring = new ScoringOverlap(modelTotalWeekOrWeekend);
+			return scoring;	
 		case SCORING_COSENO_NETWORK:
 			scoring = new ScoringCosenoNetwork(grafoModel);
 			return scoring;
 		case SCORING_JACCARD_NETWORK:
 			scoring = new ScoringJaccardNetwork(grafoModel);
 			return scoring;
+		case SCORING_DISTANCIA_NETWORK:
+			scoring = new ScoringDistanciaNetwork(grafoModel);
+			return scoring;	
 		case SCORING_OVERLAP_ABSTRACCION_CATEGORY:
-			scoring = new ScoringOverlapAbstraccionItemCategory(dataModel,itemModel);
+			scoring = new ScoringOverlapAbstraccionItemCategory(dataModel,modelAbstraccionCategoria);
 			return scoring;
 		case SCORING_OVERLAP_BY_CATEGORY:
 			scoring = new ScoringOverlapAsFirstItemCategory(dataModel,itemModel, dataModelItemCat);
+			return scoring;
+		case SCORING_OVERLAP_BY_CATEGORY_WEEKDAYNAME:
+			scoring = new ScoringOverlap(modelAbstraccionCategoriaWeekDayName);
+			return scoring;	
+		case SCORING_OVERLAP_BY_CATEGORY_WEEKORWEEKEND:
+			scoring = new ScoringOverlap(modelAbstraccionCategoriaWeekOrWeekEnd);
+			return scoring;
+
+		case SCORING_LR2:
+			UserSimilarity userVisitas  = new ScoringOverlap(dataModel);
+			UserSimilarity userVisitasWeekDayName  = new ScoringOverlap(modelTotalWeekDayName);
+			
+			UserSimilarity userVisitasCate = new ScoringOverlap(modelAbstraccionCategoria);
+			UserSimilarity userVisitasCateWeekDayName  = new ScoringOverlap(modelAbstraccionCategoriaWeekDayName);
+			UserSimilarity userVisitasCateWeekOrWeekend  = new ScoringOverlap(modelAbstraccionCategoriaWeekOrWeekEnd);
+			UserSimilarity userCosenoNet  = new ScoringCosenoNetwork(grafoModel); 
+			UserSimilarity userPathNet  = new ScoringDistanciaNetwork(grafoModel);
+			UserSimilarity usersAreFriendsNet  = new ScoringAreFriendsNetwork(grafoModel);
+			
+			scoring = new ScoringLRModel2(
+					userVisitas, 
+					userVisitasWeekDayName, 
+					userVisitasCate,
+					userVisitasCateWeekOrWeekend, 
+					userVisitasCateWeekDayName, 
+					userCosenoNet,
+					userPathNet,
+					usersAreFriendsNet);
 			return scoring;		
 		default:
 			return null; 

@@ -39,20 +39,28 @@ import com.isistan.lbsn.vencindario.UserNeighborhoodAux;
 public class GenRecBuilder implements RecommenderBuilder {
 	private static final Logger log = LoggerFactory.getLogger(GenRecBuilder.class);
 	DataModel modelTotal;
+	DataModel modelTotalLiked;
+	DataModel modelTotalHated;
 	Configuracion configuracion ;
-	GrafoModel grafoModel;
+	GrafoModel grafoModelSeleccionNeig;
 	UserModel userModel;
 	ItemModel itemModel;
 	DataModelByItemCategory dataModelItemCat;
-	GrafoModel grafoModel2;
+	GrafoModel grafoModelScoring;
 	UserSimilarity cacheUserSimilarity;
+	DataModel modelAbstraccionCategoria;
+	DataModel modelAbstraccionCategoriaWeekDayName;
+	DataModel modelAbstraccionCategoriaWeekOrWeekend;
+	DataModel modelTotalWeekDayName;
+	DataModel modelTotalWeekOrWeekend;
 	
 	public GenRecBuilder(Configuracion configuracion,DataModel modeltotal,GrafoModel grafoModel ,UserModel userModel, 
-			ItemModel itemModel,DataModelByItemCategory dataModelItemCat) {
+			ItemModel itemModel,
+			DataModelByItemCategory dataModelItemCat) {
 		super();
 		this.modelTotal = modeltotal;
 		this.configuracion = configuracion;
-		this.grafoModel = grafoModel;
+		this.grafoModelSeleccionNeig = grafoModel;
 		this.userModel = userModel;
 		this.itemModel = itemModel;
 		this.dataModelItemCat = dataModelItemCat;
@@ -64,32 +72,47 @@ public class GenRecBuilder implements RecommenderBuilder {
 		super();
 		this.modelTotal = modeltotal;
 		this.configuracion = configuracion;
-		this.grafoModel = grafoModel;
+		this.grafoModelSeleccionNeig = grafoModel;
 		this.userModel = userModel;
 		this.itemModel = itemModel;
 		this.dataModelItemCat = dataModelItemCat;
-		this.grafoModel2 = grafoModel2;
+		this.grafoModelScoring = grafoModel2;
 
 	}
 	
 	public GenRecBuilder(Configuracion configuracion,DataModel modeltotal,GrafoModel grafoModel ,UserModel userModel, 
-			ItemModel itemModel,DataModelByItemCategory dataModelItemCat,GrafoModel grafoModel2,UserSimilarity cacheUserSimilarity) {
+			ItemModel itemModel,DataModelByItemCategory dataModelItemCat,GrafoModel grafoModel2,
+			UserSimilarity cacheUserSimilarity,
+			DataModel modeltotalLiked,
+			DataModel modeltotalHated,
+			DataModel ratingModelAbstraccionCategoria,
+			DataModel ratingModelAbstraccionCategoriaWeekDayName,
+			DataModel ratingModelAbstraccionCategoriaWeekOrWeekEnd,
+			DataModel modelTotalWeekDayName,
+			DataModel modelTotalWeekOrWeekend) {
 		super();
 		this.modelTotal = modeltotal;
 		this.configuracion = configuracion;
-		this.grafoModel = grafoModel;
+		this.grafoModelSeleccionNeig = grafoModel;
 		this.userModel = userModel;
 		this.itemModel = itemModel;
 		this.dataModelItemCat = dataModelItemCat;
-		this.grafoModel2 = grafoModel2;
+		this.grafoModelScoring = grafoModel2;
 		this.cacheUserSimilarity = cacheUserSimilarity;
+		this.modelTotalLiked = modeltotalLiked;
+		this.modelTotalHated = modeltotalHated;
+		this.modelAbstraccionCategoria = ratingModelAbstraccionCategoria;
+		this.modelAbstraccionCategoriaWeekDayName = ratingModelAbstraccionCategoriaWeekDayName;
+		this.modelAbstraccionCategoriaWeekOrWeekend = ratingModelAbstraccionCategoriaWeekOrWeekEnd;
+		this.modelTotalWeekDayName = modelTotalWeekDayName;
+		this.modelTotalWeekOrWeekend = modelTotalWeekOrWeekend;
 
 	}
 	public GenRecBuilder(Configuracion configuracion,GrafoModel grafoModel ) {
 		super();
 		this.modelTotal = null;
 		this.configuracion = configuracion;
-		this.grafoModel = grafoModel;
+		this.grafoModelSeleccionNeig = grafoModel;
 
 	}
 
@@ -122,9 +145,18 @@ public class GenRecBuilder implements RecommenderBuilder {
 //			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
 //			return new GenericUserBasedRecommenderNoNormalizado(modelFiltrado, neighborhood, agregation);
 //		}else{
-			UserSimilarity sim = (cacheUserSimilarity!=null)?cacheUserSimilarity: SimilarityAlgorithmFactory.build(this.modelTotal, grafoModel,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
-			Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), modelTotal,grafoModel2,userModel,itemModel,dataModelItemCat);
-			UserNeighborhoodAux neighborhood = TypeNeighborhoodFactory.build(sim, modelTotal, configuracion.getTypeNeigh(),configuracion.getNeighSize(), configuracion.getThreshold(),grafoModel,scoring,userModel,itemModel);
+			UserSimilarity sim = (cacheUserSimilarity!=null)?cacheUserSimilarity: SimilarityAlgorithmFactory.build(this.modelTotal, grafoModelSeleccionNeig,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
+			Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), modelTotal,
+					grafoModelScoring,userModel,itemModel,
+					dataModelItemCat,modelTotalLiked,modelTotalHated,
+					modelAbstraccionCategoria,
+					modelAbstraccionCategoriaWeekDayName,
+					modelAbstraccionCategoriaWeekOrWeekend,
+					modelTotalWeekDayName,
+					modelTotalWeekOrWeekend);
+			UserNeighborhoodAux neighborhood = TypeNeighborhoodFactory.build(sim, modelTotal, configuracion.getTypeNeigh(),
+					configuracion.getNeighSize(), configuracion.getThreshold(),
+					grafoModelSeleccionNeig,scoring,userModel,itemModel);
 			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
 			return new GenericUserBasedRecommenderNoNormalizado(modelTotal, neighborhood, agregation);
 //		}

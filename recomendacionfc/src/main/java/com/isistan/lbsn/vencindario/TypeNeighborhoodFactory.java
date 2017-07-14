@@ -32,7 +32,12 @@ public class TypeNeighborhoodFactory {
 						   K_FRIENDS_FRIENDS,
 						   THRESHOLD_SCORING,
 						   K_NEIGHBORHOOD_SCORING,
-						   K_NEIGHBORHOOD_BY_SCORING};
+						   K_NEIGHBORHOOD_BY_SCORING,
+						   K_FRIENDS_NIVEL_1_BY_SCORING,
+						   K_FRIENDS_NIVEL_2_BY_SCORING,
+						   K_FRIENDS_NIVEL_3_BY_SCORING,
+						   K_FRIENDS_NIVEL_4_BY_SCORING,
+						   K_FRIENDS_NIVEL_5_BY_SCORING};
     public static UserNeighborhoodAux  build(UserSimilarity userSimilarity,
     									  DataModel model, 
     									  TypeNeigh  typeNeigh,
@@ -41,7 +46,8 @@ public class TypeNeighborhoodFactory {
     									  GrafoModel fdm, 
     									  Scoring scoring,
     									  UserModel userModel,
-    									  ItemModel itemModel) {
+    									  ItemModel itemModel
+    									  ) {
     	UserNeighborhoodAux userNeighborhood = null;
         switch(typeNeigh) {
             case K_NEIGHBORHOOD:
@@ -85,7 +91,40 @@ public class TypeNeighborhoodFactory {
                     userNeighborhood = new NearestNUserFriendsAndFriends(neighSize, userSimilarity, model,fdm,5);
                 } catch (TasteException exception) {
                 	}
+                return userNeighborhood;
+                
+            case K_FRIENDS_NIVEL_1_BY_SCORING: 
+                try {
+                    userNeighborhood = new NearestNUserFriendsAndFriends(neighSize, scoring, model,fdm,1);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;
+            case K_FRIENDS_NIVEL_2_BY_SCORING: 
+                try {
+                    userNeighborhood = new NearestNUserFriendsAndFriends(neighSize, scoring, model,fdm,2);
+                } catch (TasteException exception) {
+                	}
                 return userNeighborhood;    
+            case K_FRIENDS_NIVEL_3_BY_SCORING: 
+                try {
+                    userNeighborhood = new NearestNUserFriendsAndFriends(neighSize, scoring, model,fdm,3);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;    
+            case K_FRIENDS_NIVEL_4_BY_SCORING: 
+                try {
+                    userNeighborhood = new NearestNUserFriendsAndFriends(neighSize, scoring, model,fdm,4);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;    
+            case K_FRIENDS_NIVEL_5_BY_SCORING: 
+                try {
+                    userNeighborhood = new NearestNUserFriendsAndFriends(neighSize, scoring, model,fdm,5);
+                } catch (TasteException exception) {
+                	}
+                return userNeighborhood;    
+
+                
             case K_NEIGHBORHOOD_GRUPO:
                 try {
                     userNeighborhood = new NearestNUserGrupo(neighSize, userSimilarity,userModel,1);
@@ -161,7 +200,7 @@ public class TypeNeighborhoodFactory {
 //                return userNeighborhood;
             case K_NEIGHBORHOOD_BY_SCORING:
 			try {
-				userNeighborhood = new NearestNUserNeighborhoodByScoring(neighSize, scoring, itemModel, model);
+				userNeighborhood = new NearestNUserNeighborhoodByScoring(neighSize, scoring, model);
 			} catch (TasteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

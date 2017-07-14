@@ -2,6 +2,7 @@ package com.isistan.lbsn.scoring;
 
 import java.util.Collection;
 
+import org.apache.mahout.cf.taste.common.NoSuchUserException;
 import org.apache.mahout.cf.taste.common.Refreshable;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.common.FastIDSet;
@@ -17,12 +18,20 @@ public class ScoringOverlapLikedAndHated implements Scoring{
 	//private static final int UMBRAL_LIKED = 3;
 	GrafoModel grafoModel;
 	DataModel dataModel;
+	DataModel dataModelLiked;
+	DataModel dataModelHated;
 	private Double umbralLiked;
+	
+	public ScoringOverlapLikedAndHated(DataModel dataModel,DataModel dataModelLiked,DataModel dataModelHated) {
+		this.dataModelLiked = dataModelLiked;
+		this.dataModelHated = dataModelHated;
+		this.dataModel = dataModel;
+	}
 	public ScoringOverlapLikedAndHated(GrafoModel grafoModel, DataModel dataModel) {
 		this.dataModel=dataModel;
 		this.grafoModel=grafoModel;
-		this.umbralLiked=3.0;
 	}
+
 	public ScoringOverlapLikedAndHated(GrafoModel grafoModel, DataModel dataModel, Double umbralLiked) {
 		this.dataModel=dataModel;
 		this.grafoModel=grafoModel;
@@ -46,17 +55,43 @@ public class ScoringOverlapLikedAndHated implements Scoring{
 
 	public double getScoring(long userID1, long userID2, long itemID)
 			throws TasteException {
-		double theUmbralUserID1 = (umbralLiked==null) ? calcularUmbral(dataModel.getPreferencesFromUser(userID1)) : umbralLiked;
-		double theUmbralUserID2 = (umbralLiked==null) ? calcularUmbral(dataModel.getPreferencesFromUser(userID2)) : umbralLiked;
 		
-	    FastIDSet xPrefs = getLikedItems(userID1,theUmbralUserID1);
-	    FastIDSet yPrefs = getLikedItems(userID2,theUmbralUserID2);
-	    double simLiked = getJaccardSim(xPrefs, yPrefs);
-	    FastIDSet xPrefsHated = getHatedItems(userID1,theUmbralUserID1);
-	    FastIDSet yPrefsHated = getHatedItems(userID2,theUmbralUserID2);
-	    double simHated = getJaccardSim(xPrefsHated, yPrefsHated);
+		Double theUmbralUserID1 = null;
+		Double theUmbralUserID2 = null;
+		if( dataModelLiked == null ){
+			 theUmbralUserID1 = (umbralLiked==null) ? calcularUmbral(dataModel.getPreferencesFromUser(userID1)) : umbralLiked;
+			 theUmbralUserID2 = (umbralLiked==null) ? calcularUmbral(dataModel.getPreferencesFromUser(userID2)) : umbralLiked;
+		}
+		
+		double simLiked = 0;
+		try{
+//	    FastIDSet xPrefs = dataModelLiked.getItemIDsFromUser(userID1);
+//	    FastIDSet yPrefs = dataModelLiked.getItemIDsFromUser(userID2);
+		//System.out.println(userID1+" "+userID2);
+	    FastIDSet xPrefs = (dataModelLiked != null)? dataModelLiked.getItemIDsFromUser(userID1) : getLikedItems(userID1,theUmbralUserID1);
+	    FastIDSet yPrefs = (dataModelLiked != null)? dataModelLiked.getItemIDsFromUser(userID2) : getLikedItems(userID2,theUmbralUserID2);
+
+	    simLiked = getJaccardSim(xPrefs, yPrefs);
+		}catch(NoSuchUserException ne){
+			ne.printStackTrace();
+		}
+		
+		
+		double simHated = 0;
+	    try{
+//	    FastIDSet xPrefsHated = dataModelHated.getItemIDsFromUser(userID1);
+//	    FastIDSet yPrefsHated = dataModelHated.getItemIDsFromUser(userID1);
+
+	    FastIDSet xPrefsHated = (dataModelHated != null)? dataModelHated.getItemIDsFromUser(userID1) : getHatedItems(userID1,theUmbralUserID1);
+	    FastIDSet yPrefsHated = (dataModelHated != null)? dataModelHated.getItemIDsFromUser(userID2) : getHatedItems(userID2,theUmbralUserID2);
+
 	    
-	    return (double) (simLiked+ simHated)/ (double) 2;
+	    simHated = getJaccardSim(xPrefsHated, yPrefsHated);
+	    }catch(NoSuchUserException ne){
+	    	
+	    }
+	    
+	    return (double) (simLiked + simHated)/ (double) 2;
 	}
 
 	private double getJaccardSim(FastIDSet xPrefs, FastIDSet yPrefs) {
@@ -81,6 +116,7 @@ public class ScoringOverlapLikedAndHated implements Scoring{
 	}
 	
 	private FastIDSet getLikedItems(Long userID, double theUmbralLiked) throws TasteException {
+		
 		FastIDSet itemIDsFromUser = dataModel.getItemIDsFromUser(userID);
 		for (Long itemID : itemIDsFromUser) {
 			double valor = dataModel.getPreferenceValue(userID, itemID);

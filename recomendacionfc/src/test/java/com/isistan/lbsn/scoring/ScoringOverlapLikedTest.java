@@ -20,6 +20,7 @@ public class ScoringOverlapLikedTest extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		FastByIDMap<PreferenceArray> preferences = 	new FastByIDMap<PreferenceArray>();
+		
 		PreferenceArray prefsForUser1 = new GenericUserPreferenceArray(5);
 		prefsForUser1.setUserID(0, 1L);
 		prefsForUser1.setItemID(0, 101L);

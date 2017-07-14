@@ -14,10 +14,10 @@ import com.isistan.lbsn.datamodels.GrafoModel;
 import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
 
-public class PearsonNetwork implements UserSimilarity {
+public class ScoringPearsonNetwork implements UserSimilarity {
 	GrafoModel grafoDataModel;
 
-	public PearsonNetwork(GrafoModel grafoDataModel) {
+	public ScoringPearsonNetwork(GrafoModel grafoDataModel) {
 		super();
 		this.grafoDataModel = grafoDataModel;
 	}

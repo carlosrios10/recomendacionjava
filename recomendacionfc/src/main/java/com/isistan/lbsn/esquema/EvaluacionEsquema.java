@@ -44,18 +44,27 @@ public class EvaluacionEsquema {
 			RandomUtils.useTestSeed();
 			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
 			DataModel ratingModelTotal = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaserating")));
-			//GrafoModel grafoModel = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
-			GrafoModel grafoModel = null;// new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
-			//GrafoModel grafoModel2 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml2"));
-			UserModel userModel = null;//new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
+			
+			DataModel ratingModelTotalWeekDayName = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingweekdayname")));
+			DataModel ratingModelTotalWeekOrWeekend = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingweekorweekend")));
+			DataModel ratingModelLiked = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingliked")));
+			DataModel ratingModelHated = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratinghated")));
+			DataModel ratingModelAbstraccionCategoria = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingabstraccioncate")));
+			DataModel ratingModelCategoriaWeekDayName = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingcateweekdayname")));
+			DataModel ratingModelCategoriaWeekOrWeekend = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingcateweekorweekend")));
+			
+			GrafoModel grafoModelSeleccion =  new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+			GrafoModel grafoModelScoring =  new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographmlscoring"));
+			
+			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
 			ItemModel itemModel = null; //new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModelByItemCategory dataModelItemCat = null;//new DataModelByItemCategory(ratingModelTotal,itemModel,8);
 			
-			 UserSimilarity similarityCache = cache?new SimilitudProxy(new UncenteredCosineSimilarity(ratingModelTotal)):null;
+			UserSimilarity similarityCache = cache?new SimilitudProxy(new UncenteredCosineSimilarity(ratingModelTotal)):null;
 			
 			log.info("Model a evaluar con  {} usuarios y  {} items", ratingModelEvaluar.getNumUsers(), ratingModelEvaluar.getNumItems());
 			EvluadorCantidadVecinos evalCantidadVecinos = new EvluadorCantidadVecinos();
-			log.info("Con {}  para test, Preferencias en test {} ",(1-porcentajeTrain), evalCantidadVecinos.getCantidadTrainTest(ratingModelEvaluar, 0.0, 0.5));
+			log.info("Con {}  para test, Preferencias en test {} ",(1-porcentajeTrain), evalCantidadVecinos.getCantidadTrainTest(ratingModelEvaluar, 0.0,1.0));
 		
 			for (final Configuracion configuracion : configuraciones) {
 //					    ResultadoEvaluarCantidadVecinos  res = evalCantidadVecinos.evaluate(configuracion,
@@ -64,8 +73,17 @@ public class EvaluacionEsquema {
 //					    																	grafoModel,
 //					    																	userModel, 
 //					    																	0.8);
-						RecommenderBuilder recBuilder = new GenRecBuilder(configuracion,ratingModelTotal,grafoModel,userModel,itemModel,dataModelItemCat,grafoModel,similarityCache);
-					    double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluatorTrainTest().evaluate(recBuilder,null,ratingModelEvaluar, 0.0, 0.5);
+						RecommenderBuilder recBuilder = new GenRecBuilder(configuracion,
+								ratingModelTotal,grafoModelSeleccion,userModel,
+								itemModel,dataModelItemCat,grafoModelScoring,
+								similarityCache,ratingModelLiked,ratingModelHated,
+								ratingModelAbstraccionCategoria,
+								ratingModelCategoriaWeekDayName,
+								ratingModelCategoriaWeekOrWeekend,
+								ratingModelTotalWeekDayName,
+								ratingModelTotalWeekOrWeekend
+								);
+					    double scoreMae = new AverageAbsoluteDifferenceRecommenderEvaluatorTrainTest().evaluate(recBuilder,null,ratingModelEvaluar, 0.0,1.0);
 					 // 	double scoreRms = new RMSRecommenderEvaluator().evaluate(recBuilder, null, ratingModelEvaluar, 0.8, 1);
 						Resultado resultado = new Resultado(configuracion, scoreMae, 0 ,
 															0,

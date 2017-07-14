@@ -7,12 +7,12 @@ import org.apache.mahout.cf.taste.common.TasteException;
 import com.isistan.lbsn.datamodels.GrafoDataModel;
 import com.isistan.lbsn.scoring.ScoringCosenoNetwork;
 import com.isistan.lbsn.scoring.Nodo;
-import com.isistan.lbsn.scoring.PearsonNetwork;
+import com.isistan.lbsn.scoring.ScoringPearsonNetwork;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 
 public class PearsonNetworkTest extends TestCase {
-	PearsonNetwork sim;
+	ScoringPearsonNetwork sim;
 	public PearsonNetworkTest(String name) {
 		super(name);
 //		// Graph<V, E> where V is the type of the vertices and E is the type of the edges
@@ -53,7 +53,7 @@ public class PearsonNetworkTest extends TestCase {
 		dataModel.addEdge((Integer)5, 3l, 5l);
 		dataModel.addEdge((Integer)6, 4l, 6l);
 		dataModel.addEdge((Integer)7, 5l, 6l);
-		sim = new PearsonNetwork(new GrafoDataModel(dataModel));
+		sim = new ScoringPearsonNetwork(new GrafoDataModel(dataModel));
 	}
 
 	protected void setUp() throws Exception {

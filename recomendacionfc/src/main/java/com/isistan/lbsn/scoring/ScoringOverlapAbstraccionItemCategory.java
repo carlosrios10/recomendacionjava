@@ -16,10 +16,16 @@ import com.isistan.lbsn.entidades.Item;
 public class ScoringOverlapAbstraccionItemCategory implements Scoring {
 	DataModel dataModel;
 	ItemModel itemModel;
+	DataModel dataModelAbstraccionCate;
 	public ScoringOverlapAbstraccionItemCategory(DataModel dataModel, ItemModel itemModel) {
 		this.dataModel=dataModel;
 		this.itemModel=itemModel;
 	}
+	public ScoringOverlapAbstraccionItemCategory(DataModel dataModel,DataModel dataModelAbstraccionCate ) {
+		this.dataModel=dataModel;
+		this.dataModelAbstraccionCate=dataModelAbstraccionCate;
+	}
+	
 	
 	public double userSimilarity(long userID1, long userID2)
 			throws TasteException {
@@ -38,11 +44,12 @@ public class ScoringOverlapAbstraccionItemCategory implements Scoring {
 
 	public double getScoring(long userID1, long userID2, long itemID)
 			throws TasteException {
-	    FastIDSet xPrefs = dataModel.getItemIDsFromUser(userID1);
-	    FastIDSet yPrefs = dataModel.getItemIDsFromUser(userID2);
+		
+	    FastIDSet xPrefs = (dataModelAbstraccionCate != null)?dataModelAbstraccionCate.getItemIDsFromUser(userID1):dataModel.getItemIDsFromUser(userID1);
+	    FastIDSet yPrefs = (dataModelAbstraccionCate != null)?dataModelAbstraccionCate.getItemIDsFromUser(userID2):dataModel.getItemIDsFromUser(userID2);
 	    
-	    FastIDSet xPrefsCategoria = getCategoria(xPrefs,2);
-	    FastIDSet yPrefsCategoria = getCategoria(yPrefs,2);
+	    FastIDSet xPrefsCategoria = (itemModel != null)? getCategoria(xPrefs,2) : xPrefs;
+	    FastIDSet yPrefsCategoria = (itemModel != null)? getCategoria(yPrefs,2): yPrefs;
 	    
 	    int xPrefsSize = xPrefsCategoria.size();
 	    int yPrefsSize = yPrefsCategoria.size();

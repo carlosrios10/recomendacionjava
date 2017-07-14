@@ -1,5 +1,7 @@
 package com.isistan.lbsn.scoring;
 
+
+
 import org.apache.mahout.cf.taste.common.TasteException;
 
 import com.isistan.lbsn.config.MyProperties;
@@ -9,9 +11,9 @@ import com.isistan.lbsn.scoring.ScoringCosenoNetwork;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import junit.framework.TestCase;
 
-public class CosenoNetworkTest extends TestCase {
-	ScoringCosenoNetwork sim;
-	public CosenoNetworkTest(String name) {
+public class ScoringAreFriendsTest extends TestCase {
+	ScoringAreFriendsNetwork sim;
+	public ScoringAreFriendsTest(String name) {
 		super(name);
 		// Graph<V, E> where V is the type of the vertices and E is the type of the edges
 		UndirectedSparseGraph<Long, Integer> dataModel = new UndirectedSparseGraph<Long, Integer>();
@@ -39,9 +41,9 @@ public class CosenoNetworkTest extends TestCase {
 		dataModel.addEdge((Integer)10, 8l, 10l);
 		dataModel.addEdge((Integer)11, 9l, 10l);
 		
-	//	GrafoDataModel g3 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
-		GrafoDataModel g3 = new GrafoDataModel(dataModel);
-		sim = new ScoringCosenoNetwork(g3);
+		GrafoDataModel g3 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+	//	GrafoDataModel g3 = new GrafoDataModel(dataModel);
+		sim = new ScoringAreFriendsNetwork(g3);
 	}
 
 	protected void setUp() throws Exception {
@@ -53,34 +55,12 @@ public class CosenoNetworkTest extends TestCase {
 	}
 
 	
-	public void testUserSimilarityCorrecto_v2_v5() throws TasteException {
-		System.out.println(sim.userSimilarity(2l, 5l));
-		assertEquals(0.28,sim.userSimilarity(2l, 5l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v6_v7() throws TasteException {
-		System.out.println(sim.userSimilarity(6l, 7l));
-		assertEquals(0.70,sim.userSimilarity(6l, 7l),0.01);
-	}
-	
 	public void testUserSimilarityCorrecto_v1_v2() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 2l));
-		assertEquals(0.86,sim.userSimilarity(1l, 2l),0.01);
+		System.out.println(sim.userSimilarity(2l, 2323l));
+		assertEquals(1.0,sim.userSimilarity(2l, 2323l),0.01);
 	}
-//
-//	public void testUserSimilarityCorrecto_v4_v2() throws TasteException {
-//		System.out.println(sim.userSimilarity(4l, 2l));
-//		assertEquals(0.40,sim.userSimilarity(4l, 2l),0.01);
-//	}
-//	
-//	public void testUserSimilarityCorrecto_v8_v9() throws TasteException {
-//		System.out.println(sim.userSimilarity(8l, 9l));
-//		assertEquals(0.40,sim.userSimilarity(8l, 9l),0.01);
-//	}
-//	
-//	public void testUserSimilarityCorrecto_v1_v9() throws TasteException {
-//		System.out.println(sim.userSimilarity(1l, 9l));
-//		assertEquals(0.40,sim.userSimilarity(1l, 9l),0.01);
-//	}
+	
+
+
 }
 
