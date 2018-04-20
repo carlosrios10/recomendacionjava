@@ -53,7 +53,19 @@ public class ScoringCercaniaUsuarioItem implements Scoring{
 					  Double.valueOf(item.getLatitud()), 
 					  Double.valueOf(item.getLongitud()));
 		
-		return (1/distanciaKms);
+		double distanciaM = (1000*distanciaKms);
+		double cuadras = this.km2Cuadras(distanciaM);
+		
+		if (cuadras<=1)
+			return 1;
+		
+		return (1/(1+Math.log(cuadras)));
+		
+	}
+	private double km2Cuadras(double distanciaM){
+		double cuadras  = distanciaM/100;
+		return cuadras;
+		
 	}
 	public double userSimilarity(long userID1, long userID2)
 			throws TasteException {

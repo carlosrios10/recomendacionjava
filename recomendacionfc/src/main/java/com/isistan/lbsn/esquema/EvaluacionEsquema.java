@@ -38,8 +38,8 @@ public class EvaluacionEsquema {
  * @return
  * To be clear, trainingPercentage and evaluationPercentage are not related. They do not need to add up to 1.0, for example.
  */
-	public ArrayList<Resultado> evaluar(ArrayList<Configuracion> configuraciones, double porcentajeTrain, boolean cache ) {
 		ArrayList<Resultado> resultados = new ArrayList<Resultado>();
+		public ArrayList<Resultado> evaluar(ArrayList<Configuracion> configuraciones, double porcentajeTrain, boolean cache ) {
 		try {
 			RandomUtils.useTestSeed();
 			DataModel ratingModelEvaluar = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingevaluar")));
@@ -57,7 +57,7 @@ public class EvaluacionEsquema {
 			GrafoModel grafoModelScoring =  new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographmlscoring"));
 			
 			UserModel userModel = new UserModel(MyProperties.getInstance().getProperty("databaseusers"));
-			ItemModel itemModel = null; //new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
+			ItemModel itemModel = new ItemModel(MyProperties.getInstance().getProperty("databasevenues"));
 			DataModelByItemCategory dataModelItemCat = null;//new DataModelByItemCategory(ratingModelTotal,itemModel,8);
 			
 			UserSimilarity similarityCache = cache?new SimilitudProxy(new UncenteredCosineSimilarity(ratingModelTotal)):null;

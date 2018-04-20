@@ -1,4 +1,4 @@
-package com.isistan.lbsn.experimentos.dataset2;
+package com.isistan.lbsn.experimentos.datasetfoursquare;
 
 import java.util.ArrayList;
 
@@ -75,25 +75,25 @@ public class Experimento1 {
 //configuraciones.add(new Configuracion(300,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD,-1,-1,
 //ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));		
 
-configuraciones.add(new Configuracion(5,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(5,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));		
-configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(10,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(20,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(20,SimilarityAlgorithmFactory.SimAlg.COSENO,0.7,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(30,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(30,SimilarityAlgorithmFactory.SimAlg.COSENO,0.8,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(50,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(50,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(100,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(100,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(150,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(150,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(200,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(200,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(250,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(250,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
-configuraciones.add(new Configuracion(300,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO,-1,-1,
+configuraciones.add(new Configuracion(300,SimilarityAlgorithmFactory.SimAlg.COSENO,0.9,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_1,-1,-1,
 ScoringType.USER_OVERLAP_LIKED,AgregationType.BASE));
 
 configuraciones.add(new Configuracion(5,SimilarityAlgorithmFactory.SimAlg.COSENO,0.6,TypeNeigh.K_NEIGHBORHOOD_GRUPO_NIVEL_2,-1,-1,

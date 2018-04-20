@@ -61,7 +61,7 @@ public class CalcularDistanciasUsuario {
 			DataModel ratingModel, UserModel userModel, String nombreArchivo) throws TasteException, IOException {
 		System.out.println("Inicia-Calcular Distancia-Casa-Item");
 		CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t');
-		Iterator<Long> iterador = userModel.getMultiMap().keySet().iterator();
+		Iterator<Long> iterador = userModel.getUsuariosTabla().keySet().iterator();
 		while (iterador.hasNext()){
 		Long usuarioId =  iterador.next();
 		User user = userModel.getUser(usuarioId);
@@ -91,7 +91,7 @@ public class CalcularDistanciasUsuario {
 			UserModel userModel,String nombreArchivo) throws IOException, TasteException {
 		System.out.println("Inicia-Calcular Distancia I-I");
 		CSVWriter writer = new CSVWriter(new FileWriter(nombreArchivo), '\t');
-		Iterator<Long> iterador = userModel.getMultiMap().keySet().iterator();
+		Iterator<Long> iterador = userModel.getUsuariosTabla().keySet().iterator();
 		while (iterador.hasNext()){
 		Long usuarioId =  iterador.next();
 		FastIDSet ratingsIds =  ratingModel.getItemIDsFromUser(usuarioId);

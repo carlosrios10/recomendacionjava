@@ -59,13 +59,24 @@ public class ScoringCercaniaUsuarioUsuario implements Scoring {
 					  Double.valueOf(user1.getLongitud()), 
 					  Double.valueOf(user2.getLatitud()), 
 					  Double.valueOf(user2.getLongitud()));
-		if (distanciaKms == 0)
-			return 1/0.001 ;
-		    
-		return (1/distanciaKms);
+		
+
+		double distanciaM = (1000*distanciaKms);
+		double cuadras = this.km2Cuadras(distanciaM);
+		
+		if (cuadras<=1)
+			return 1;
+		
+		return (1/(1+Math.log(cuadras)));
 	}
 	private double km2Metros(double kmsDist){
 		return (1000*kmsDist);
+		
+	}
+	
+	private double km2Cuadras(double distanciaM){
+		double cuadras  = distanciaM/100;
+		return cuadras;
 		
 	}
 

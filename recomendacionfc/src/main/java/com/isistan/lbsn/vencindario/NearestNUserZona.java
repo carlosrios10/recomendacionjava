@@ -36,7 +36,7 @@ public class NearestNUserZona implements UserNeighborhoodAux {
 		this.userModel = userModel;
 		this.radio = radio;
 		Preconditions.checkArgument(n >= 1, "n must be at least 1");
-		int numUsers = userModel.getMultiMap().size();
+		int numUsers = userModel.getUsuariosTabla().size();
 		this.n = n > numUsers ? numUsers : n;
 		this.minSimilarity = minSimilarity;
 		this.refreshHelper = new RefreshHelper(null);

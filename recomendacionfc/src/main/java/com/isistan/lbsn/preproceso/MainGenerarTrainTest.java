@@ -46,8 +46,8 @@ public class MainGenerarTrainTest {
 			FastByIDMap<PreferenceArray> preferencias = filtrarPreferenciasdeModelTotal(trainingModel,ratingModelTotal);
 			DataModel modelFiltrado = new GenericDataModel(preferencias);
 		    DataModel testingModel = new GenericDataModel(testPrefs);
-		    String resulTest = MyProperties.getInstance().getProperty("resultados")+"one_state_test_matriz_estrella_mas_10.csv";
-		    String resulTrain = MyProperties.getInstance().getProperty("resultados")+"one_state_train_matriz_estrella_total.csv";
+		    String resulTest = MyProperties.getInstance().getProperty("resultados")+"test_3_count_tips_con_user_grafo_ny_tips_senti_discret_2.csv";
+		    String resulTrain = MyProperties.getInstance().getProperty("resultados")+"train_4_count_tips_con_user_grafo_tips_senti_discret_2.csv";
 		    toCSV(testingModel,resulTest);
 		    toCSV(modelFiltrado,resulTrain);
 		    System.out.println("FIN - MainGenerarTrainTest -");

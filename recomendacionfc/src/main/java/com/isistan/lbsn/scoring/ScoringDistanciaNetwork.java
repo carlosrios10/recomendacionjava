@@ -10,10 +10,16 @@ import com.isistan.lbsn.datamodels.GrafoModel;
 
 public class ScoringDistanciaNetwork implements Scoring{
 	GrafoModel grafoDataModel;
-	double MEAN_PATH = 0.16463998828;
+	double meanPath = 0.16463998828 ;
 	public ScoringDistanciaNetwork(GrafoModel grafoDataModel) {
 		super();
 		this.grafoDataModel = grafoDataModel;
+	}
+	public ScoringDistanciaNetwork(GrafoModel grafoDataModel,double meanPath) {
+		super();
+		this.grafoDataModel = grafoDataModel;
+		this.meanPath = meanPath;
+		
 	}
 	public double userSimilarity(long userID1, long userID2)
 			throws TasteException {
@@ -24,7 +30,7 @@ public class ScoringDistanciaNetwork implements Scoring{
 			return 0;
 		
 		if (dist > 2 )
-			return MEAN_PATH;
+			return meanPath;
 		
 		return (1.0/dist);
 	}

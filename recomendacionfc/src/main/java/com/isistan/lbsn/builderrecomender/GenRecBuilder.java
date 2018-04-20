@@ -145,7 +145,11 @@ public class GenRecBuilder implements RecommenderBuilder {
 //			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
 //			return new GenericUserBasedRecommenderNoNormalizado(modelFiltrado, neighborhood, agregation);
 //		}else{
+		log.info(configuracion.getSimForAgg().toString());
 			UserSimilarity sim = (cacheUserSimilarity!=null)?cacheUserSimilarity: SimilarityAlgorithmFactory.build(this.modelTotal, grafoModelSeleccionNeig,configuracion.getSimAlg(),configuracion.getBeta(),configuracion.getBeta());
+			
+			UserSimilarity simForAgg = (configuracion.getSimForAgg()==null)?sim: SimilarityAlgorithmFactory.build(this.modelTotal, grafoModelSeleccionNeig,configuracion.getSimForAgg(),configuracion.getBeta(),configuracion.getBeta());
+			
 			Scoring scoring = ScoringFactory.build(configuracion.getScoringType(), modelTotal,
 					grafoModelScoring,userModel,itemModel,
 					dataModelItemCat,modelTotalLiked,modelTotalHated,
@@ -157,7 +161,7 @@ public class GenRecBuilder implements RecommenderBuilder {
 			UserNeighborhoodAux neighborhood = TypeNeighborhoodFactory.build(sim, modelTotal, configuracion.getTypeNeigh(),
 					configuracion.getNeighSize(), configuracion.getThreshold(),
 					grafoModelSeleccionNeig,scoring,userModel,itemModel);
-			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), sim, scoring);
+			Agregation agregation = AgregationFactory.build(configuracion.getAgregationType(), simForAgg, scoring);
 			return new GenericUserBasedRecommenderNoNormalizado(modelTotal, neighborhood, agregation);
 //		}
 	}

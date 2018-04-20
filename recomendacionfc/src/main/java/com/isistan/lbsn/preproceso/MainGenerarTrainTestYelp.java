@@ -49,8 +49,8 @@ public class MainGenerarTrainTestYelp {
 //			FastByIDMap<PreferenceArray> preferencias = filtrarPreferenciasdeModelTotal(trainingModel,ratingModelTotal);
 //			DataModel modelFiltrado = new GenericDataModel(preferencias);
 		    DataModel testingModel = new GenericDataModel(testPrefs);
-		    String resulTest = MyProperties.getInstance().getProperty("resultadosprocesar")+"one_state_AZ_test_matriz_estrella_mas_10.csv";
-		    String resulTrain = MyProperties.getInstance().getProperty("resultadosprocesar")+"one_state_AZ_train_matriz_estrella_mas_10.csv";
+		    String resulTest = MyProperties.getInstance().getProperty("resultadosprocesar")+"test_fours.csv";
+		    String resulTrain = MyProperties.getInstance().getProperty("resultadosprocesar")+"train_fours.csv";
 		    toCSV(testingModel,resulTest);
 		    toCSV(trainingModel,resulTrain);
 		    System.out.println("FIN - MainGenerarTrainTest -");

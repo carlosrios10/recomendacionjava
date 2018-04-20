@@ -16,15 +16,15 @@ import com.isistan.lbsn.entidades.Item;
 
 public class ItemModel {
 	private  File dataFile;
-	Map<Long,Item> multiMap;
+	Map<Long,Item> itemsTabla;
 	
 	public ItemModel() {
 		super();
-		 multiMap = new HashMap<Long,Item>();
+		 itemsTabla = new HashMap<Long,Item>();
 		 Item item = new Item();
     	 item.setLatitud("45.5405832");
     	 item.setLongitud("-73.5965186");
-    	 multiMap.put(new Long(101759),item);
+    	 itemsTabla.put(new Long(101759),item);
 	}
 
 	public ItemModel(String fileName) throws IOException{
@@ -34,7 +34,7 @@ public class ItemModel {
 	      throw new FileNotFoundException(dataFile.toString());
 	    }
 	    Preconditions.checkArgument(dataFile.length() > 0L, "dataFile is empty");
-	    multiMap = new HashMap<Long,Item>();
+	    itemsTabla = new HashMap<Long,Item>();
 	    CSVReader csvReader = new CSVReader(new FileReader(dataFile));
 	    String[] lineaCsv  = null;
 	    csvReader.readNext();
@@ -60,18 +60,18 @@ public class ItemModel {
         		 if( cat3!= -1)
         			 item.getCategoriaNivel3().add(new Long(cat3));
 			}
-        	 multiMap.put(new Long(lineaCsv[0].trim()),item);
+        	 itemsTabla.put(new Long(lineaCsv[0].trim()),item);
                       
          }
          csvReader.close();
 	}
 	
 	public Item getItem(long id){
-		return this.multiMap.get(new Long(id));
+		return this.itemsTabla.get(new Long(id));
 	}
 	
 	public int getCantidadDeItems(){
-		return this.multiMap.size();
+		return this.itemsTabla.size();
 	}
 
 }

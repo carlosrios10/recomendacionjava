@@ -20,7 +20,7 @@ public class TypeNeighborhoodFactory {
 						   K_FRIENDS_NIVEL_3,
 						   K_FRIENDS_NIVEL_4,
 						   K_FRIENDS_NIVEL_5,
-						   K_NEIGHBORHOOD_GRUPO,
+						   K_NEIGHBORHOOD_GRUPO_NIVEL_1,
 						   K_NEIGHBORHOOD_GRUPO_NIVEL_2,
 						   K_NEIGHBORHOOD_ZONA,
 						   K_NEIGHBORHOOD_ZONA_RADIO_1,
@@ -125,7 +125,7 @@ public class TypeNeighborhoodFactory {
                 return userNeighborhood;    
 
                 
-            case K_NEIGHBORHOOD_GRUPO:
+            case K_NEIGHBORHOOD_GRUPO_NIVEL_1:
                 try {
                     userNeighborhood = new NearestNUserGrupo(neighSize, userSimilarity,userModel,1);
                 } catch (TasteException exception) {

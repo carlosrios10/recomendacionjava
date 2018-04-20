@@ -1,0 +1,1 @@
+rsync -e 'ssh -p 22' --delete --checksum -z --progress -tr ./ crios@192.168.2.99:/home/crios/proyectoRecomendacion

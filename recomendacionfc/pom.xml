@@ -26,6 +26,7 @@
 			<groupId>org.apache.mahout</groupId>
 			<artifactId>mahout-core</artifactId>
 			<version>0.9</version>
+<!-- 			<version>0.9.0.2.1.7.0-784</version> -->
 		</dependency>
 		<dependency>
 			<groupId>au.com.bytecode</groupId>
@@ -100,15 +101,29 @@
 					</execution>
 				</executions>
 				<configuration>
+					<!-- YELP -->
 					<!-- <mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionVecinosIRS</mainClass> -->
 <!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosPonderacionVecinos</mainClass> -->
-					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionRedesPonderacionScorings</mainClass>
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionRedesPonderacionScorings</mainClass> -->
 <!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionRedesByScoringPonderacionScoring</mainClass> -->
 <!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionVecinos</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionZonasPonderacionScorings</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentosSeleccionVecinosByScoring</mainClass> -->
+<!-- 						<mainClass>com.isistan.lbsn.experimentos.datasetyelp.ExperimentoBaselineFBCF</mainClass> -->
+					<!-- FOURSQUARE -->
 					<!-- <mainClass>com.isistan.lbsn.experimentos.dataset2.Experimento3</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetfoursquare.ExperimentosSeleccionVecinos</mainClass> -->
+					<mainClass>com.isistan.lbsn.experimentos.datasetfoursquare.ExperimentosPonderacionVecinos</mainClass>
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetfoursquare.ExperimentosSeleccionVecinosByScoring</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetfoursquare.ExperimentosSeleccionStateCountyPonderacionScoring</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetfoursquare.ExperimentosSeleccionRedesPonderacionScorings</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetfoursquare.ExperimentosSeleccionZonasPonderacionScorings</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.experimentos.datasetfoursquare.ExperimentoBaselineFBCF</mainClass> -->
+					
+					<!--COMUN -->
 					<!-- <mainClass>com.isistan.lbsn.preproceso.MainCalcularVecinosEnGrafo</mainClass> -->
 <!-- 					<mainClass>com.isistan.lbsn.preproceso.MainCalcularVecinos</mainClass> -->
-					<!--<mainClass>com.isistan.lbsn.preproceso.MainCalcularGoodness</mainClass> -->
+<!-- 					<mainClass>com.isistan.lbsn.preproceso.MainCalcularGoodness</mainClass> -->
 					<cleanupDaemonThreads>false</cleanupDaemonThreads>
 				</configuration>
 			</plugin>

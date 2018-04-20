@@ -1,4 +1,4 @@
-package com.isistan.lbsn.experimentos.dataset2;
+package com.isistan.lbsn.experimentos.datasetfoursquare;
 
 import java.util.ArrayList;
 

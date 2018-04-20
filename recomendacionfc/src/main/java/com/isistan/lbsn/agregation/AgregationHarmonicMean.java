@@ -31,11 +31,12 @@ public class AgregationHarmonicMean implements Agregation {
 
 	public double userSimilarity(long userID1, long userID2)
 			throws TasteException {
+		
 		double simRating = userSimilarityRating.userSimilarity(userID1, userID2);
 		double simScoring = scoring.getScoring(userID1, userID2,0);
-		double harmonicMean	= (2*simRating*simScoring)/(simRating+simScoring);
-		return harmonicMean;
+		double harmonicMean =   (2*simRating*simScoring)/(simRating+simScoring);
 		
+		return harmonicMean;
 	}
 
 	public void setPreferenceInferrer(PreferenceInferrer inferrer) {
@@ -45,10 +46,14 @@ public class AgregationHarmonicMean implements Agregation {
 
 	public double getAgregation(long userID1, long userID2, long itemID)
 			throws TasteException {
+		
 		double simRating = userSimilarityRating.userSimilarity(userID1, userID2);
-		double simScoring = scoring.getScoring(userID1, userID2,0);
-		double harmonicMean	= (2*simRating*simScoring)/(simRating+simScoring);
+		double simScoring = scoring.getScoring(userID1, userID2,itemID);
+		double harmonicMean =   (2*simRating*simScoring)/(simRating+simScoring);
+		
+
 		return harmonicMean;
+		
 	}
 
 }

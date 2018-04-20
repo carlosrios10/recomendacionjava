@@ -7,6 +7,7 @@ import org.apache.mahout.cf.taste.impl.model.GenericUserPreferenceArray;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 
+import com.isistan.lbsn.config.MyProperties;
 import com.isistan.lbsn.datamodels.GrafoDataModel;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
@@ -44,8 +45,8 @@ public class ScoringDistanciaNetworkTest extends TestCase {
 		dataModel.addEdge((Integer)10, 8l, 10l);
 		dataModel.addEdge((Integer)11, 9l, 10l);
 		
-	//	GrafoDataModel g3 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
-		GrafoDataModel g3 = new GrafoDataModel(dataModel);
+		GrafoDataModel g3 = new GrafoDataModel(MyProperties.getInstance().getProperty("databasegrafographml"));
+		//GrafoDataModel g3 = new GrafoDataModel(dataModel);
 		
 		FastByIDMap<PreferenceArray> preferences = 	new FastByIDMap<PreferenceArray>();
 		PreferenceArray prefsForUser4 = new GenericUserPreferenceArray(0);
@@ -76,55 +77,55 @@ public class ScoringDistanciaNetworkTest extends TestCase {
 	}
 
 	
-	public void testUserSimilarityCorrecto_v1_v2() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 2l));
-		assertEquals(1,sim.userSimilarity(1l, 2l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_v8() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 8l));
-		assertEquals(0,sim.userSimilarity(1l, 8l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_v3() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 3l));
-		assertEquals(1,sim.userSimilarity(1l, 3l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_v5() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 5l));
-		assertEquals(0.5,sim.userSimilarity(1l, 5l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_v10() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 10l));
-		assertEquals(0,sim.userSimilarity(1l, 10l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_v6() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 6l));
-		assertEquals(0.333,sim.userSimilarity(1l, 6l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_v4() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 4l));
-		assertEquals(0.5,sim.userSimilarity(1l, 4l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_v2_notexist() throws TasteException {
-		System.out.println(sim.userSimilarity(1l, 400l));
-		assertEquals(0,sim.userSimilarity(1l, 400l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_notexist() throws TasteException {
-		System.out.println(sim.userSimilarity(1000l, 4l));
-		assertEquals(0,sim.userSimilarity(1000l, 4l),0.01);
-	}
-	
-	public void testUserSimilarityCorrecto_v1_isalone() throws TasteException {
-		System.out.println(sim.userSimilarity(11l, 1l));
-		assertEquals(0,sim.userSimilarity(11l, 1l),0.01);
-	}
+//	public void testUserSimilarityCorrecto_v1_v2() throws TasteException {
+//		System.out.println(sim.userSimilarity(1l, 2l));
+//		assertEquals(1,sim.userSimilarity(1l, 2l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_v8() throws TasteException {
+//		System.out.println(sim.userSimilarity(1l, 8l));
+//		assertEquals(0,sim.userSimilarity(1l, 8l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_v3() throws TasteException {
+//		System.out.println(sim.userSimilarity(1l, 3l));
+//		assertEquals(1,sim.userSimilarity(1l, 3l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_v5() throws TasteException {
+//		System.out.println(sim.userSimilarity(1l, 5l));
+//		assertEquals(0.5,sim.userSimilarity(1l, 5l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_v10() throws TasteException {
+//		System.out.println(sim.userSimilarity(1l, 10l));
+//		assertEquals(0,sim.userSimilarity(1l, 10l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_v6() throws TasteException {
+//		System.out.println(sim.userSimilarity(1l, 6l));
+//		assertEquals(0.333,sim.userSimilarity(1l, 6l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_v4() throws TasteException {
+//		System.out.println(sim.userSimilarity(1l, 4l));
+//		assertEquals(0.5,sim.userSimilarity(1l, 4l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_v2_notexist() throws TasteException {
+//		System.out.println(sim.userSimilarity(1l, 400l));
+//		assertEquals(0,sim.userSimilarity(1l, 400l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_notexist() throws TasteException {
+//		System.out.println(sim.userSimilarity(1000l, 4l));
+//		assertEquals(0,sim.userSimilarity(1000l, 4l),0.01);
+//	}
+//	
+//	public void testUserSimilarityCorrecto_v1_isalone() throws TasteException {
+//		System.out.println(sim.userSimilarity(11l, 1l));
+//		assertEquals(0,sim.userSimilarity(11l, 1l),0.01);
+//	}
 
 //	
 //	public void testUserSimilarityCorrecto_v6_v7() throws TasteException {
@@ -152,4 +153,8 @@ public class ScoringDistanciaNetworkTest extends TestCase {
 //		assertEquals(0.40,sim.userSimilarity(1l, 9l),0.01);
 //	}
 
+	public void testUserSimilarityCorrecto_v1_v2() throws TasteException {
+	System.out.println(sim.userSimilarity(37l, 46l));
+	assertEquals(1,sim.userSimilarity(1l, 2l),0.01);
+}
 }

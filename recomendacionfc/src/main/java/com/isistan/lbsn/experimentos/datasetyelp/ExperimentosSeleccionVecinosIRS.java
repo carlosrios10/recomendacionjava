@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.isistan.lbsn.agregation.AgregationFactory.AgregationType;
 import com.isistan.lbsn.esquema.EvaluacionEsquema;
 import com.isistan.lbsn.esquema.EvaluacionEsquemaIRS;
-import com.isistan.lbsn.experimentos.dataset2.Experimento1;
+import com.isistan.lbsn.experimentos.datasetfoursquare.Experimento1;
 import com.isistan.lbsn.recomendacionfc.Configuracion;
 import com.isistan.lbsn.recomendacionfc.Resultado;
 import com.isistan.lbsn.recomendacionfc.SimilarityAlgorithmFactory;

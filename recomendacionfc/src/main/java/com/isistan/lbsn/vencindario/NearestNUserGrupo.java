@@ -41,7 +41,7 @@ public final class NearestNUserGrupo implements UserNeighborhoodAux {
 		this.samplingRate =  samplingRate;
 		this.userModel = userModel;
 		Preconditions.checkArgument(n >= 1, "n must be at least 1");
-		int numUsers = userModel.getMultiMap().size();
+		int numUsers = userModel.getUsuariosTabla().size();
 		this.n = n > numUsers ? numUsers : n;
 		this.nivel = nivel;
 		this.minSimilarity = minSimilarity;

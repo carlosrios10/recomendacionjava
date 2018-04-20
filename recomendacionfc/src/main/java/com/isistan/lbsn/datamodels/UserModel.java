@@ -21,25 +21,25 @@ import com.isistan.lbsn.util.Util;
 
 public class UserModel {
 	private  File dataFile;
-	Map<Long,User> multiMap;
-	Map<Integer,ArrayList<Long>> multiMapGrupo;
-	Map<Integer,ArrayList<Long>> multiMapGrupoNivel2;
+	Map<Long,User> usuariosTabla;
+	Map<Integer,ArrayList<Long>> grupoNivel1;
+	Map<Integer,ArrayList<Long>> grupoNivel2;
 	private static final Logger log = LoggerFactory.getLogger(UserModel.class);
 	public UserModel() {
 		super();
-		  multiMap = new HashMap<Long,User>();
+		  usuariosTabla = new HashMap<Long,User>();
 		  User user19 = new User();
 		  user19.setLatitud("46.7866719");
 		  user19.setLongitud("-92.1004852");
-		  multiMap.put(new Long(19) , user19);
+		  usuariosTabla.put(new Long(19) , user19);
 		  User user1095708 = new User();
 		  user1095708.setLatitud("40.715972");
 		  user1095708.setLongitud("-74.001437");
-		  multiMap.put(new Long(1095708) , user1095708);
+		  usuariosTabla.put(new Long(1095708) , user1095708);
 		  User user1095712 = new User();
 		  user1095712.setLatitud("40.715972");
 		  user1095712.setLongitud("-74.001437");
-		  multiMap.put(new Long(1095712) , user1095712);
+		  usuariosTabla.put(new Long(1095712) , user1095712);
 		
 	}
 
@@ -50,9 +50,9 @@ public class UserModel {
 	      throw new FileNotFoundException(dataFile.toString());
 	    }
 	    Preconditions.checkArgument(dataFile.length() > 0L, "dataFile is empty");
-	    multiMap = new HashMap<Long,User>();
-	    multiMapGrupo = new HashMap<Integer,ArrayList<Long>>();
-	    multiMapGrupoNivel2 = new HashMap<Integer,ArrayList<Long>>();
+	    usuariosTabla = new HashMap<Long,User>();
+	    grupoNivel1 = new HashMap<Integer,ArrayList<Long>>();
+	    grupoNivel2 = new HashMap<Integer,ArrayList<Long>>();
 	    CSVReader csvReader = new CSVReader(new FileReader(dataFile));
 	    String[] lineaCsv  = null;
 	    csvReader.readNext();
@@ -62,49 +62,49 @@ public class UserModel {
         	 user.setId(Long.parseLong(lineaCsv[0].trim()));
         	 user.setLatitud(lineaCsv[1].trim());
         	 user.setLongitud(lineaCsv[2].trim());
-        	 user.setGrupo(Integer.parseInt(lineaCsv[3].trim()));
-//        	 user.setGrupoNivel2(Integer.parseInt(lineaCsv[4].trim()));
-        	 multiMap.put(new Long(lineaCsv[0].trim()),user);
-        	 Integer idGrupo = new Integer(user.getGrupo());
+        	 user.setGrupoNivel1(Integer.parseInt(lineaCsv[4].trim()));
+        	 user.setGrupoNivel2(Integer.parseInt(lineaCsv[5].trim()));
+        	 usuariosTabla.put(new Long(lineaCsv[0].trim()),user);
+        	 Integer idGrupoNivel1 = new Integer(user.getGrupoNivel1());
         	 Integer idGrupoNivel2 = new Integer(user.getGrupoNivel2());
-//        	 // grupo nivel 1
-//        	 if( multiMapGrupo.containsKey(idGrupo) ){
-//        		 multiMapGrupo.get(idGrupo).add(user.getId());
-//        	 }else{
-//        		 ArrayList<Long> listaUser = new ArrayList<Long>();
-//        		 listaUser.add(user.getId());
-//        		 multiMapGrupo.put(idGrupo,listaUser);
-//        	 }
-//        	 // grupo nivel 2
-//        	 if( multiMapGrupoNivel2.containsKey(idGrupoNivel2) ){
-//        		 multiMapGrupoNivel2.get(idGrupoNivel2).add(user.getId());
-//        	 }else{
-//        		 ArrayList<Long> listaUser2 = new ArrayList<Long>();
-//        		 listaUser2.add(user.getId());
-//        		 multiMapGrupoNivel2.put(idGrupoNivel2,listaUser2);
-//        	 }
+        	 // grupo nivel 1
+        	 if( grupoNivel1.containsKey(idGrupoNivel1) ){
+        		 grupoNivel1.get(idGrupoNivel1).add(user.getId());
+        	 }else{
+        		 ArrayList<Long> listaUser = new ArrayList<Long>();
+        		 listaUser.add(user.getId());
+        		 grupoNivel1.put(idGrupoNivel1,listaUser);
+        	 }
+        	 // grupo nivel 2
+        	 if( grupoNivel2.containsKey(idGrupoNivel2) ){
+        		 grupoNivel2.get(idGrupoNivel2).add(user.getId());
+        	 }else{
+        		 ArrayList<Long> listaUser2 = new ArrayList<Long>();
+        		 listaUser2.add(user.getId());
+        		 grupoNivel2.put(idGrupoNivel2,listaUser2);
+        	 }
                       
          }
          csvReader.close();
          log.info("Levantado datos de usuarios");
-         log.info("Cantidad de usarios con zona: {}",multiMap.size());
+         log.info("Cantidad de usarios con zona: {}",usuariosTabla.size());
 	}
 	
 	public User getUser(long id){
 		//System.out.println("idpppp: "+id);
-		return this.multiMap.get(new Long(id));
+		return this.usuariosTabla.get(new Long(id));
 	}
 	
 	public Collection<Long> getUserGrupo(User user){
-		ArrayList<Long> grupo = multiMapGrupo.get(new Integer(user.getGrupo()));
+		ArrayList<Long> grupo = grupoNivel1.get(new Integer(user.getGrupoNivel1()));
 		return grupo;
 	}
 	public Collection<Long> getUserGrupo(User user,int nivel){
 		if ( nivel == 2 ){
-			ArrayList<Long> grupo = multiMapGrupoNivel2.get(new Integer(user.getGrupoNivel2()));
+			ArrayList<Long> grupo = grupoNivel2.get(new Integer(user.getGrupoNivel2()));
 			return grupo;
 		}else {
-			ArrayList<Long> grupo = multiMapGrupo.get(new Integer(user.getGrupo()));
+			ArrayList<Long> grupo = grupoNivel1.get(new Integer(user.getGrupoNivel1()));
 			return grupo;
 		}
 		
@@ -124,7 +124,7 @@ public class UserModel {
 	}
 	public Collection<Long> getUserZona(User user){
 		ArrayList<Long> usuariosZona = new ArrayList<Long>();
-		Iterator<Long> it = multiMap.keySet().iterator();
+		Iterator<Long> it = usuariosTabla.keySet().iterator();
 		while (it.hasNext()) {
 			Long IdUser2 = it.next();
 			User user2 = getUser(IdUser2);
@@ -140,7 +140,7 @@ public class UserModel {
 	
 	public Collection<Long> getUserZona(User user,int radio){
 		ArrayList<Long> usuariosZona = new ArrayList<Long>();
-		Iterator<Long> it = multiMap.keySet().iterator();
+		Iterator<Long> it = usuariosTabla.keySet().iterator();
 		while (it.hasNext()) {
 			Long IdUser2 = it.next();
 			User user2 = getUser(IdUser2);
@@ -157,12 +157,20 @@ public class UserModel {
 		else			
 			return usuariosZona;
 	}
-	public Map<Long, User> getMultiMap() {
-		return multiMap;
+//	public Map<Long, User> getMultiMap() {
+//		return usuarios;
+//	}
+//
+//	public void setMultiMap(Map<Long, User> multiMap) {
+//		this.usuarios = multiMap;
+//	}
+
+	public Map<Long, User> getUsuariosTabla() {
+		return usuariosTabla;
 	}
 
-	public void setMultiMap(Map<Long, User> multiMap) {
-		this.multiMap = multiMap;
+	public void setUsuariosTabla(Map<Long, User> usuariosTabla) {
+		this.usuariosTabla = usuariosTabla;
 	}
 
 }

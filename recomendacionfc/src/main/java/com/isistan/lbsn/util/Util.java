@@ -24,7 +24,7 @@ public class Util {
 		csv.write("C:/Users/Usuarioç/Desktop/carlos/Tesis/datasets/foursquare/resultados/"+fileName+".csv", new CSVWriteProc() {
 		    public void process(CSVWriter out) {
 		        out.writeNext("Id","distanciaTotalRecorrida","distanciaPromedioRecorrida","cantidadDeItem","distanciaTotalEntreItems");
-				Iterator<Long> iterador = userModel.getMultiMap().keySet().iterator();
+				Iterator<Long> iterador = userModel.getUsuariosTabla().keySet().iterator();
 				while (iterador.hasNext()){
 					Long usuarioId =  iterador.next();
 					User user = userModel.getUser(usuarioId);
@@ -88,7 +88,43 @@ public class Util {
 		});
 		
 	}
-	
+	public static void exportarResultadoCsvSVD(final ArrayList<Resultado> resultados, String fileName) {
+		String resultadosPath = MyProperties.getInstance().getProperty("resultados");
+		CSV csv = CSV
+			    .separator(',')  // delimiter of fields
+			    .quote('"')      // quote character
+			    .create();       // new instance is immutable
+		
+		csv.write(resultadosPath+fileName+".csv", new CSVWriteProc() {
+		    public void process(CSVWriter out) {
+		        out.writeNext("modelo","numfeatures","Mae","Rms",
+		        			  "Precision","Recall","F1Measure",
+		        			  "Fallou","nDgg",
+		        			  "Reach","numUserTest","userTestConVecinos","promedioVecinos","numPrefTest");
+		        for (Resultado resultado : resultados) {
+		        	out.writeNext(
+		        			    resultado.getConfiguracion().getTypeModel().toString(),
+		        				Integer.toString(resultado.getConfiguracion().getNumFeature()),
+		        				Double.toString(resultado.getScoreMae()),
+		        				Double.toString(resultado.getScoreRms()),
+		        				Double.toString(resultado.getScorePrecision()),
+		        				Double.toString(resultado.getScoreRecall()),
+		        				Double.toString(resultado.getScoreF1Measure()),
+		        				Double.toString(resultado.getFallout()),
+		        				Double.toString(resultado.getnDgg()),
+		        				Double.toString(resultado.getReach()),
+		        				Double.toString(resultado.getResultadoCantV().getCantidadUsuariosTest()),
+		        				Double.toString(resultado.getResultadoCantV().getCantidadUsuarioTestConVecinos()),
+		        				Double.toString(resultado.getResultadoCantV().getPromedioVecinos()),
+		        				Double.toString(resultado.getResultadoCantV().getCantidadPreferenciasTest())
+		        				
+		        				);
+				}
+		        
+		   }
+		});
+		
+	}
 	
 	private static void exportarCsv(final ArrayList<Resultado> resultados) {
 		CSV csv = CSV

@@ -124,6 +124,7 @@ public class GrafoDataModel implements GrafoModel {
 			GraphMLReader2<UndirectedSparseGraph<Long, Integer>, Long, Integer> gmlr = new GraphMLReader2<UndirectedSparseGraph<Long, Integer>, Long, Integer>(
 					reader, gtrans, vtrans, etrans, hetrans);
 			setGrafo(gmlr.readGraph());
+			gmlr.close();
 			
 //			pageRank = new PageRank<Long, Integer>(getGrafo(),0.95);
 //			hits = new HITS<Long, Integer>(getGrafo());
@@ -299,7 +300,7 @@ public class GrafoDataModel implements GrafoModel {
 				if (count%100 == 0)
 					log.info("cantidad usuarios procesados "+count);
 				if(this.grafo.containsVertex(long1)){
-					for(int i =1; i<=3;i++){
+					for(int i =1; i<=2;i++){
 						
 						FastIDSet totalVecinos = new FastIDSet();
 						FastIDSet amigos = new FastIDSet();
@@ -396,12 +397,14 @@ public class GrafoDataModel implements GrafoModel {
 		if (this.grafo.isNeighbor(userID1,userID2))
 			return 1;
 		
-		FastIDSet vecinos = getFriendsMyFriendsFastIDSet(userID1, 2);
-		if (vecinos == null)
-			return null;
-		
-		if(vecinos.contains(userID2))
-			return 2;
+		// tarda mucho en calcular la distancia por lo tanto no sera tenido en  cuenta
+		//FastIDSet vecinos = getFriendsMyFriendsFastIDSet(userID1, 2);
+//		Collection<Long> vecinos = getFriendsMyFriends(userID1, 2);
+//		if (vecinos == null)
+//			return null;
+//		
+//		if(vecinos.contains(userID2))
+//			return 2;
 		
 		return 3;
 			

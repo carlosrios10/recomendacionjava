@@ -4,15 +4,16 @@ public class User {
 	Long id;
 	String latitud;
 	String longitud;
+//	String latitudCentroZona;
+//	String longitudCentroZona;
+	int grupoNivel1;
+	int grupoNivel2;
+	
 	double distanciaTotalRecorrida;
 	double distanciaPromedioRecorrida;
 	int cantidadDeItem;
 	double distanciaTotalEntreItems;
-	int grupo;
-	int grupoNivel2;
 	double radioZona = 1;
-	String latitudCentroZona;
-	String longitudCentroZona;
 
 	
 	public User(){
@@ -73,12 +74,7 @@ public class User {
 				" total Distancia items:"+getDistanciaTotalEntreItems()+
 				" total items:"+getCantidadDeItem();
 	}
-	public int getGrupo() {
-		return grupo;
-	}
-	public void setGrupo(int grupo) {
-		this.grupo = grupo;
-	}
+
 	public double getRadioZona() {
 		return radioZona;
 	}
@@ -91,17 +87,23 @@ public class User {
 	public void setGrupoNivel2(int grupoNivel2) {
 		this.grupoNivel2 = grupoNivel2;
 	}
-	public String getLatitudCentroZona() {
-		return latitudCentroZona;
+//	public String getLatitudCentroZona() {
+//		return latitudCentroZona;
+//	}
+//	public void setLatitudCentroZona(String latitudCentroZona) {
+//		this.latitudCentroZona = latitudCentroZona;
+//	}
+//	public String getLongitudCentroZona() {
+//		return longitudCentroZona;
+//	}
+//	public void setLongitudCentroZona(String longitudCentroZona) {
+//		this.longitudCentroZona = longitudCentroZona;
+//	}
+	public int getGrupoNivel1() {
+		return grupoNivel1;
 	}
-	public void setLatitudCentroZona(String latitudCentroZona) {
-		this.latitudCentroZona = latitudCentroZona;
-	}
-	public String getLongitudCentroZona() {
-		return longitudCentroZona;
-	}
-	public void setLongitudCentroZona(String longitudCentroZona) {
-		this.longitudCentroZona = longitudCentroZona;
+	public void setGrupoNivel1(int grupoNivel1) {
+		this.grupoNivel1 = grupoNivel1;
 	}
 
 

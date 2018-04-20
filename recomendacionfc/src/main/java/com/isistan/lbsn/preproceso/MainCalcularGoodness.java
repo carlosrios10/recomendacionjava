@@ -16,7 +16,7 @@ public class MainCalcularGoodness {
 		try {
 			System.out.println("INICIO - MainCalcularGoodness  -");
 			DataModel	ratingModel = new FileDataModel(new File(MyProperties.getInstance().getProperty("databaseratingprocesar")));
-			new GoodNessEvaluator().evaluate( ratingModel, 0.5, 1.0,PATH_RESULTADO+"vecinos_goodness_mas10.csv");
+			new GoodNessEvaluator().evaluate( ratingModel, 0.5, 1.0,PATH_RESULTADO+"vecinos_goodness_matriz_tips_foursq.csv");
 			System.out.println("FIN - MainCalcularGoodness -");
 		} catch (IOException e) {
 			e.printStackTrace();
