@@ -164,10 +164,10 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
 
 		logger.info("Fin cargando Scoring");
 
-		if (!verificarScoring(trainRating, scorers, scorings))
-			logger.info("Inicio-Model Training - Error al cargar los scorings");
-		else
-			logger.info("Inicio-Model Training - Correcta carga de los scorings");
+//		if (!verificarScoring(trainRating, scorers, scorings))
+//			logger.info("Inicio-Model Training - Error al cargar los scorings");
+//		else
+//			logger.info("Inicio-Model Training - Correcta carga de los scorings");
 
 		logger.info("Inicio-Model Training");
 		// TODO Implement model training

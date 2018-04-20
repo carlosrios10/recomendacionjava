@@ -319,13 +319,13 @@ task crossfoldLBSN(type: Crossfold, group: 'evaluate') {
     //sampleSize=1000
      	
     // test on random 1/5 of each user's ratings
-    holdout(2, 'random')
+    holdout(5, 'random')
 
     // test on random 1/5 of each user's ratings
     //holdoutFraction(0.3, 'random')
 	
     // use 5-fold cross-validation
-    partitionCount 5
+    partitionCount 3
     outputFormat 'gz'
 }
 
