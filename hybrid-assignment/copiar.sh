@@ -1,0 +1,1 @@
+rsync -e 'ssh -p 143' --delete --checksum -z --progress -tr ./ crios@192.168.2.14:/home/crios/postdoc/proyectos//hybrid-recsys
