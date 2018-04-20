@@ -1,7 +1,5 @@
 package org.lenskit.mooc.hybrid;
 
-import it.unimi.dsi.fastutil.longs.LongSet;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
