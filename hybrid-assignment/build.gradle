@@ -16,7 +16,7 @@ ext.lenskitVersion = '3.0-M2'
 if (!hasProperty('dataDir')) {
     ext.dataDir = 'data'
 }
-ext.dataDirLBSN = '/home/crios/postdoc/datos'
+ext.dataDirLBSN = 'D:/postdoc/datos'
 
 
 
@@ -39,6 +39,21 @@ dependencies {
     runtime "org.lenskit:lenskit-cli:$lenskitVersion"
 }
 
+task recommendUULBSN(type: JavaExec, group: 'run') {
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-uu.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', file("$dataDirLBSN/yelp.yml")
+    args '-c', file('cfg/uu.groovy')
+    args userIdsLBSN
+    if (lenskit.maxMemory) {
+        maxHeapSize lenskit.maxMemory
+    }
+    systemProperties(
+            blendWeight: project.findProperty('blendWeight'),
+            predictor: 'bias')
+}
 
 task recommendPopularLBSN(type: JavaExec, group: 'run') {
     classpath sourceSets.main.runtimeClasspath
@@ -87,7 +102,6 @@ task recommendSVDLBSN(type: JavaExec, group: 'run') {
             blendWeight: project.findProperty('blendWeight'),
             predictor: 'bias')
 }
-
 
 
 task recommendLucene(type: JavaExec, group: 'run') {
@@ -490,6 +504,42 @@ task evaluateLogisticLBSN(type: TrainTest, group: 'evaluate') {
     }
 }
 
+task sweepNbrs(type: TrainTest, group: 'evaluate') {
+    description 'Runs a LensKit evaluation to sweep nbrs for uu and ii.'
+
+    // we add our crossfold task as evaluation input
+    dataSet crossfoldLBSN
+
+    // send the output to appropriate files
+    outputFile "build/sweep-nbr-results.csv"
+    userOutputFile "build/sweep-nbr-users.csv"
+    cacheDirectory "build/eval-cache"
+    logFile "build/sweep-nbr-users.log"
+
+    // configure our algorithms
+    algorithm 'cfg/uu-ii-nbr-sweep.groovy'
+
+    // and some evaluation tasks and metrics
+    predict {
+        metric 'coverage'
+        metric 'rmse'
+        metric 'ndcg'
+        metric 'mae'
+    }
+    recommend {
+        listSize 25
+        candidates "allItems"
+        exclude "user.trainItems"
+        metric 'ndcg'
+        metric('map') {
+            goodItems 'user.testItems'
+        }
+        metric('mrr') {
+            goodItems 'user.testItems'
+        }
+    }
+}
+	
 tasks.withType(TrainTest) {
     jvmArgs = ['-Xms1g', '-Xmx15g']
 }
