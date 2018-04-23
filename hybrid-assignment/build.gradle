@@ -541,7 +541,7 @@ task sweepNbrs(type: TrainTest, group: 'evaluate') {
 }
 	
 tasks.withType(TrainTest) {
-    jvmArgs = ['-Xms1g', '-Xmx15g']
+    jvmArgs = ['-Xms1g', '-Xmx4g']
 }
 
 tasks.withType(TrainTest) {
