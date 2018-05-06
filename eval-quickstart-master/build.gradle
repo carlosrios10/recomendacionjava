@@ -1,0 +1,250 @@
+/* This file may be freely modified, used, and redistributed without restriction. */
+/* Set up the repositories to get the LensKit plugin.
+ * This configuration pulls in things needed for the build.gradle script itself */
+buildscript {
+    repositories {
+        // allow maven local to be turned on
+        if ((project.findProperty('maven.useLocal') ?: 'no') == 'yes') {
+            mavenLocal()
+        }
+        // LensKit snapshots are published to the Sonatype snapshot repository
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        // LensKit releases are published to Maven Central
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.lenskit:lenskit-gradle:${project.findProperty('lenskit.version') ?: '3.0-M2'}"
+        
+    }
+}
+
+apply plugin: 'java' // if you use Groovy or Scala, add those plugins
+apply plugin: 'lenskit'
+
+/* Set up the repositories for getting LensKit and other libraries.
+ * These repositories are used for your Java or Groovy code, and for running LensKit.
+ */
+repositories {
+    // allow maven local to be turned on
+    if ((project.findProperty('maven.useLocal') ?: 'no') == 'yes') {
+        mavenLocal()
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    // Code needs to build with LensKit.
+    compile "org.lenskit:lenskit-all:${project.findProperty('lenskit.version') ?: '3.0-M2'}"
+    // To run the code, we also need the LensKit CLI.
+    runtime "org.lenskit:lenskit-cli:${project.findProperty('lenskit.version') ?: '3.0-M2'}"
+
+	compile "org.apache.lucene:lucene-analyzers:3.5.0"
+    compile "org.apache.lucene:lucene-queries:3.5.0"
+    // Tests use JUnit
+    testCompile "junit:junit:4.12"
+}
+
+/* Configure LensKit */
+lenskit {
+    // you can configure the threadCount and maxMemory here, or on the command line
+    // e.g. -PthreadCount=8
+}
+
+import org.lenskit.gradle.*
+
+/* Download the MovieLens data set */
+task fetchData {
+    description 'Fetches the MovieLens data set.'
+    ext.dataDir = "data/ml-100k"
+    ext.zipFile = "data/ml-100k.zip"
+
+    outputs.dir dataDir
+    outputs.file zipFile
+
+    doLast {
+        mkdir dataDir
+        ant {
+            get(src: 'http://files.grouplens.org/datasets/movielens/ml-100k.zip',
+                dest: zipFile,
+                skipExisting: true)
+            unzip(src: zipFile, dest: dataDir) {
+                patternset {
+                    include name: 'ml-100k/*'
+                }
+                mapper type: 'flatten'
+            }
+        }
+    }
+}
+//ext.dataDirLBSN = 'data'
+ext.dataDirLBSN = '/home/crios/postdoc/datos'
+ext.userIdsLBSN = (project.findProperty('userId') ?: '311,429').split(/,/).toList()
+
+task recommendCBFATTBasic(type: JavaExec, group: 'run') {
+    description 'Runs the recommender with the basic profile.'
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', "$dataDirLBSN/yelp.yml"
+    args '-c', file('algorithms/cbf-att-basic.groovy')
+    args userIdsLBSN
+    if (project.hasProperty('lenskit.maxMemory')) {
+        maxHeapSize project.getProperty('lenskit.maxMemory')
+    }
+}
+
+task recommendCBFATTWeighted(type: JavaExec, group: 'run') {
+    description 'Runs the recommender with the basic profile.'
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', "$dataDirLBSN/yelp.yml"
+    args '-c', file('algorithms/cbf-att-weighted.groovy')
+    args userIdsLBSN
+    if (project.hasProperty('lenskit.maxMemory')) {
+        maxHeapSize project.getProperty('lenskit.maxMemory')
+    }
+}
+
+task recommendCBFTFIDFBasic(type: JavaExec, group: 'run') {
+    description 'Runs the recommender with the basic profile.'
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', "$dataDirLBSN/yelp.yml"
+    args '-c', file('algorithms/cbf-basic.groovy')
+    args userIdsLBSN
+    if (project.hasProperty('lenskit.maxMemory')) {
+        maxHeapSize project.getProperty('lenskit.maxMemory')
+    }
+}
+
+task recommendCBFTFIDFWeighted(type: JavaExec, group: 'run') {
+    description 'Runs the recommender with the basic profile.'
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', "$dataDirLBSN/yelp.yml"
+    args '-c', file('algorithms/cbf-weighted.groovy')
+    args userIdsLBSN
+    if (project.hasProperty('lenskit.maxMemory')) {
+        maxHeapSize project.getProperty('lenskit.maxMemory')
+    }
+}
+
+task recommendUserUserZona(type: JavaExec, group: 'run') {
+    description 'Runs the recommender with the basic profile.'
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', "$dataDirLBSN/yelp.yml"
+    args '-c', file('algorithms/user-user.groovy')
+    args userIdsLBSN
+    if (project.hasProperty('lenskit.maxMemory')) {
+        maxHeapSize project.getProperty('lenskit.maxMemory')
+    }
+}
+
+task crossfold(type: Crossfold, group: 'evaluate') {
+    // download data before evaluating
+    //dependsOn fetchData
+
+    input "$dataDirLBSN/yelp.yml"
+    //method "SAMPLE_USERS"
+    //sampleSize=100
+    // test on random 1/5 of each user's ratings
+    holdoutFraction(0.3, 'random')
+    // use 5-fold cross-validation
+    partitionCount 5
+    
+}
+
+/* Run the LensKit evaluation */
+task evaluate(type: TrainTest, group: 'evaluate') {
+    description 'Runs the LensKit evaluation.'
+    logFile "$buildDir/evaluate.log"
+    logFileLevel 'DEBUG'
+
+    // we add our crossfold task as evaluation input
+    dataSet crossfold
+
+    // send the output to appropriate files
+    outputFile "$buildDir/eval-results-uu-ii-sweep.csv"
+    userOutputFile "$buildDir/eval-users-uu-ii-sweep.csv"
+
+    // configure our algorithms
+    //algorithm 'UserUser', 'algorithms/user-user.groovy'
+    //algorithm 'PersMean', 'algorithms/pers-mean.groovy'
+    //algorithm 'ItemItem', 'algorithms/item-item.groovy'
+    //algorithm 'Custom', 'algorithms/custom.groovy'
+    //algorithm 'CBF-basic', 'algorithms/cbf-basic.groovy'
+     algorithm 'uu-ii-sweep-nbr', 'algorithms/uu-ii-nbr-sweep.groovy'
+    //algorithm 'svd-sweep-fc', 'algorithms/svd-sweep.groovy'
+    //algorithm 'CBF-tfidf-basic', 'algorithms/cbf-basic.groovy'
+    //algorithm 'CBF-tfidf-weighted', 'algorithms/cbf-weighted.groovy'
+    //algorithm 'CBF-att-basic', 'algorithms/cbf-att-basic.groovy'
+    //algorithm 'CBF-att-weighted', 'algorithms/cbf-att-weighted.groovy'
+
+    // and some evaluation tasks and metrics
+    predict {
+    	metric 'coverage'
+        metric 'rmse'
+        metric 'ndcg'
+        metric 'mae'
+    }
+ 
+    recommend {
+        listSize 5
+        candidates "allItems"
+        exclude "user.trainItems"
+        metric 'ndcg'
+        metric('map') {
+            goodItems 'user.testItems'
+        }
+        metric('mrr') {
+            goodItems 'user.testItems'
+        }
+        metric('pr') {
+            goodItems 'user.testItems'
+        }
+    }
+}
+
+task analyzeResults(type: Exec, group: 'evaluate') {
+    description 'Post-processes evaluation results to draw charts.'
+
+    dependsOn evaluate
+
+    inputs.files "$buildDir/eval-results.csv", 'analyze-output.ipynb'
+    outputs.file "$buildDir/analysis.html"
+
+    /* run Jupyter/IPython. Location can be overridden with -Pipython.bin=/usr/bin/ipython */
+    if (project.hasProperty('ipython.bin')) {
+        executable project.getProperty('ipython.bin')
+    } else {
+        executable 'jupyter'
+    }
+    args 'nbconvert', '--to', 'html', '--execute'
+    args '--output', file("$buildDir/analysis.html")
+    args file("analyze-output.ipynb")
+}
+
+task cleanData {
+    doLast {
+        delete 'data'
+    }
+}
+
+tasks.withType(TrainTest) {
+    jvmArgs = ['-Xms1g', '-Xmx15g']
+}

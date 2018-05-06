@@ -1,0 +1,36 @@
+ratings:
+  file: user_business_rating_az_restaurant.csv
+  format: csv
+  header: true
+  entity_type: rating
+items:
+  file: business_az_restaurant_att.csv
+  format: csv
+  header: true
+  entity_type: item
+  columns: [id, name,categoria,att,latitude,longitude]
+users:
+  file: user_az_restaurant.csv
+  format: csv
+  header: true
+  entity_type: user
+  columns: 
+  - name: id
+    type: long
+  - name: lat
+    type: double
+  - name: lon
+    type: double 
+tags:
+  type: textfile
+  file: user_business_tags_az_restaurant.csv
+  format: csv
+  entity_type: item-tag
+  header: true
+  columns:
+  - name: item
+    type: long
+  - name: user
+    type: long
+  - name: tag
+    type: string
