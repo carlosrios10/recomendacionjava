@@ -1,0 +1,6 @@
+ratings:
+  file: rating_sample.csv
+  format: csv
+  header: true
+  entity_type: rating
+
