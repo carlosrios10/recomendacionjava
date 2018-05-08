@@ -1,5 +1,8 @@
 package org.lenskit.mooc.hybrid;
 
+import it.unimi.dsi.fastutil.longs.LongArraySet;
+import it.unimi.dsi.fastutil.longs.LongSet;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -62,15 +65,6 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
 
 	}
 
-	private Set<Long> getUsersFromRatings(List<Rating> trainRating) {
-		Set<Long> longSet = new HashSet<Long>();
-		for (Rating ratingTrain : trainRating) {
-			long user = ratingTrain.getUserId();
-			longSet.add(user);
-		}
-		return longSet;
-
-	}
 
 	private ResultMap calScores(long user, Set<Long> items, ItemScorer score) {
 		List<Result> allResults = new ArrayList<>(items.size());
@@ -118,7 +112,25 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
 
 		return completo;
 	}
+	private LongSet getUsersFromRatings(List<Rating> trainRating) {
+		LongSet longSet = new LongArraySet();
+		for (Rating ratingTrain : trainRating) {
+			long user = ratingTrain.getUserId();
+			longSet.add(user);
+		}
+		return longSet;
+		
+	}
+	private LongSet getItemFromUser(List<Rating> trainRating,long user) {
+		LongSet longSet = new LongArraySet();
+		for (Rating ratingTrain : trainRating) {
+			long userId = ratingTrain.getUserId();
+			if(user==userId)
+				longSet.add(ratingTrain.getItemId());
+		}
+		return longSet;
 
+	}
 	public LogisticModel get() {
 		List<Hashtable<Long, ResultMap>> scorings = new ArrayList<Hashtable<Long, ResultMap>>();
 
@@ -129,10 +141,12 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
 		LogisticModel current = LogisticModel.create(intercept, params);
 		List<Rating> trainRating = dataSplit.getTuneRatings();
 
-		logger.info("Cargando Scoring");
-		Set<Long> itemsTraining = getItemsFromRatings(trainRating);
-		Set<Long> usersTraining = getUsersFromRatings(trainRating);
-		logger.info("Cargando Scoring -  cantidad de user en trainrating " + usersTraining.size());
+		logger.info("Cargando Scoringss");
+		//Set<Long> itemsTraining = getItemsFromRatings(trainRating);
+		LongSet usersTraining = getUsersFromRatings(trainRating);
+		logger.info("Cargando Scoring -  cantidad de scorers " + scorers.size());
+		logger.info("Cargando Scoring -  cantidad de users " + usersTraining.size());
+		//logger.info("Cargando Scoring -  cantidad de items " + itemsTraining.size());
 
 		for (ItemScorer scorer : scorers) {
 			Hashtable<Long, ResultMap> scoreCache = new Hashtable<Long, ResultMap>();
@@ -140,11 +154,12 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
 		}
 
 		for (Long user : usersTraining) {
+			LongSet usersItemTraining = getItemFromUser(trainRating, user);
 				for (int i = 0; i < scorings.size(); i++) {
 					Hashtable<Long, ResultMap> scoreCache = scorings.get(i);
-					if (!scoreCache.containsKey(user))
-						scoreCache.put(user,
-								calScores(user, itemsTraining, scorers.get(i)));
+					scoreCache.put(user,scorers.get(i).scoreWithDetails(user, usersItemTraining));
+//					if (!scoreCache.containsKey(user))
+//						scoreCache.put(user,scorers.get(i).scoreWithDetails(user, usersItemTraining));
 	
 				}
 		}

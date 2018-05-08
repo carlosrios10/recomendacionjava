@@ -1,0 +1,73 @@
+import org.grouplens.lenskit.iterative.IterationCount
+import org.grouplens.lenskit.iterative.LearningRate
+import org.lenskit.api.ItemScorer
+import org.lenskit.baseline.BaselineScorer
+import org.lenskit.bias.BiasItemScorer
+import org.lenskit.bias.BiasModel
+import org.lenskit.bias.ItemBiasModel
+import org.lenskit.bias.UserItemBiasModel
+import org.lenskit.knn.NeighborhoodSize
+import org.lenskit.knn.item.ItemItemScorer
+import org.lenskit.knn.item.model.ItemItemModel
+import org.lenskit.knn.user.UserUserItemScorer
+import org.lenskit.mf.funksvd.FeatureCount
+import org.lenskit.mf.funksvd.FunkSVDItemScorer
+import org.lenskit.mooc.cbf.LuceneItemItemModel
+import org.lenskit.mooc.cbf.TFIDFItemScorer
+import org.lenskit.mooc.cbf.UserProfileBuilder
+import org.lenskit.mooc.cbf.WeightedUserProfileBuilder
+import org.lenskit.mooc.hybrid.LogisticItemScorer
+import org.lenskit.mooc.hybrid.LogisticTrainingSplit
+import org.lenskit.mooc.hybrid.RecommenderConfigurationList
+import org.lenskit.transform.normalize.BiasUserVectorNormalizer
+import org.lenskit.transform.normalize.MeanCenteringVectorNormalizer
+import org.lenskit.transform.normalize.UserVectorNormalizer
+import org.lenskit.transform.normalize.VectorNormalizer
+
+def lucene = {
+    bind ItemScorer to ItemItemScorer
+    set NeighborhoodSize to 20
+    bind ItemItemModel to LuceneItemItemModel
+    bind UserVectorNormalizer to BiasUserVectorNormalizer
+    within (UserVectorNormalizer) {
+        bind BiasModel to ItemBiasModel
+    }
+
+    bind (BaselineScorer, ItemScorer) to BiasItemScorer
+    bind BiasModel to UserItemBiasModel
+}
+
+
+def svd = {
+    bind ItemScorer to FunkSVDItemScorer
+    set FeatureCount to 20
+    set IterationCount to 125
+    set LearningRate to 0.0015
+
+    bind (BaselineScorer, ItemScorer) to BiasItemScorer
+    bind BiasModel to UserItemBiasModel
+}
+
+def uu = {
+	bind ItemScorer to UserUserItemScorer
+	within (UserVectorNormalizer) {
+		bind VectorNormalizer to MeanCenteringVectorNormalizer
+	}
+	set NeighborhoodSize to 20
+	
+}
+
+
+def cbfWeighted = {
+	bind ItemScorer to TFIDFItemScorer
+	bind UserProfileBuilder to WeightedUserProfileBuilder
+
+}
+
+addComponent RecommenderConfigurationList.create(lucene,uu,cbfWeighted,svd)
+
+bind ItemScorer to LogisticItemScorer
+set LogisticTrainingSplit.TrainingBalance to 2.0
+
+bind (BaselineScorer, ItemScorer) to BiasItemScorer
+bind BiasModel to UserItemBiasModel

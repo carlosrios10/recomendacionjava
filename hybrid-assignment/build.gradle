@@ -10,13 +10,16 @@ buildscript {
     dependencies {
         classpath 'org.lenskit:lenskit-gradle:3.0-M2'
     }
+
 }
 
 ext.lenskitVersion = '3.0-M2'
 if (!hasProperty('dataDir')) {
     ext.dataDir = 'data'
 }
-ext.dataDirLBSN = 'D:/postdoc/datos'
+//ext.dataDirLBSN = 'D:/postdoc/datos'
+//ext.dataDirLBSN = 'C:/Users/Usuario/Desktop/carlos/Tesis/workspaceJ/lenskit-hello-lbsn/data'
+ext.dataDirLBSN = '/home/crios/postdoc/datos'
 
 
 
@@ -38,7 +41,32 @@ dependencies {
 
     runtime "org.lenskit:lenskit-cli:$lenskitVersion"
 }
-
+task recommendBasicLBSN(type: JavaExec, group: 'run') {
+    description 'Runs the recommender with the basic profile.'
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', "$dataDirLBSN/yelp.yml"
+    args '-c', file('cfg/cbf-basic.groovy')
+    args userIdsLBSN
+    if (project.hasProperty('lenskit.maxMemory')) {
+        maxHeapSize project.getProperty('lenskit.maxMemory')
+    }
+}
+task recommendWeightedLBSN(type: JavaExec, group: 'run') {
+    description 'Runs the recommender with the basic profile.'
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-weighted.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', "$dataDirLBSN/yelp.yml"
+    args '-c', file('cfg/cbf-weighted.groovy')
+    args userIdsLBSN
+    if (project.hasProperty('lenskit.maxMemory')) {
+        maxHeapSize project.getProperty('lenskit.maxMemory')
+    }
+}
 task recommendUULBSN(type: JavaExec, group: 'run') {
     classpath sourceSets.main.runtimeClasspath
     main 'org.lenskit.cli.Main'
@@ -259,6 +287,19 @@ task recommendSVDLogLBSN(type: JavaExec, group: 'run') {
     }
 }
 
+task recommendLuSvUuCbfwLBSN(type: JavaExec, group: 'run') {
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-svd-log.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', file("$dataDirLBSN/yelp.yml")
+    args '-c', file('cfg/lucene-svd-uu-cbfweight-log.groovy')
+    args userIdsLBSN
+    if (lenskit.maxMemory) {
+        maxHeapSize lenskit.maxMemory
+    }
+}
+
 task recommendLuceneSVDLog(type: JavaExec, group: 'run') {
     classpath sourceSets.main.runtimeClasspath
     main 'org.lenskit.cli.Main'
@@ -271,6 +312,20 @@ task recommendLuceneSVDLog(type: JavaExec, group: 'run') {
         maxHeapSize lenskit.maxMemory
     }
 }
+
+task recommendLuceneSVDLogLBSN(type: JavaExec, group: 'run') {
+    classpath sourceSets.main.runtimeClasspath
+    main 'org.lenskit.cli.Main'
+    args '--log-file', file("$buildDir/recommend-lucene-svd-log.log"), '--log-file-level', 'DEBUG'
+    args 'recommend'
+    args '--data-source', file("$dataDirLBSN/yelp.yml")
+    args '-c', file('cfg/lucene-svd-log.groovy')
+    args userIdsLBSN
+    if (lenskit.maxMemory) {
+        maxHeapSize lenskit.maxMemory
+    }
+}
+
 
 task runAll(group: 'run', dependsOn: ['recommendLuceneSVD', 'recommendIISVD',
                                       'recommendSVDLog', 'recommendLuceneSVDLog'])
@@ -361,12 +416,14 @@ task sweepHybridLBSN(type: TrainTest, group: 'evaluate') {
     algorithm 'cfg/ii.groovy'
     algorithm 'cfg/svd.groovy'
     algorithm 'cfg/lucene.groovy'
+    algorithm 'cfg/uu.groovy'
 
     // and some evaluation tasks and metrics
     predict {
         metric 'coverage'
         metric 'rmse'
         metric 'ndcg'
+        metric 'mae'
     }
     recommend {
         listSize 25
@@ -377,6 +434,9 @@ task sweepHybridLBSN(type: TrainTest, group: 'evaluate') {
             goodItems 'user.testItems'
         }
         metric('mrr') {
+            goodItems 'user.testItems'
+        }
+        metric('pr'){
             goodItems 'user.testItems'
         }
     }
@@ -437,8 +497,8 @@ task evaluateLogistic(type: TrainTest, group: 'evaluate') {
     algorithm 'cfg/popular.groovy'
     algorithm 'cfg/ii.groovy'
     algorithm 'cfg/svd.groovy'
-    algorithm 'cfg/lucene.groovy'
-    algorithm 'cfg/svd-log.groovy'
+    //algorithm 'cfg/lucene.groovy'
+    //algorithm 'cfg/svd-log.groovy'
     algorithm 'cfg/lucene-log.groovy'
     algorithm 'cfg/lucene-svd-log.groovy'
     algorithm 'cfg/ii-log.groovy'
@@ -450,7 +510,7 @@ task evaluateLogistic(type: TrainTest, group: 'evaluate') {
         metric 'ndcg'
     }
     recommend {
-        listSize 25
+        listSize 5
         candidates "allItems"
         exclude "user.trainItems"
         metric 'ndcg'
@@ -458,6 +518,9 @@ task evaluateLogistic(type: TrainTest, group: 'evaluate') {
             goodItems 'user.testItems'
         }
         metric('mrr') {
+            goodItems 'user.testItems'
+        }
+        metric('pr') {
             goodItems 'user.testItems'
         }
     }
@@ -479,11 +542,16 @@ task evaluateLogisticLBSN(type: TrainTest, group: 'evaluate') {
     algorithm 'cfg/ii.groovy'
     algorithm 'cfg/svd.groovy'
     algorithm 'cfg/lucene.groovy'
+    algorithm 'cfg/uu.groovy'
+    algorithm 'cfg/cbf-basic.groovy'
+    algorithm 'cfg/cbf-weighted.groovy'
+    
     algorithm 'cfg/svd-log.groovy'
     algorithm 'cfg/lucene-log.groovy'
-    algorithm 'cfg/lucene-svd-log.groovy'
     algorithm 'cfg/ii-log.groovy'
     algorithm 'cfg/ii-svd-log.groovy'
+    algorithm 'cfg/lucene-svd-log.groovy'
+    algorithm 'cfg/lucene-svd-uu-cbfweight-log.groovy'
 
     // and some evaluation tasks and metrics
     predict {
@@ -492,13 +560,16 @@ task evaluateLogisticLBSN(type: TrainTest, group: 'evaluate') {
     }
     recommend {
         listSize 25
-        candidates "allItems"
+        candidates user.testItems + pickRandom(allItems - user.trainItems, 100)
         exclude "user.trainItems"
         metric 'ndcg'
         metric('map') {
-            goodItems 'user.testItems'
+           	 goodItems 'user.testItems'
         }
         metric('mrr') {
+            goodItems 'user.testItems'
+        }
+        metric('pr'){
             goodItems 'user.testItems'
         }
     }
@@ -541,7 +612,11 @@ task sweepNbrs(type: TrainTest, group: 'evaluate') {
 }
 	
 tasks.withType(TrainTest) {
-    jvmArgs = ['-Xms1g', '-Xmx4g']
+    jvmArgs = ['-Xms1g', '-Xmx15g']
+    threadCount 3
+}
+lenskit {
+    threadCount 3
 }
 
 tasks.withType(TrainTest) {
