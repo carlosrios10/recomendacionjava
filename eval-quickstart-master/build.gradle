@@ -165,7 +165,7 @@ task crossfold(type: Crossfold, group: 'evaluate') {
     // test on random 1/5 of each user's ratings
     holdoutFraction(0.3, 'random')
     // use 5-fold cross-validation
-    partitionCount 5
+    partitionCount 3
     
 }
 
@@ -179,8 +179,8 @@ task evaluate(type: TrainTest, group: 'evaluate') {
     dataSet crossfold
 
     // send the output to appropriate files
-    outputFile "$buildDir/eval-results-uu-ii-sweep.csv"
-    userOutputFile "$buildDir/eval-users-uu-ii-sweep.csv"
+    outputFile "$buildDir/eval-results--restaurante.csv"
+    userOutputFile "$buildDir/eval-users-hybridsweep-restaurante.csv"
 
     // configure our algorithms
     //algorithm 'UserUser', 'algorithms/user-user.groovy'
@@ -188,12 +188,13 @@ task evaluate(type: TrainTest, group: 'evaluate') {
     //algorithm 'ItemItem', 'algorithms/item-item.groovy'
     //algorithm 'Custom', 'algorithms/custom.groovy'
     //algorithm 'CBF-basic', 'algorithms/cbf-basic.groovy'
-     algorithm 'uu-ii-sweep-nbr', 'algorithms/uu-ii-nbr-sweep.groovy'
+    // algorithm 'uu-ii-sweep-nbr', 'algorithms/uu-ii-nbr-sweep.groovy'
     //algorithm 'svd-sweep-fc', 'algorithms/svd-sweep.groovy'
-    //algorithm 'CBF-tfidf-basic', 'algorithms/cbf-basic.groovy'
-    //algorithm 'CBF-tfidf-weighted', 'algorithms/cbf-weighted.groovy'
-    //algorithm 'CBF-att-basic', 'algorithms/cbf-att-basic.groovy'
-    //algorithm 'CBF-att-weighted', 'algorithms/cbf-att-weighted.groovy'
+    algorithm 'CBF-tfidf-basic', 'algorithms/cbf-basic.groovy'
+    algorithm 'CBF-tfidf-weighted', 'algorithms/cbf-weighted.groovy'
+    algorithm 'CBF-att-basic', 'algorithms/cbf-att-basic.groovy'
+    algorithm 'CBF-att-weighted', 'algorithms/cbf-att-weighted.groovy'
+    //algorithm 'hybridsweep', 'algorithms/hybridsweep.groovy'
 
     // and some evaluation tasks and metrics
     predict {
