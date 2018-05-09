@@ -11,8 +11,7 @@ import org.lenskit.transform.normalize.MeanCenteringVectorNormalizer
 import org.lenskit.transform.normalize.UserVectorNormalizer
 import org.lenskit.transform.normalize.VectorNormalizer
 
-// [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100]
-for (n in  [5, 10]) {
+for (n in  [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100]) {
 	algorithm("ItemItem") {
 		bind ItemScorer to ItemItemScorer
 		bind (BaselineScorer, ItemScorer) to UserMeanItemScorer
