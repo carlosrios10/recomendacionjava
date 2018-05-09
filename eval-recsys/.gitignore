@@ -1,0 +1,9 @@
+/build
+/.idea
+/.idea_modules
+/.gradle
+*.iml
+.ipynb_checkpoints
+/data/ml-100k
+*.zip
+/bin/
