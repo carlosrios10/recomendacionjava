@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Builder for computing {@linkplain TFIDFModel TF-IDF models} from item tag data.  Each item is
  * represented by a normalized TF-IDF vector.
- *
+ *Agrego algunas modificaciones
  * @author <a href="http://www.grouplens.org">GroupLens Research</a>
  */
 public class TFIDFModelProvider implements Provider<TFIDFModel> {
