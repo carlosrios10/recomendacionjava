@@ -47,6 +47,12 @@ dependencies {
     compile "org.apache.lucene:lucene-queries:3.5.0"
     // Tests use JUnit
     testCompile "junit:junit:4.12"
+	//dbscan
+	compile group: 'org.apache.commons', name: 'commons-math3', version: '3.0'
+	//weka
+	compile group: 'nz.ac.waikato.cms.weka', name: 'weka-stable', version: '3.8.0'
+	
+	
 }
 
 /* Configure LensKit */
@@ -81,9 +87,9 @@ task fetchData {
         }
     }
 }
-//ext.dataDirLBSN = 'data'
-ext.dataDirLBSN = '/home/crios/postdoc/datos'
-ext.userIdsLBSN = (project.findProperty('userId') ?: '311,429').split(/,/).toList()
+ext.dataDirLBSN = 'data'
+//ext.dataDirLBSN = '/home/crios/postdoc/datos'
+ext.userIdsLBSN = (project.findProperty('userId') ?: '311,429,713,1082').split(/,/).toList()
 
 task recommendCBFATTBasic(type: JavaExec, group: 'run') {
     description 'Runs the recommender with the basic profile.'
@@ -148,23 +154,177 @@ task recommendUserUserZona(type: JavaExec, group: 'run') {
     args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
     args 'recommend'
     args '--data-source', "$dataDirLBSN/yelp.yml"
-    args '-c', file('algorithms/user-user.groovy')
+    args '-c', file('algorithms/user-user-zona.groovy')
     args userIdsLBSN
     if (project.hasProperty('lenskit.maxMemory')) {
         maxHeapSize project.getProperty('lenskit.maxMemory')
     }
 }
 
+task recommendUserUserZonaKmeans(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/user-user-zona-kmeans.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+
+task recommendUserUserZonaDBscan(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/user-user-zona-dbscan.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+
+task recommendUserUserFriendsN2(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '-n',25 
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/user-user-friends-2n.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+
+task recommendUserUserFriendsSimplusJaccNet(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '-n',25
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/user-user-friends-simplusjaccnet.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+
+
+task recommendItemItemDistancia(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/item-item-distancia.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+task recommendItemItemSimple(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/item-item-simple.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+
+task recommendItemItem(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/item-item.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+
+task recommendSVDLog(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/svd-log.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+task recommendSVDLogWeka(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/svd-log.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+task recommendLuceneSvdLog(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/lucene-svd-log.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+
+task recommenduuFriendN2CBFTFIDFBasicLog(type: JavaExec, group: 'run') {
+	description 'Runs the recommender with the basic profile.'
+	classpath sourceSets.main.runtimeClasspath
+	main 'org.lenskit.cli.Main'
+	args '--log-file', file("$buildDir/recommend-basic.log"), '--log-file-level', 'DEBUG'
+	args 'recommend'
+	args '--data-source', "$dataDirLBSN/yelp.yml"
+	args '-c', file('algorithms/hylogistic/uufriendsn2-cbftfidfbasic-log.groovy')
+	args userIdsLBSN
+	if (project.hasProperty('lenskit.maxMemory')) {
+		maxHeapSize project.getProperty('lenskit.maxMemory')
+	}
+}
+
 task crossfold(type: Crossfold, group: 'evaluate') {
     // download data before evaluating
     //dependsOn fetchData
-
     input "$dataDirLBSN/yelp.yml"
-    //method "SAMPLE_USERS"
-    //sampleSize=100
-    // test on random 1/5 of each user's ratings
+    method "SAMPLE_USERS"
+    sampleSize=10
+    //test on random 1/5 of each user's ratings
     holdoutFraction(0.3, 'random')
-    // use 5-fold cross-validation
+	//holdout(5,'random')
+    //use 5-fold cross-validation
     partitionCount 3
     
 }
@@ -176,40 +336,78 @@ task evaluate(type: TrainTest, group: 'evaluate') {
     logFileLevel 'DEBUG'
 
     // we add our crossfold task as evaluation input
-    dataSet crossfold
+    dataSet 'build/crossfoldRelNpopuPy/datasets.yaml'//crossfold
 
     // send the output to appropriate files
-    outputFile "$buildDir/eval-results--restaurante.csv"
-    userOutputFile "$buildDir/eval-users-hybridsweep-restaurante.csv"
+    outputFile "$buildDir/eval-results-hybridLogTop10ThresholdNP-restaurante.csv"
+    userOutputFile "$buildDir/eval-users-hybridLogTop10ThresholdNP-restaurante.csv"
 
-    // configure our algorithms
-    //algorithm 'UserUser', 'algorithms/user-user.groovy'
-    //algorithm 'PersMean', 'algorithms/pers-mean.groovy'
-    //algorithm 'ItemItem', 'algorithms/item-item.groovy'
-    //algorithm 'Custom', 'algorithms/custom.groovy'
-    //algorithm 'CBF-basic', 'algorithms/cbf-basic.groovy'
-    // algorithm 'uu-ii-sweep-nbr', 'algorithms/uu-ii-nbr-sweep.groovy'
-    //algorithm 'svd-sweep-fc', 'algorithms/svd-sweep.groovy'
-    algorithm 'CBF-tfidf-basic', 'algorithms/cbf-basic.groovy'
-    algorithm 'CBF-tfidf-weighted', 'algorithms/cbf-weighted.groovy'
-    algorithm 'CBF-att-basic', 'algorithms/cbf-att-basic.groovy'
-    algorithm 'CBF-att-weighted', 'algorithms/cbf-att-weighted.groovy'
-    //algorithm 'hybridsweep', 'algorithms/hybridsweep.groovy'
+//    configure our algorithms
+//	  sweep hiperparametros
+//	  algorithm 'SweepDistNeigh', 'algorithms/swhiper/sweep-nbr.groovy'
+//	  algorithm 'SweepNeigh', 'algorithms/swhiper/sweep-uuii-nbr.groovy'
+	  
+	  algorithm 'Popular', 'algorithms/popular.groovy'
+      algorithm 'UserUser', 'algorithms/user-user.groovy'
+	  algorithm 'ItemItem', 'algorithms/item-item.groovy'
+	  algorithm 'CBF-tfidf-basic', 'algorithms/cbf-basic.groovy'
+//	  algorithm 'CBF-tfidf-weighted', 'algorithms/cbf-weighted.groovy'
+//	  algorithm 'CBF-att-basic', 'algorithms/cbf-att-basic.groovy'
+//	  algorithm 'CBF-att-weighted', 'algorithms/cbf-att-weighted.groovy'
+	  algorithm 'ItemItem-distancia', 'algorithms/item-item-distancia.groovy'
+	  algorithm 'UserUser-zonaDBScan', 'algorithms/user-user-zona-dbscan.groovy'
+	  algorithm 'SVD', 'algorithms/svd.groovy'
+	  algorithm 'ItemItemLucene', 'algorithms/lucene.groovy'
+	  algorithm 'UserUser-friendsN2', 'algorithms/user-user-friends-2n.groovy'
+	  algorithm 'UserUser-simplusjaccnet', 'algorithms/user-user-friends-simplusjaccnet.groovy'
 
+     
+	//HYBRID
+	algorithm 'uu-svd-log','algorithms/hylogistic/uu-svd-log.groovy'
+	algorithm 'ii-svd-log','algorithms/hylogistic/ii-svd-log.groovy'
+	algorithm 'uuzonadbscan-svd-log','algorithms/hylogistic/uuzonadbscan-svd-log.groovy'
+	algorithm 'iidistancia-svd-log','algorithms/hylogistic/iidistancia-svd-log.groovy'
+	algorithm 'iilucene-svd-log','algorithms/hylogistic/lucene-svd-log.groovy'
+	algorithm 'uu-cbftfidfbasic-log','algorithms/hylogistic/uu-cbftfidfbasic-log.groovy'
+	algorithm 'ii-cbftfidfbasic-log','algorithms/hylogistic/ii-cbftfidfbasic-log.groovy'
+	algorithm 'uuzonadbscan-cbftfidfbasic-log','algorithms/hylogistic/uuzonadbscan-cbftfidfbasic-log.groovy'
+	algorithm 'iidistancia-cbftfidfbasic-log','algorithms/hylogistic/iidistancia-cbftfidfbasic-log.groovy'
+	algorithm 'iilucene-cbftfidfbasic-log','algorithms/hylogistic/iilucene-cbftfidfbasic-log.groovy'
+	algorithm 'uufriendsn2-svd-log','algorithms/hylogistic/uufriendsn2-svd-log.groovy'
+	algorithm 'uusimplusjaccnet-svd-log','algorithms/hylogistic/uusimplusjaccnet-svd-log.groovy'
+	algorithm 'uufriendsn2-cbftfidfbasic-log','algorithms/hylogistic/uufriendsn2-cbftfidfbasic-log.groovy'
+	algorithm 'uusimplusjaccnet-cbftfidfbasic-log','algorithms/hylogistic/uusimplusjaccnet-cbftfidfbasic-log.groovy'
+
+	
+//	algorithm 'UserZona-log','algorithms/zona-log.groovy'
+//	algorithm 'SVD-log','algorithms/svd-log.groovy'
+//	algorithm 'Lucene-log','algorithms/lucene-log.groovy'
+//	algorithm 'II-log','algorithms/ii-log.groovy'
+//	algorithm 'II-SVD-log','algorithms/ii-svd-log.groovy'
+//	algorithm 'Lucene-SVD-log','algorithms/lucene-svd-log.groovy'
+//	algorithm 'UU-log','algorithms/uu-log.groovy'
+//	algorithm 'ItemItem-distancia-log','algorithms/ii-distancia-log.groovy'
+
+	
     // and some evaluation tasks and metrics
     predict {
     	metric 'coverage'
-        metric 'rmse'
-        metric 'ndcg'
-        metric 'mae'
+//        metric 'rmse'
+//        metric 'ndcg'
+//        metric 'mae'
     }
  
     recommend {
         listSize 5
-        candidates "allItems"
+        candidates 'user.testItems + pickRandom(allItems - user.trainItems, 100)'//"allItems"2*(user.testItems.size())
         exclude "user.trainItems"
         metric 'ndcg'
-        metric('map') {
+		metric 'popularity'
+		metric 'entropy'
+		metric 'ilpgd'
+		metric 'useritemlistrecpgd'
+		metric 'catentropy'
+        metric('map') {//user.trainItems.stream().mapToDouble(a -> a).average()
             goodItems 'user.testItems'
         }
         metric('mrr') {
@@ -218,6 +416,8 @@ task evaluate(type: TrainTest, group: 'evaluate') {
         metric('pr') {
             goodItems 'user.testItems'
         }
+			
+		
     }
 }
 
@@ -244,6 +444,9 @@ task cleanData {
     doLast {
         delete 'data'
     }
+}
+lenskit {
+	threadCount 3
 }
 
 tasks.withType(TrainTest) {

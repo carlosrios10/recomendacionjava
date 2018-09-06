@@ -50,6 +50,7 @@ public class NeighborhoodFinderZona implements NeighborFinder {
     private final Threshold threshold;
     
     Map<Long,Entity> zonas = new HashMap<Long, Entity>();
+    Map<Long,LongSet> neigborsCercanos = new HashMap<Long, LongSet>();
     int radioZona = 2;
     /**
      * Construct a new user neighborhood finder.
@@ -69,6 +70,7 @@ public class NeighborhoodFinderZona implements NeighborFinder {
         threshold = thresh;
         neighborhoodRadio = 3;
         calcularZonas();
+        calcularNeigborCercanos();
         Preconditions.checkArgument(sim.isSparse(), "user similarity function is not sparse");
     }
     private boolean isInRadio(Entity eItemCentro ,Entity eItem){
@@ -80,6 +82,16 @@ public class NeighborhoodFinderZona implements NeighborFinder {
 			return true;
 		else 
 			return false;
+    }
+    private void calcularNeigborCercanos() {
+    	logger.info("Calcular Neigbor Cercanos");
+    	LongSet usersIds = dao.getEntityIds(CommonTypes.USER);
+    	for (Long user : usersIds) {
+    		LongSet vecinosDistancia = getVecinosRadio(user);
+    		neigborsCercanos.put(user, vecinosDistancia);
+    	}
+    	logger.info("Fin Calcular Neigbor Cercanos");
+    	zonas = null;
     }
     private void calcularZonas(){
     	logger.info("Calculando Zonas");
@@ -117,15 +129,15 @@ public class NeighborhoodFinderZona implements NeighborFinder {
 	            return Collections.emptyList();
 	        }
 	        
-	        logger.debug("El item {} es la zona para el usuario {}", zonas.get(user).getId(),user);
+	       // logger.debug("El item {} es la zona para el usuario {}", zonas.get(user).getId(),user);
 
 	        SparseVector urs = ImmutableSparseVector.create(ratings);
 	        final ImmutableSparseVector nratings = normalizer.normalize(user, urs, null)
 	                                                   .freeze();
 	        //final LongSet candidates = findCandidateNeighbors(user, nratings, items);
-	        final LongSet candidates = getVecinosRadio(user);
+	        final LongSet candidates = neigborsCercanos.get(user);
+	       //final LongSet candidates = getVecinosRadio(user);
 	        logger.debug("found {} candidate neighbors for {}", candidates.size(), user);
-	        
 	        return new Iterable<Neighbor>() {
 	            @Override
 	            public Iterator<Neighbor> iterator() {
@@ -175,7 +187,7 @@ public class NeighborhoodFinderZona implements NeighborFinder {
 						Double.valueOf(userV.get("latitude").toString()), 
 						Double.valueOf(userV.get("longitude").toString()));
 				
-				if( distanciaKms<= getNeighborhoodRadio() ){
+				if( distanciaKms <= getNeighborhoodRadio() ){
 					vecinosZona.add(vec);
 				}
 			}

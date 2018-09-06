@@ -37,6 +37,7 @@ public class LuceneItemItemModel implements ItemItemModel {
     private final Directory luceneDir;
     private final LongSortedSet itemSet;
     private final LoadingCache<Long,Long2DoubleMap> cache;
+    private final int cantidadVecinos = 30; 
 
     LuceneItemItemModel(Directory dir, LongSortedSet items) {
         luceneDir = dir;
@@ -91,8 +92,8 @@ public class LuceneItemItemModel implements ItemItemModel {
                 MoreLikeThis mlt = new MoreLikeThis(idx.getIndexReader());
                 mlt.setFieldNames(new String[]{"title", "genres", "tags"});
                 Query q = mlt.like(docid);
-                TopDocs results = idx.search(q, itemSet.size() + 1);
-
+                //TopDocs results = idx.search(q, itemSet.size() + 1);
+                TopDocs results = idx.search(q, cantidadVecinos);
                 logger.trace("index returned {} of {} similar movies",
                              results.scoreDocs.length, results.totalHits);
                 Long2DoubleMap scores = new Long2DoubleOpenHashMap(results.totalHits);

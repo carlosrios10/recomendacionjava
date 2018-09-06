@@ -33,7 +33,7 @@ public class ThresholdUserProfileBuilder implements UserProfileBuilder {
         Map<String,Double> profile = new HashMap<>();
 
         // Iterate over the user's ratings to build their profile
-        for (Rating r: ratings) {
+        for (Rating r: ratings) {	
             if (r.getValue() >= RATING_THRESHOLD) {
                 // TODO Get this item's vector and add it to the user's profile
                 for (Map.Entry<String, Double> e : model.getItemVector(r.getItemId()).entrySet()) {

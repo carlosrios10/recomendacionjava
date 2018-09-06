@@ -11,7 +11,7 @@ import java.io.Serializable;
  * Model class for logistic regression, used to build models.
  */
 @Shareable
-@DefaultProvider(LogisticModelProvider.class)
+@DefaultProvider(LogisticModelProviderWeka.class)
 public class LogisticModel implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -9,6 +9,8 @@ import java.nio.file.Paths;
 import org.grouplens.lenskit.transform.threshold.RealThreshold;
 import org.grouplens.lenskit.vectors.similarity.CosineVectorSimilarity;
 import org.isistan.lbsn.uu.NeighborhoodFinderZona;
+import org.isistan.lbsn.uu.NeighborhoodFinderZonaDBscan;
+import org.isistan.lbsn.uu.NeighborhoodFinderZonaKmeans;
 import org.junit.Before;
 import org.junit.Test;
 import org.lenskit.data.dao.DataAccessObject;
@@ -36,14 +38,15 @@ public class NeighborhoodFinderZonaTest {
 	        rvDAO = new StandardRatingVectorPDAO(dao);
 	        usersim = new  UserVectorSimilarity(new CosineVectorSimilarity());
 	        
-	        nf = new NeighborhoodFinderZona(rvDAO,dao,usersim,new DefaultUserVectorNormalizer(),new RealThreshold(0.0));
+	        nf = new NeighborhoodFinderZonaDBscan(rvDAO,dao,usersim,new DefaultUserVectorNormalizer(),new RealThreshold(0.0),1.0);
 	    }
 	   @Test
 	    public void testUserDataOk() {
 		   LongSet items = dao.getEntityIds(CommonTypes.ITEM);
 		  long userID = 311;
 		  
-		  nf.getCandidateNeighbors(userID, items);
+		 Iterable<Neighbor>  res = nf.getCandidateNeighbors(userID, items);
+		  System.out.println(res);
 //		  for (Neighbor nbr: nf.getCandidateNeighbors(userID, items)) {
 //				System.out.println(nbr.user);
 //				System.out.println(nbr.similarity);

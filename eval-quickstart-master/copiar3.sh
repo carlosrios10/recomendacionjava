@@ -1,0 +1,1 @@
+rsync -e 'ssh' --delete --checksum -z --progress -tr ./ crios@192.168.2.109://home/crios/postdoc/proyectos/eval-recsys-lbsn

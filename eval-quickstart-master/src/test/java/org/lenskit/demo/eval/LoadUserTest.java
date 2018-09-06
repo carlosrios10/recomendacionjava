@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,18 +26,26 @@ public class LoadUserTest {
 	   @Test
 	    public void testUserDataOk() {
 		   System.out.println(dao.getEntityIds(CommonTypes.USER).size());
-		  Entity enti = dao.lookupEntity(CommonTypes.USER, 1026);
+		   Entity enti = dao.lookupEntity(CommonTypes.USER, 713);
 		   System.out.println(enti.get("id"));
-		   System.out.println(enti.get("lat")); 
-		   System.out.println(enti.get("lon"));
+		   System.out.println(enti.get("amigos"));
+		   System.out.println(enti.get("amigosN2"));
+		   //		   System.out.println(enti.get("lat")); 
+//		   System.out.println(enti.get("lon"));
 		  // List<Entity> users = dao.streamEntities(CommonTypes.USER).get();
-		   System.out.println( dao.query(CommonTypes.USER).get().size());
-		   for (Entity ent : dao.streamEntities(CommonTypes.USER)) {
-			   System.out.println(ent.get("id"));
-			   System.out.println(ent.get("lat")); 
-			   System.out.println(ent.get("lon"));
-			
-		}
+//		   for (Entity ent : dao.streamEntities(CommonTypes.USER)) {
+//			   System.out.println(ent.get("id"));
+////			   System.out.println(ent.get("lat")); 
+////			   System.out.println(ent.get("lon"));
+//			
+//		}
+		  String att = enti.get("amigosN2").toString();
+		  if (" ".equals(att))
+			  System.out.println("att"+att);
+		  for(String aa : att.split(Pattern.quote(","))){
+			  System.out.println("----");
+			  System.out.println(Long.parseLong(aa));
+		  }
 	   }
 
 }

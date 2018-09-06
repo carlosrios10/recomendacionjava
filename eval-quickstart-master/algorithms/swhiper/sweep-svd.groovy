@@ -12,7 +12,7 @@ import org.lenskit.mf.funksvd.FunkSVDItemScorer
 
 
 
-for (n in  [5,10,20,30,40,50,60,70,80,90,100]) {
+for (n in  [5,10,20,30,40,50,60,70,80,90,100,200,300,500,1000]) {
 
 	algorithm("FunkSVD") {
 		bind ItemScorer to FunkSVDItemScorer

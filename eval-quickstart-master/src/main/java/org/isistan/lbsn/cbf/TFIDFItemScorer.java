@@ -20,80 +20,80 @@ import java.util.Map;
  * @author <a href="http://www.grouplens.org">GroupLens Research</a>
  */
 public class TFIDFItemScorer extends AbstractItemScorer {
-    private final DataAccessObject dao;
-    private final CBFModel model;
-    private final UserProfileBuilder profileBuilder;
+	private final DataAccessObject dao;
+	private final CBFModel model;
+	private final UserProfileBuilder profileBuilder;
 
-    /**
-     * Construct a new item scorer.  LensKit's dependency injector will call this constructor and
-     * provide the appropriate parameters.
-     *
-     * @param dao The data access object, for looking up users' ratings.
-     * @param m   The precomputed model containing the item tag vectors.
-     * @param upb The user profile builder for building user tag profiles.
-     */
-    @Inject
-    public TFIDFItemScorer(DataAccessObject dao, CBFModel m, UserProfileBuilder upb) {
-        this.dao = dao;
-        model = m;
-        profileBuilder = upb;
-    }
+	/**
+	 * Construct a new item scorer.  LensKit's dependency injector will call this constructor and
+	 * provide the appropriate parameters.
+	 *
+	 * @param dao The data access object, for looking up users' ratings.
+	 * @param m   The precomputed model containing the item tag vectors.
+	 * @param upb The user profile builder for building user tag profiles.
+	 */
+	@Inject
+	public TFIDFItemScorer(DataAccessObject dao, CBFModel m, UserProfileBuilder upb) {
+		this.dao = dao;
+		model = m;
+		profileBuilder = upb;
+	}
 
-    /**
-     * Generate item scores personalized for a particular user.  For the TFIDF scorer, this will
-     * prepare a user profile and compare it to item tag vectors to produce the score.
-     *
-     * @param user   The user to score for.
-     * @param items  A collection of item ids that should be scored.
-     */
-    @Nonnull
-    @Override
-    public ResultMap scoreWithDetails(long user, @Nonnull Collection<Long> items){
-        // Get the user's ratings
-        List<Rating> ratings = dao.query(Rating.class)
-                                  .withAttribute(CommonAttributes.USER_ID, user)
-                                  .get();
+	/**
+	 * Generate item scores personalized for a particular user.  For the TFIDF scorer, this will
+	 * prepare a user profile and compare it to item tag vectors to produce the score.
+	 *
+	 * @param user   The user to score for.
+	 * @param items  A collection of item ids that should be scored.
+	 */
+	@Nonnull
+	@Override
+	public ResultMap scoreWithDetails(long user, @Nonnull Collection<Long> items){
+		// Get the user's ratings
+		List<Rating> ratings = dao.query(Rating.class)
+				.withAttribute(CommonAttributes.USER_ID, user)
+				.get();
 
-        if (ratings == null) {
-            // the user doesn't exist, so return an empty ResultMap
-            return Results.newResultMap();
-        }
+		if (ratings == null) {
+			// the user doesn't exist, so return an empty ResultMap
+			return Results.newResultMap();
+		}
 
-        // Create a place to store the results of our score computations
-        List<Result> results = new ArrayList<>();
+		// Create a place to store the results of our score computations
+		List<Result> results = new ArrayList<>();
 
-        // Get the user's profile, which is a vector with their 'like' for each tag
-        Map<String, Double> userVector = profileBuilder.makeUserProfile(ratings);
-        double sumSqUser = 0.0;
-        for (Map.Entry<String, Double> e : userVector.entrySet()){
-            sumSqUser = sumSqUser + (e.getValue()*e.getValue());
-        }
-        double normUserVector = Math.sqrt(sumSqUser);
+		// Get the user's profile, which is a vector with their 'like' for each tag
+		Map<String, Double> userVector = profileBuilder.makeUserProfile(ratings);
+		double sumSqUser = 0.0;
+		for (Map.Entry<String, Double> e : userVector.entrySet()){
+			sumSqUser = sumSqUser + (e.getValue()*e.getValue());
+		}
+		double normUserVector = Math.sqrt(sumSqUser);
 
-        for (Long item: items) {
-            Map<String, Double> iv = model.getItemVector(item);
+		for (Long item: items) {
+			Map<String, Double> iv = model.getItemVector(item);
 
-            // TODO Compute the cosine of this item and the user's profile, store it in the output list
-            // TODO And remove this exception to say you've implemented it
-            // If the denominator of the cosine similarity is 0, skip the item
-            double numerator = 0.0;
-            double sumSqItem = 0.0;
-            for (Map.Entry<String, Double> e : iv.entrySet()){
-                if (userVector.containsKey(e.getKey())){
-                    numerator = numerator + (e.getValue()*userVector.get(e.getKey()));
-                }
-                sumSqItem = sumSqItem + (e.getValue()*e.getValue());
-            }
-            double normItemVector = Math.sqrt(sumSqItem);
-            double cosineSim = numerator/(normItemVector*normUserVector);
-            if(!Double.isNaN(cosineSim)){
-                Result result = new BasicResult(item,cosineSim);
-                results.add(result);
-            }
-        }
-        //results = Results.scoreOrder().sortedCopy(results);
-        return Results.newResultMap(results);
-    }
+			// TODO Compute the cosine of this item and the user's profile, store it in the output list
+			// TODO And remove this exception to say you've implemented it
+			// If the denominator of the cosine similarity is 0, skip the item
+			double numerator = 0.0;
+			double sumSqItem = 0.0;
+			for (Map.Entry<String, Double> e : iv.entrySet()){
+				if (userVector.containsKey(e.getKey())){
+					numerator = numerator + (e.getValue()*userVector.get(e.getKey()));
+				}
+				sumSqItem = sumSqItem + (e.getValue()*e.getValue());
+			}
+			double normItemVector = Math.sqrt(sumSqItem);
+			double cosineSim = numerator/(normItemVector*normUserVector);
+			if(!Double.isNaN(cosineSim)){
+				Result result = new BasicResult(item,cosineSim);
+				results.add(result);
+			}
+		}
+		//results = Results.scoreOrder().sortedCopy(results);
+		return Results.newResultMap(results);
+	}
 
 
 }
